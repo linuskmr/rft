@@ -4,6 +4,8 @@ from functools import wraps
 class UnitFloat(float):
     """A typed float, i.e. a float with a unit."""
 
+    output_decimal_points: int = 3
+
     unit: str
     """The unit of this float."""
 
@@ -15,7 +17,7 @@ class UnitFloat(float):
         self.unit = unit
 
     def __str__(self):
-        return f'{float(self)} {self.unit}'
+        return ('{:.' + str(self.output_decimal_points) + 'f} {}').format(float(self), self.unit)
 
     def __repr__(self):
         return str(self)

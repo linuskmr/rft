@@ -9,5 +9,7 @@ print(
     parabel.perizentrum_geschwindigkeit(vk=21.3)
 )
 
+print(ellipse.umlaufzeit(planet=ERDE, a=ERDE.R + 200000))
+
 # 200 km um die Erde
 print(vis_viva(planet=ERDE, r=ERDE.R + 200, epsilon=0, p=ERDE.R + 200))
