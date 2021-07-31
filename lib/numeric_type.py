@@ -3,7 +3,7 @@ class MyNumber(float):
     unit: str
 
     def __new__(cls, value: float, unit: str):
-        return float.__new__(cls, value)
+        return MyNumber(float.__new__(cls, value), unit)
 
     def __init__(self, value: float, unit: str):
         float.__init__(value)
