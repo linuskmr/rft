@@ -62,10 +62,9 @@ def apozentrum_radius(r: float) -> float:
 
 
 @return_unit('km/s')
-def perizentrum_geschwindigkeit(*, planet: Planet, r: float) -> float:
+def geschwindigkeit(*, planet: Planet, r: float) -> float:
     """
-    Berechnet die Perizentrumsgeschwindigkeit eines Kreises, also die Geschwindigkeit am Ort mit minimaler Entfernung
-    zum Planeten.
+    Berechnet die Geschwindigkeit auf einer Kreisbahn.
 
     :param planet: Planet, an dem die Perizentrumsgeschwindigkeit berechnet werden soll.
     :param r: Radius des Planeten.
