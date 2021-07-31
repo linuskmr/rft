@@ -1,5 +1,5 @@
 from typing import TypeVar, Generic
-
+from lib.numeric_type import MyNumber
 from lib.planet import *
 
 
@@ -78,4 +78,5 @@ def lineare_exzentrizitaet_allgemein(*, a: float, epsilon: float) -> float:
     return a * epsilon
 
 
+print(MyNumber(42, 'm/s'))
 print('Geschwindigkeit der Erde um die Sonne', vis_viva(planet=SONNE, r=ERDE.a, epsilon=0, p=ERDE.a))
