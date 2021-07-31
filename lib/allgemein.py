@@ -1,6 +1,20 @@
 import math
+from datetime import timedelta
+
 from lib.planet import *
-from lib.unit_float import return_unit
+from lib.unit_float import return_unit, UnitFloat
+
+
+SIDERISCHER_WINKELGESCHWINDIGKEIT_GRAD_PRO_TAG = UnitFloat(360 / 365.2422, '°/d')
+SIDERISCHER_WINKELGESCHWINDIGKEIT_GRAD_PRO_STUNDE = UnitFloat(
+    (360 + SIDERISCHER_WINKELGESCHWINDIGKEIT_GRAD_PRO_TAG) / 24, '°/h'
+)
+SIDERISCHER_TAG = timedelta(hours=360 / SIDERISCHER_WINKELGESCHWINDIGKEIT_GRAD_PRO_STUNDE)
+
+
+def keplersche_zeitgleichung(planet: Planet, a: float, epsilon: float, psi: float):
+    return math.sqrt(a**3 / planet.mu) * (2 * math.atan(math.sqrt((1 - epsilon) / (1 + epsilon)) * math.tan(psi / 2)))
+    # Todo
 
 
 @return_unit('km')
