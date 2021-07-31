@@ -4,13 +4,6 @@ from lib.planet import *
 from lib.unit_float import return_unit, UnitFloat
 
 
-SIDERISCHER_WINKELGESCHWINDIGKEIT_GRAD_PRO_TAG = UnitFloat(360 / 365.2422, '°/d')
-SIDERISCHER_WINKELGESCHWINDIGKEIT_GRAD_PRO_STUNDE = UnitFloat(
-    (360 + SIDERISCHER_WINKELGESCHWINDIGKEIT_GRAD_PRO_TAG) / 24, '°/h'
-)
-SIDERISCHER_TAG = timedelta(hours=360 / SIDERISCHER_WINKELGESCHWINDIGKEIT_GRAD_PRO_STUNDE)
-
-
 def keplersche_zeitgleichung(planet: Planet, a: float, epsilon: float, psi: float):
     return math.sqrt(a**3 / planet.mu) * (2 * math.atan(math.sqrt((1 - epsilon) / (1 + epsilon)) * math.tan(psi / 2)))
     # Todo
@@ -85,7 +78,7 @@ def vis_viva_r_a(*, planet: Planet, r: float, a: float) -> float:
     return math.sqrt(planet.mu * ((2 / r) - (1 / a)))
 
 
-def numerische_exzentrizitaet_ra_rp(*, ra: float, rp: float) -> float:
+def numerische_exzentrizitaet_ra_rp(*, rp: float, ra: float) -> float:
     """
     Berechnet die numerische Exzentrizität epsilon.
 
@@ -93,7 +86,6 @@ def numerische_exzentrizitaet_ra_rp(*, ra: float, rp: float) -> float:
     :param rp: Radius des Perizentrums in km, also der Ort mit minimaler Entfernung zum Planten.
     :return: Numerische Exzentrizität.
     """
-    assert rp <= ra, "Apozentrum ist kleiner als Perizentrum. Vielleicht beide Werte tauschen?"
     return (ra - rp) / (ra + rp)
 
 
