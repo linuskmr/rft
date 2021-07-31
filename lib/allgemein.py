@@ -1,6 +1,5 @@
 import math
 from datetime import timedelta
-
 from lib.planet import *
 from lib.unit_float import return_unit, UnitFloat
 
@@ -62,7 +61,7 @@ def vis_viva_r_epsilon_p(*, planet: Planet, r: float, epsilon: float, p: float) 
     Beispiel: Das Vis-Viva-Integral der Erde um die Sonne sollte die Geschwindigkeit der Erde ergeben.
 
     >>> vis_viva_r_epsilon_p(planet=SONNE, r=ERDE.a, epsilon=0, p=ERDE.a)
-    29.784269170050496 km/s
+    29.784 km/s
 
     :param planet: Planet, an dem das Vis-Viva-Integral berechnet werden soll.
     :param r: Radius bzw. Abstand zum Planeten in km.
