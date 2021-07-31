@@ -1,8 +1,9 @@
-from typing import TypeVar, Generic
 from lib.unit_float import return_unit
 from lib.planet import *
+from lib import ellipse, kreis, hyperbel, parabel
 
 
+@return_unit('km')
 def bahngleichung(*, p: float, epsilon: float, psi: float) -> float:
     """
     Berechnet die allgemeine Bahngleichung / Kegelschnittgleichung in Polarkoordinaten.
@@ -15,6 +16,7 @@ def bahngleichung(*, p: float, epsilon: float, psi: float) -> float:
     return p / (1 + epsilon * math.cos(psi))
 
 
+@return_unit('km')
 def bahngleichung_perizentrum(*, p: float, epsilon: float) -> float:
     """
     Berechnet die Bahngleichung am Perizentrum, also der Ort mit minimaler Entfernung zum Planeten.
@@ -57,7 +59,7 @@ def vis_viva(*, planet: Planet, r: float, epsilon: float, p: float) -> float:
     return math.sqrt(planet.mu * ((2 / r) + ((epsilon ** 2 - 1) / p)))
 
 
-def numerische_exzentrizitaet_allgemein(*, ra: float, rp: float) -> float:
+def numerische_exzentrizitaet_ra_rp(*, ra: float, rp: float) -> float:
     """
     Berechnet die numerische Exzentrizität epsilon.
 
@@ -69,16 +71,43 @@ def numerische_exzentrizitaet_allgemein(*, ra: float, rp: float) -> float:
     return (ra - rp) / (ra + rp)
 
 
+def numerische_exzentrizitaet_e_a(*, e: float, a: float) -> float:
+    """
+    Berechnet die numerische Exzentrizität epsilon.
+
+    :param e: Lineare Exzentrizität in km.
+    :param a: Große Halbachse in km.
+    :return: Numerische Exzentrizität.
+    """
+    return e / a
+
+
+def numerische_exzentrizitaet_epsilon_a(*, epsilon: float, a: float) -> float:
+    """
+    Berechnet die numerische Exzentrizität epsilon.
+
+    :param epsilon: Numerische Exzentrizität.
+    :param a: Große Halbachse in km.
+    :return: Numerische Exzentrizität.
+    """
+    return (a * (1 + epsilon) - a * (1 - epsilon)) / (2*a)
+
+
+@return_unit('km')
 def lineare_exzentrizitaet_allgemein(*, a: float, epsilon: float) -> float:
     """
     Berechnet die lineare Exzentrizität e.
     
     :param a: Große Halbachse in km.
     :param epsilon: Numerische Exzentrizität.
-    :return: Lineare Exzentrizität.
+    :return: Lineare Exzentrizität  in km.
     """
     return a * epsilon
 
 
-print('Geschwindigkeit der Erde um die Sonne', vis_viva(planet=SONNE, r=ERDE.a, epsilon=0, p=ERDE.a))
-print(bahngleichung_apozentrum(p=1000, epsilon=0.4))
+print('Geschwindigkeit der Erde um die Sonne:', vis_viva(planet=SONNE, r=ERDE.a, epsilon=0, p=ERDE.a))
+print('Apozentrum bei p=1000 und epsilon=0.4:', bahngleichung_apozentrum(p=1000, epsilon=0.4))
+print(
+    'Perizentrumsgeschwindigkeit einer Parabel bei einer Kreisgeschwindigkeit von 21.3:',
+    parabel.perizentrum_geschwindigkeit(vk=21.3)
+)

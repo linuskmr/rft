@@ -1,7 +1,8 @@
 import math
-from planet import Planet
+from lib.unit_float import return_unit
 
 
+@return_unit('km')
 def grosse_halbachse() -> float:
     """
     Gibt die große Halbachse a einer Parabel zurück.
@@ -12,16 +13,18 @@ def grosse_halbachse() -> float:
     return math.inf
 
 
+@return_unit('km')
 def lineare_exzentrizitaet() -> float:
     """
     Gibt die lineare Exzentrizität e einer Parabel zurück.
     Hinweis: Die lineare Exzentrizität einer Parabel ist immer unendlich.
 
-    :return: Lineare Exzentrizität.
+    :return: Lineare Exzentrizität in km.
     """
     return math.inf
 
 
+@return_unit('km')
 def perizentrum_radius(*, p: float) -> float:
     """
     Berechnet den Perizentrumsradius einer Parabel, also die Entfernung des Orts mit minimaler Entfernung zum Planeten.
@@ -32,6 +35,7 @@ def perizentrum_radius(*, p: float) -> float:
     return p / 2
 
 
+@return_unit('km')
 def apozentrum_radius() -> float:
     """
     Gibt den Apozentrumsradius einer Parabel zurück, also die Entfernung des Orts mit maximaler Entfernung zum Planeten.
@@ -42,6 +46,7 @@ def apozentrum_radius() -> float:
     return math.inf
 
 
+@return_unit('km/s')
 def perizentrum_geschwindigkeit(*, vk: float) -> float:
     """
     Berechnet die Perizentrumsgeschwindigkeit einer Parabel, also die Geschwindigkeit am Ort mit minimaler Entfernung

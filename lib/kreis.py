@@ -1,7 +1,10 @@
 import math
-from planet import Planet
+from datetime import timedelta
+from lib.planet import Planet
+from lib.unit_float import return_unit
 
 
+@return_unit('km')
 def grosse_halbachse(r: float) -> float:
     """
     Berechnet die große Halbachse a des Kreises.
@@ -13,6 +16,7 @@ def grosse_halbachse(r: float) -> float:
     return r
 
 
+@return_unit('km')
 def kleine_halbachse(r: float) -> float:
     """
     Berechnet die kleine Halbachse b eines Kreises.
@@ -24,6 +28,7 @@ def kleine_halbachse(r: float) -> float:
     return r
 
 
+@return_unit('km')
 def lineare_exzentrizitaet() -> float:
     """
     Gibt die lineare Exzentrizität e einer Kreises zurück.
@@ -32,6 +37,7 @@ def lineare_exzentrizitaet() -> float:
     return 0
 
 
+@return_unit('km')
 def perizentrum_radius(r: float) -> float:
     """
     Berechnet den Perizentrumsradius eines Kreises, also die Entfernung des Orts mit minimaler Entfernung zum Planeten.
@@ -43,6 +49,7 @@ def perizentrum_radius(r: float) -> float:
     return r
 
 
+@return_unit('km')
 def apozentrum_radius(r: float) -> float:
     """
     Berechnet den Apozentrumsradius eines Kreises, also die Entfernung des Orts mit minimaler Entfernung zum Planeten.
@@ -54,6 +61,7 @@ def apozentrum_radius(r: float) -> float:
     return r
 
 
+@return_unit('km/s')
 def perizentrum_geschwindigkeit(*, planet: Planet, r: float) -> float:
     """
     Berechnet die Perizentrumsgeschwindigkeit eines Kreises, also die Geschwindigkeit am Ort mit minimaler Entfernung
@@ -66,7 +74,7 @@ def perizentrum_geschwindigkeit(*, planet: Planet, r: float) -> float:
     return math.sqrt(planet.mu / r)
 
 
-def umlaufzeit(*, planet: Planet, r: float) -> float:
+def umlaufzeit(*, planet: Planet, r: float) -> timedelta:
     """
     Berechnet die Umlaufzeit des Kreises.
 
@@ -76,4 +84,4 @@ def umlaufzeit(*, planet: Planet, r: float) -> float:
     """
     # TODO: Ist die Umlaufzeit wirklich in Sekunden?
     # TODO: Umlaufzeit als timedelta returnen?
-    return 2 * math.pi * math.sqrt(r ** 3 / planet.mu)
+    return timedelta(seconds=2 * math.pi * math.sqrt(r ** 3 / planet.mu))

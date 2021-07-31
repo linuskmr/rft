@@ -1,6 +1,8 @@
 import math
+from lib.unit_float import return_unit
 
 
+@return_unit('km')
 def grosse_halbachse(*, p: float, epsilon: float) -> float:
     """
     Berechnet die große Halbachse a einer Hyperbel.
@@ -12,6 +14,7 @@ def grosse_halbachse(*, p: float, epsilon: float) -> float:
     return p / (epsilon**2 - 1)
 
 
+@return_unit('km')
 def kleine_halbachse(*, a: float, e: float) -> float:
     """
     Berechnet die kleine Halbachse b einer Hyperbel.
@@ -23,17 +26,19 @@ def kleine_halbachse(*, a: float, e: float) -> float:
     return math.sqrt(e**2 - a**2)
 
 
+@return_unit('km')
 def lineare_exzentrizitaet(*, a: float, rp: float) -> float:
     """
     Berechnet die lineare Exzentrizität e einer Hyperbel.
 
     :param a: Große Halbachse in km.
     :param rp: Radius des Perizentrums in km, also der Ort mit minimaler Entfernung zum Planten.
-    :return: Lineare Exzentrizität.
+    :return: Lineare Exzentrizität in km.
     """
     return a + rp
 
 
+@return_unit('km')
 def perizentrum_radius(*, a: float, epsilon: float) -> float:
     """
     Berechnet den Perizentrumsradius einer Hyperbel, also die Entfernung des Orts mit minimaler Entfernung zum Planeten.
@@ -45,6 +50,7 @@ def perizentrum_radius(*, a: float, epsilon: float) -> float:
     return a * (1 - epsilon)
 
 
+@return_unit('km')
 def apozentrum_radius(*, a: float, epsilon: float) -> float:
     """
     Berechnet den Apozentrumsradius einer Hyperbel, also die Entfernung des Orts mit maximaler Entfernung zum Planeten.
@@ -56,6 +62,7 @@ def apozentrum_radius(*, a: float, epsilon: float) -> float:
     return a * (1 + epsilon)
 
 
+@return_unit('km/s')
 def perizentrum_geschwindigkeit(*, vk: float, vinf: float) -> float:
     """
     Berechnet die Perizentrumsgeschwindigkeit einer Hyperbel, also die Geschwindigkeit am Ort mit minimaler Entfernung
