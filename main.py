@@ -5,7 +5,7 @@ from lib.planet import *
 
 def bahngleichung(*, p: float, epsilon: float, psi: float) -> float:
     """
-    Berechnet die allgemeine Bahngleichung.
+    Berechnet die allgemeine Bahngleichung / Kegelschnittgleichung in Polarkoordinaten.
 
     :param p: Bahnparameter p.
     :param epsilon: Numerische Exzentrizität.
