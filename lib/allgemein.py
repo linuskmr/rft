@@ -48,7 +48,7 @@ def vis_viva(*, planet: Planet, r: float, epsilon: float, p: float) -> float:
     Beispiel: Das Vis-Viva-Integral der Erde um die Sonne sollte die Geschwindigkeit der Erde ergeben.
 
     >>> vis_viva(planet=SONNE, r=ERDE.a, epsilon=0, p=ERDE.a)
-    UnitFloat(29.784269170050496, km/s)
+    29.784269170050496 km/s
 
     :param planet: Planet, an dem das Vis-Viva-Integral berechnet werden soll.
     :param r: Radius bzw. Abstand zum Planeten in km.

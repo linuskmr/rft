@@ -15,10 +15,10 @@ class UnitFloat(float):
         self.unit = unit
 
     def __str__(self):
-        return f'{super.__str__(self)} {self.unit}'
+        return f'{float(self)} {self.unit}'
 
     def __repr__(self):
-        return f'UnitFloat({repr(float(self))}, {self.unit})'
+        return str(self)
 
 
 def return_unit(unit: str):

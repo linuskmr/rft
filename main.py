@@ -8,3 +8,6 @@ print(
     'Perizentrumsgeschwindigkeit einer Parabel bei einer Kreisgeschwindigkeit von 21.3:',
     parabel.perizentrum_geschwindigkeit(vk=21.3)
 )
+
+# 200 km um die Erde
+print(vis_viva(planet=ERDE, r=ERDE.R + 200, epsilon=0, p=ERDE.R + 200))
