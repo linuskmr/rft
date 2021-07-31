@@ -1,5 +1,5 @@
 from typing import TypeVar, Generic
-from lib.numeric_type import MyNumber
+from lib.unit_float import return_unit
 from lib.planet import *
 
 
@@ -26,6 +26,7 @@ def bahngleichung_perizentrum(*, p: float, epsilon: float) -> float:
     return p / (1 + epsilon)
 
 
+@return_unit('km')
 def bahngleichung_apozentrum(*, p: float, epsilon: float) -> float:
     """
     Berechnet die Bahngleichung am Apozentrum, also der Ort mit maximaler Entfernung zum Planeten.
@@ -37,6 +38,7 @@ def bahngleichung_apozentrum(*, p: float, epsilon: float) -> float:
     return p / (1 - epsilon)
 
 
+@return_unit('km/s')
 def vis_viva(*, planet: Planet, r: float, epsilon: float, p: float) -> float:
     """
     Berechnet das Vis-Viva-Integral.
@@ -52,7 +54,7 @@ def vis_viva(*, planet: Planet, r: float, epsilon: float, p: float) -> float:
     :param p: Bahnparameter p in km.
     :return: Geschwindigkeit des Satelliten in km/s.
     """
-    return MyNumber(math.sqrt(planet.mu * ((2 / r) + ((epsilon ** 2 - 1) / p))), 'km/s')
+    return math.sqrt(planet.mu * ((2 / r) + ((epsilon ** 2 - 1) / p)))
 
 
 def numerische_exzentrizitaet_allgemein(*, ra: float, rp: float) -> float:
@@ -79,3 +81,4 @@ def lineare_exzentrizitaet_allgemein(*, a: float, epsilon: float) -> float:
 
 
 print('Geschwindigkeit der Erde um die Sonne', vis_viva(planet=SONNE, r=ERDE.a, epsilon=0, p=ERDE.a))
+print(bahngleichung_apozentrum(p=1000, epsilon=0.4))
