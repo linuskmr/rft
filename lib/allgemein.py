@@ -41,13 +41,13 @@ def bahngleichung_apozentrum(*, p: float, epsilon: float) -> float:
 
 
 @return_unit('km/s')
-def vis_viva(*, planet: Planet, r: float, epsilon: float, p: float) -> float:
+def vis_viva_r_epsilon_p(*, planet: Planet, r: float, epsilon: float, p: float) -> float:
     """
     Berechnet das Vis-Viva-Integral.
 
     Beispiel: Das Vis-Viva-Integral der Erde um die Sonne sollte die Geschwindigkeit der Erde ergeben.
 
-    >>> vis_viva(planet=SONNE, r=ERDE.a, epsilon=0, p=ERDE.a)
+    >>> vis_viva_r_epsilon_p(planet=SONNE, r=ERDE.a, epsilon=0, p=ERDE.a)
     29.784269170050496 km/s
 
     :param planet: Planet, an dem das Vis-Viva-Integral berechnet werden soll.
@@ -57,6 +57,19 @@ def vis_viva(*, planet: Planet, r: float, epsilon: float, p: float) -> float:
     :return: Geschwindigkeit des Satelliten in km/s.
     """
     return math.sqrt(planet.mu * ((2 / r) + ((epsilon ** 2 - 1) / p)))
+
+
+@return_unit('km/s')
+def vis_viva_r_a(*, planet: Planet, r: float, a: float) -> float:
+    """
+    Berechnet das Vis-Viva-Integral.
+
+    :param planet: Planet, an dem das Vis-Viva-Integral berechnet werden soll.
+    :param r: Radius bzw. Abstand zum Planeten in km.
+    :param a: Große Halbachse in km.
+    :return: Geschwindigkeit des Satelliten in km/s.
+    """
+    return math.sqrt(planet.mu * ((2 / r) - (1 / a))
 
 
 def numerische_exzentrizitaet_ra_rp(*, ra: float, rp: float) -> float:
