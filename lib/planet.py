@@ -1,5 +1,6 @@
 import math
 from dataclasses import dataclass
+from lib.unit_float import UnitFloat
 
 
 @dataclass(frozen=True)
@@ -28,49 +29,63 @@ class Planet:
 # Definition einiger Planeten
 SONNE = Planet(
     name='Helios (Sonne)',
-    M=1.989 * 10**30,
-    mu=1.327_1 * 10**11,
-    a=math.nan,  # Die Sonne hat keine große Halbachse um sich selber
-    R=60_000,
-    v=math.nan,  # Die Sonne hat keine Geschwindigkeit um sich selber
+    M=UnitFloat(1.989 * 10**30, 'kg'),
+    mu=UnitFloat(1.327_1 * 10**11, 'km³/s²'),
+    a=UnitFloat(math.nan, 'km'),  # Die Sonne hat keine große Halbachse um sich selber
+    R=UnitFloat(60_000, 'km'),
+    v=UnitFloat(math.nan, 'km/s'),  # Die Sonne hat keine Geschwindigkeit um sich selber
 )
 ERDE = Planet(
     name='Erde',
-    M=5.974_2 * 10**24,
-    mu=398_599,
-    a=149_599_366,
-    R=6_378,
-    v=29.784
+    M=UnitFloat(5.974_2 * 10**24, 'kg'),
+    mu=UnitFloat(398_599, 'km³/s²'),
+    a=UnitFloat(149_599_366, 'km'),
+    R=UnitFloat(6_378, 'km'),
+    v=UnitFloat(29.784, 'km/s'),
 )
 VENUS = Planet(
     name='Venus',
-    M=4.869 * 10**24,
-    mu=324_860,
-    a=108_208_777,
-    R=6_052,
-    v=35.020,
+    M=UnitFloat(4.869 * 10**24, 'kg'),
+    mu=UnitFloat(324_860, 'km³/s²'),
+    a=UnitFloat(108_208_777, 'km'),
+    R=UnitFloat(6_052, 'km'),
+    v=UnitFloat(35.020, 'km/s'),
 )
 MARS = Planet(
     name='Mars',
-    M=6.419_1 * 10**23,
-    mu=42_828,
-    a=227_946_314,
-    R=3_397,
-    v=24.129,
+    M=UnitFloat(6.419_1 * 10**23, 'kg'),
+    mu=UnitFloat(42_828, 'km³/s²'),
+    a=UnitFloat(227_946_314, 'km'),
+    R=UnitFloat(3_397, 'km'),
+    v=UnitFloat(24.129, 'km/s'),
 )
 SATURN = Planet(
     name='Saturn',
-    M=5.686 * 10**26,
-    mu=37_930_320,
-    a=1_425_945_953,
-    R=60_000,
-    v=9.647
+    M=UnitFloat(5.686 * 10**26, 'kg'),
+    mu=UnitFloat(37_930_320, 'km³/s²'),
+    a=UnitFloat(1_425_945_953, 'km'),
+    R=UnitFloat(60_000, 'km'),
+    v=UnitFloat(9.647, 'km/s'),
 )
 JUPITER = Planet(
     name='Jupiter',
-    M=1.898_8 * 10**27,
-    mu=126_687_936,
-    a=778_344_254,
-    R=71_398,
-    v=13.058,
+    M=UnitFloat(1.898_8 * 10**27, 'kg'),
+    mu=UnitFloat(126_687_936, 'km³/s²'),
+    a=UnitFloat(778_344_254, 'km'),
+    R=UnitFloat(71_398, 'km'),
+    v=UnitFloat(13.058, 'km/s'),
 )
+
+
+def planet_from_name(planet_name: str) -> Planet:
+    planeten = {
+        'erde': ERDE,
+        'sonne': SONNE,
+        'helios': SONNE,
+        'mars': MARS,
+        'venus': VENUS,
+        'saturn': SATURN,
+        'jupiter': JUPITER
+    }
+    planet_name = planet_name.lower()
+    return planeten[planet_name]
