@@ -10,7 +10,7 @@ class MyNumber(float):
         self.unit = unit
 
     def __str__(self):
-        return f'{super.__str__(self)} m/s'
+        return f'{super.__str__(self)} {self.unit}'
 
 
 def str_return(function):
@@ -26,4 +26,4 @@ def speed(distance: float, duration: float) -> float:
     return distance / duration
 
 
-# print(speed(100, 10) + NumericType(3, 'm/s'))
+print(speed(100, 10) + MyNumber(3, 'm/s'))

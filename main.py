@@ -52,7 +52,7 @@ def vis_viva(*, planet: Planet, r: float, epsilon: float, p: float) -> float:
     :param p: Bahnparameter p in km.
     :return: Geschwindigkeit des Satelliten in km/s.
     """
-    return math.sqrt(planet.mu * ((2 / r) + ((epsilon ** 2 - 1) / p)))
+    return MyNumber(math.sqrt(planet.mu * ((2 / r) + ((epsilon ** 2 - 1) / p))), 'km/s')
 
 
 def numerische_exzentrizitaet_allgemein(*, ra: float, rp: float) -> float:
@@ -78,5 +78,4 @@ def lineare_exzentrizitaet_allgemein(*, a: float, epsilon: float) -> float:
     return a * epsilon
 
 
-print(MyNumber(42, 'm/s'))
 print('Geschwindigkeit der Erde um die Sonne', vis_viva(planet=SONNE, r=ERDE.a, epsilon=0, p=ERDE.a))
