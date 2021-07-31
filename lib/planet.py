@@ -2,7 +2,7 @@ import math
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(frozen=True)
 class Planet:
     """Ein Planet."""
 
@@ -26,15 +26,15 @@ class Planet:
 
 
 # Definition einiger Planeten
-sonne = Planet(
-    name='Sonne',
+SONNE = Planet(
+    name='Helios (Sonne)',
     M=1.989 * 10**30,
     mu=1.327_1 * 10**11,
     a=math.nan,  # Die Sonne hat keine große Halbachse um sich selber
     R=60_000,
     v=math.nan,  # Die Sonne hat keine Geschwindigkeit um sich selber
 )
-erde = Planet(
+ERDE = Planet(
     name='Erde',
     M=5.974_2 * 10**24,
     mu=398_599,
@@ -42,7 +42,7 @@ erde = Planet(
     R=6_378,
     v=29.784
 )
-venus = Planet(
+VENUS = Planet(
     name='Venus',
     M=4.869 * 10**24,
     mu=324_860,
@@ -50,7 +50,7 @@ venus = Planet(
     R=6_052,
     v=35.020,
 )
-mars = Planet(
+MARS = Planet(
     name='Mars',
     M=6.419_1 * 10**23,
     mu=42_828,
@@ -58,7 +58,7 @@ mars = Planet(
     R=3_397,
     v=24.129,
 )
-saturn = Planet(
+SATURN = Planet(
     name='Saturn',
     M=5.686 * 10**26,
     mu=37_930_320,
@@ -66,7 +66,7 @@ saturn = Planet(
     R=60_000,
     v=9.647
 )
-jupiter = Planet(
+JUPITER = Planet(
     name='Jupiter',
     M=1.898_8 * 10**27,
     mu=126_687_936,
