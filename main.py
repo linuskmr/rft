@@ -1,5 +1,6 @@
-import math
-from planet import *
+from typing import TypeVar, Generic
+
+from lib.planet import *
 
 
 def bahngleichung(*, p: float, epsilon: float, psi: float) -> float:
@@ -42,7 +43,7 @@ def vis_viva(*, planet: Planet, r: float, epsilon: float, p: float) -> float:
 
     Beispiel: Das Vis-Viva-Integral der Erde um die Sonne sollte die Geschwindigkeit der Erde ergeben.
 
-    >>> vis_viva(planet=sonne, r=erde.a, epsilon=0, p=erde.a)
+    >>> vis_viva(planet=SONNE, r=ERDE.a, epsilon=0, p=ERDE.a)
     29.784269170050496
 
     :param planet: Planet, an dem das Vis-Viva-Integral berechnet werden soll.
@@ -51,7 +52,7 @@ def vis_viva(*, planet: Planet, r: float, epsilon: float, p: float) -> float:
     :param p: Bahnparameter p in km.
     :return: Geschwindigkeit des Satelliten in km/s.
     """
-    return math.sqrt(planet.mu * ((2/r) + ((epsilon**2 - 1) / p)))
+    return math.sqrt(planet.mu * ((2 / r) + ((epsilon ** 2 - 1) / p)))
 
 
 def numerische_exzentrizitaet_allgemein(*, ra: float, rp: float) -> float:
@@ -71,13 +72,10 @@ def lineare_exzentrizitaet_allgemein(*, a: float, epsilon: float) -> float:
     Berechnet die lineare Exzentrizität e.
     
     :param a: Große Halbachse in km.
-    :param epsilon: Nnumerische Exzentrizität.
+    :param epsilon: Numerische Exzentrizität.
     :return: Lineare Exzentrizität.
     """
     return a * epsilon
 
 
-print(erde)
-
-print()
-print('Geschwindigkeit der Erde um die Sonne', vis_viva(planet=sonne, r=erde.a, epsilon=0, p=erde.a))
+print('Geschwindigkeit der Erde um die Sonne', vis_viva(planet=SONNE, r=ERDE.a, epsilon=0, p=ERDE.a))
