@@ -69,7 +69,7 @@ def vis_viva_r_a(*, planet: Planet, r: float, a: float) -> float:
     :param a: Große Halbachse in km.
     :return: Geschwindigkeit des Satelliten in km/s.
     """
-    return math.sqrt(planet.mu * ((2 / r) - (1 / a))
+    return math.sqrt(planet.mu * ((2 / r) - (1 / a)))
 
 
 def numerische_exzentrizitaet_ra_rp(*, ra: float, rp: float) -> float:
