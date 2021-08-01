@@ -1,6 +1,6 @@
 import math
 
-from lib.planet import Planet
+from lib.planet import *
 from lib.unit_float import return_unit
 
 
@@ -21,8 +21,11 @@ def grosse_halbachse_planet_vinf(*, planet: Planet, vinf: float) -> float:
     """
     Berechnet die große Halbachse a einer Fluchthyperbel.
 
+    >>> grosse_halbachse_planet_vinf(planet=ERDE, vinf=32.73)
+    45958.47 km
+
     :param planet: Planet, an dem die Fluchthyperbel berechnet werden soll.
-    :param vinf: Geschwindigkeit im Unendlichen.
+    :param vinf: Exzessgeschwindigkeit; Geschwindigkeit im Unendlichen in km/s.
     :return: Große Halbachse a in km.
     """
     return planet.mu / (vinf**2)
