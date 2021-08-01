@@ -4,7 +4,7 @@ from functools import wraps
 class UnitFloat(float):
     """A typed float, i.e. a float with a unit."""
 
-    output_decimal_points: int = 10
+    output_decimal_points: int = 3
 
     unit: str
     """The unit of this float."""
