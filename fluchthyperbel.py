@@ -23,7 +23,7 @@ def fluchthyperbel(planet: Planet, vinf: float, hp: float) -> Dict[str, float]:
     print(f'Hyperbolische Exzessgeschwindigkeit; Geschwindigkeit im Unendlichen {vinf=}')
     print(f'Höhe über Perizentrum {hp=}')
     rp = hp + planet.R
-    print(f'Radius Perizentrum {rp=}')
+    print(f'Radius Perizentrum (Höhe Perizentrum + Radius Planet) {rp=}')
     print()
 
     a = hyperbel.grosse_halbachse_planet_vinf(planet=planet, vinf=vinf)
@@ -42,12 +42,14 @@ def fluchthyperbel(planet: Planet, vinf: float, hp: float) -> Dict[str, float]:
     print(f'Umlenkwinkel {grosses_epsilon}')
     psi_inf = hyperbel.unendlichkeitsanomalie(epsilon=epsilon)
     print(f'Unendlichkeitsanomalie {psi_inf=}')
-    vk = kreis.geschwindigkeit(planet=planet, r=rp)
+    vk = kreis.geschwindigkeit(planet=planet, rk=rp)
+    print()
+
     print(f'Bereits vorhandene Kreisbahngeschwindigkeit bei Perizentrum mit Radius {rp}: {vk=}')
     vp = hyperbel.perizentrum_geschwindigkeit(vk=vk, vinf=vinf)
-    print(f'Perizentrumsgeschwindigkeit {vp=}')
-    v_total = vp - vk
-    print(f'Benötigter Gesamtschubimpuls {v_total}')
+    print(f'Benötigte Perizentrumsgeschwindigkeit {vp=}')
+    v_total = UnitFloat(vp - vk, 'km/s')
+    print(f'Benötigter Gesamtschubimpuls {v_total=}')
 
     return {
         'vinf': vinf, 'hp': hp, 'a': a, 'rp': rp, 'epsilon': epsilon, 'p': p, 'grosses_epsilon': grosses_epsilon,

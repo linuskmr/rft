@@ -1,6 +1,8 @@
 import math
 from datetime import timedelta
-from lib.planet import Planet
+
+from lib import konstanten
+from lib.planet import Planet, ERDE
 from lib.unit_float import return_unit
 
 
@@ -20,6 +22,9 @@ def grosse_halbachse_p_epsilon(*, p: float, epsilon: float) -> float:
 def grosse_halbachse_ra_rp(*, ra: float, rp: float) -> float:
     """
     Berechnet die große Halbachse a einer Ellipse.
+
+    >>> grosse_halbachse_ra_rp(ra=ERDE.R+200, rp=konstanten.ERDE_GEO)
+    24371
 
     :param ra: Radius Apozentrum, also der Ort mit maximaler Entfernung zum Planten.
     :param rp: Radius Perizentrum, also der Ort mit maximaler Entfernung zum Planten.

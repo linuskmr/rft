@@ -55,7 +55,7 @@ def flucht_gravitationsfeld_2(planet: Planet, hp: float, vinf: float) -> Dict[st
     """
     print(f'2. Flucht aus dem Gravitationsfeld von Start {planet}')
     print(f'Berechne Fluchthyperbel von {planet=}')
-    print(f'{hp=}')
+    print(f'Höhe des Perizentrums über der Planetenoberfläche {hp=}')
     print(f'Exzessgeschwindigkeit delta_v1 (vom Hohmann-Übergang) {vinf=}')
     fluchthyperbel_data = fluchthyperbel(planet=planet, hp=hp, vinf=vinf)
     return fluchthyperbel_data

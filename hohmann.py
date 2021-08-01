@@ -41,7 +41,7 @@ def hohmann(planet: Planet, perizentrum_hoehe: float, apozentrum_hoehe: float) -
 
     vp = ellipse.perizentrum_geschwindigkeit_rp_ra(planet=planet, ra=ra, rp=rp)
     print(f'Benötigte Geschwindigkeit Perizentrum {vp=}')
-    vk_start = kreis.geschwindigkeit(planet=planet, r=rp)
+    vk_start = kreis.geschwindigkeit(planet=planet, rk=rp)
     print(f'Bereits vorhandene Kreisbahngeschwindigkeit auf Start-Umlaufbahnhöhe {perizentrum_hoehe}: {vk_start=}')
     delta_v1 = UnitFloat(vp - vk_start, 'km/s')
     print(f'Schubimpuls Geschwindigkeitsdelta Δv1 = vp - vk_start = {delta_v1}')
@@ -49,7 +49,7 @@ def hohmann(planet: Planet, perizentrum_hoehe: float, apozentrum_hoehe: float) -
 
     va = ellipse.apozentrum_geschwindigkeit(planet=planet, ra=ra, epsilon=epsilon, p=p)
     print(f'Benötigte Geschwindigkeit Apozentrum {va=}')
-    vk_ziel = kreis.geschwindigkeit(planet=planet, r=ra)
+    vk_ziel = kreis.geschwindigkeit(planet=planet, rk=ra)
     print(f'Kreisbahngeschwindigkeit bei Ziel-Umlaufbahnhöhe {apozentrum_hoehe}: {vk_ziel=}')
     delta_v2 = UnitFloat(vk_ziel - va, 'km/s')
     print(f'Schubimpuls Geschwindigkeitsdelta Δv2 = vk_ziel - va = {delta_v2}')

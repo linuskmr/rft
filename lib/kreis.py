@@ -1,6 +1,8 @@
 import math
 from datetime import timedelta
-from lib.planet import Planet
+
+from lib import konstanten
+from lib.planet import ERDE, Planet
 from lib.unit_float import return_unit
 
 
@@ -62,16 +64,21 @@ def apozentrum_radius(r: float) -> float:
 
 
 @return_unit('km/s')
-def geschwindigkeit(*, planet: Planet, r: float) -> float:
+def geschwindigkeit(*, planet: Planet, rk: float) -> float:
     """
     Berechnet die Geschwindigkeit auf einer Kreisbahn.
     Die Herleitung aus dem Vis-Viva-Integral findet sich in der großen Übung 6 auf Seite 9.
 
+    >>> geschwindigkeit(planet=ERDE, rk=ERDE.R + 200)
+    7.784 km/s
+    >>> geschwindigkeit(planet=ERDE, rk=konstanten.ERDE_GEO)
+    3.337 km/s
+
     :param planet: Planet, an dem die Perizentrumsgeschwindigkeit berechnet werden soll.
-    :param r: Radius des Planeten.
-    :return: Perizentrumsgeschwindigkeit in km/s.
+    :param rk: Radius der Kreisbahn.
+    :return: Kreisbahngeschwindigkeit in km/s.
     """
-    return math.sqrt(planet.mu / r)
+    return math.sqrt(planet.mu / rk)
 
 
 def umlaufzeit(*, planet: Planet, r: float) -> timedelta:
