@@ -1,13 +1,14 @@
-# ! Imports nicht optimieren bzw. welche rauslöschen, um in main() via eval() darauf Zugriff zu haben !
 import json
 from typing import Dict
-from lib import ellipse, kreis, allgemein, konstanten
+from fluchthyperbel import fluchthyperbel
 from lib.planet import *
 from lib.unit_float import UnitFloat
 from hohmann import hohmann
 
 
 def print_mission_ablauf():
+    """Gibt den Missionsablauf aus."""
+
     print('Ablauf der Mission')
     print('1. Bahnaufstieg')
     print('2. Flucht aus dem Gravitationsfeld des Startplaneten')
@@ -16,6 +17,11 @@ def print_mission_ablauf():
 
 
 def bahnaufstieg_1() -> Dict[str, float]:
+    """
+    Berechnet den Bahnaufstieg vom Startplaneten.
+
+    :return: Sämtliche berechneten Werte.
+    """
     # TODO: Tatsächlichen Wert ausrechnen
     print('1. Bahnaufstieg in eine 200-km-Bahn.')
     delta_v = 9.58
@@ -26,56 +32,102 @@ def bahnaufstieg_1() -> Dict[str, float]:
 
 
 def uebergang_zielplanet_3(*, start_planet: Planet, ziel_planet: Planet) -> Dict[str, float]:
+    """
+    Berechnet den Hohmann-Transfer (Ellipse) vom Startplaneten zum Zielplanten.
+
+    :param start_planet: Startplanet.
+    :param ziel_planet: Zielplanet.
+    :return: Sämtliche berechneten Werte.
+    """
     print('3. Übergang zum Zielplaneten')
     uebergang_zielplanet_data = hohmann(planet=SONNE, perizentrum_hoehe=start_planet.a, apozentrum_hoehe=ziel_planet.a)
     return uebergang_zielplanet_data
 
 
-def flucht_gravitationsfeld_2(start_planet: Planet, start_planet_hoehe_umlaufbahn: float) -> Dict[str, float]:
-    start_planet_hoehe_umlaufbahn = UnitFloat(start_planet_hoehe_umlaufbahn, 'km')
+def flucht_gravitationsfeld_2(planet: Planet, hp: float, vinf: float) -> Dict[str, float]:
+    """
+    2. Berechnet die Flucht aus dem Gravtiationsfeld des Startplaneten.
+    
+    :param planet: Planet, aus dessen Gravitationsfeld geflohen werden soll.
+    :param hp: Höhe des Perizentrums über der Planetenoberfläche in km.
+    :param vinf: Hyperbolische Exzessgeschwindigkeit im Unendlichen in km/s.
+    :return: 
+    """
+    print(f'2. Flucht aus dem Gravitationsfeld von Start {planet}')
+    print(f'Berechne Fluchthyperbel von {planet=}')
+    print(f'{hp=}')
+    print(f'Exzessgeschwindigkeit delta_v1 (vom Hohmann-Übergang) {vinf=}')
+    fluchthyperbel_data = fluchthyperbel(planet=planet, hp=hp, vinf=vinf)
+    return fluchthyperbel_data
 
-    print(f'2. Flucht aus dem Gravitationsfeld des Startplaneten {start_planet}')
 
-    start_planet_r = UnitFloat(start_planet.R + start_planet_hoehe_umlaufbahn, 'km')
-    print(f'Berechne bereits vorhandene Kreisbahngeschwindigkeit auf Umlaufbahn {start_planet_r=}')
-    vk = kreis.geschwindigkeit(planet=start_planet, r=start_planet_r)
-    print(f'{vk=}')
+def einschwenken_orbit_zielplanet_4(ziel_planet: Planet, hp: float, vinf: float) -> Dict[str, float]:
+    """
+    4. Berechnet das Einschwenken in den Orbit des Zielplanten.
 
-    return {
-        'vk': vk
-    }
+    :param ziel_planet: Zielplanet.
+    :param hp: Höhe des Perizentrums über der Planetenoberfläche in km.
+    :param vinf: Hyperbolische Exzessgeschwindigkeit; Geschwindigkeit im Unendlichen; Hier Anflugggeschwindigkeit in
+    km/s.
+    :return: Daten der Hyperbel.
+    """
+    print(f'4. Einschwenken in Orbit um den Zielplaneten')
+    print(f'{ziel_planet=}')
+    print(f'Höhe Perizentrum über Plantenoberfläche {hp=}')
+    print(f'Anfluggeschwindigkeit vom Hohmann-Transfer (va) hier als hyperbolische Exzessgeschwindigkeit {vinf=}')
+    return fluchthyperbel(planet=ziel_planet, hp=hp, vinf=ziel_planet.v)
 
 
 def mission(
-        start_planet: Planet, ziel_planet: Planet, start_planet_hoehe_umlaufbahn: float
+        start_planet: Planet, ziel_planet: Planet, start_planet_hoehe_umlaufbahn: float,
+        ziel_planet_hoehe_umlaufbahn: float
 ) -> Dict[str, Dict[str, float]]:
+    """
+    Berechnet eine vollständige Mission vom Startplanten zum Zielplaneten.
+
+    :param start_planet: Startplanet.
+    :param ziel_planet: Zielplanet.
+    :param start_planet_hoehe_umlaufbahn: Die Höhe der Umlaufbahn über der Planetenoberfläche des Startplaneten.
+    :param ziel_planet_hoehe_umlaufbahn: Die Höhe der Umlaufbahn über der Planetenoberfläche des Zielplanten.
+    :return: Sämtliche berechneten Werte.
+    """
     print_mission_ablauf()
     print('\n---\n')
-    bahnaufstieg_data = bahnaufstieg_1()
+    bahnaufstieg_1_data = bahnaufstieg_1()
     print('\n---\n')
-    uebergang_zielplanet_data = uebergang_zielplanet_3(start_planet=start_planet, ziel_planet=ziel_planet)
+    uebergang_zielplanet_3_data = uebergang_zielplanet_3(start_planet=start_planet, ziel_planet=ziel_planet)
     print('\n---\n')
-    flucht_gravitationsfeld_data = flucht_gravitationsfeld_2(
-        start_planet=start_planet, start_planet_hoehe_umlaufbahn=start_planet_hoehe_umlaufbahn
+    flucht_gravitationsfeld_2_data = flucht_gravitationsfeld_2(
+        planet=start_planet, hp=start_planet_hoehe_umlaufbahn, vinf=uebergang_zielplanet_3_data['vp']
     )
     print('\n---\n')
+    einschwenken_orbit_zielplanet_4_data = einschwenken_orbit_zielplanet_4(
+        ziel_planet=ziel_planet, hp=ziel_planet_hoehe_umlaufbahn, vinf=uebergang_zielplanet_3_data['va']
+    )
 
     return {
-        'Bahnaufstieg': bahnaufstieg_data,
-        'Übergang Zielplanet': uebergang_zielplanet_data,
-        'Flucht Gravitationsfeld': flucht_gravitationsfeld_data,
+        'Bahnaufstieg': bahnaufstieg_1_data,
+        'Übergang Zielplanet': uebergang_zielplanet_3_data,
+        'Flucht Gravitationsfeld': flucht_gravitationsfeld_2_data,
+        'Einschwenken Orbit Zielplanet': einschwenken_orbit_zielplanet_4_data
     }
 
 
 def main():
     print('Vollständige Mission 🚀 - Eingabe der Parameter')
     # Eingabe lesen
-    start_planet = planet_from_name(input('Start Planet: '))
-    start_planet_hoehe_umlaufbahn = UnitFloat(float(input('Höhe Umlaufbahn (in km): ')), 'km')
-    ziel_planet = planet_from_name(input('Ziel Planet: '))
+    start_planet = planet_from_name(input('Startplanet: '))
+    start_planet_hoehe_umlaufbahn = UnitFloat(float(
+        input('Höhe Umlaufbahn über Plantenoberfläche des Startplanten (in km): ')
+    ), 'km')
+    ziel_planet = planet_from_name(input('Zielplanet: '))
+    ziel_planet_hoehe_umlaufbahn = UnitFloat(float(
+        input('Höhe Umlaufbahn über Plantenoberfläche des Zielplanten (in km): ')
+    ), 'km')
     print('---')
     data = mission(
-        start_planet=start_planet, ziel_planet=ziel_planet, start_planet_hoehe_umlaufbahn=start_planet_hoehe_umlaufbahn
+        start_planet=start_planet, ziel_planet=ziel_planet, start_planet_hoehe_umlaufbahn=start_planet_hoehe_umlaufbahn,
+        ziel_planet_hoehe_umlaufbahn=ziel_planet_hoehe_umlaufbahn
     )
     data_json = json.dumps(data, indent='  ', default=lambda x: str(x), ensure_ascii=False)
     print()

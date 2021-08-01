@@ -16,16 +16,16 @@ def hohmann(planet: Planet, perizentrum_hoehe: float, apozentrum_hoehe: float) -
     :return: Sämtliche berechneten Werte.
     """
     print('Hohmann Transfer 🚀')
-    print(f'Planet: {planet}')
+    print(f'{planet=}')
 
     perizentrum_hoehe = UnitFloat(perizentrum_hoehe, 'km')
     apozentrum_hoehe = UnitFloat(apozentrum_hoehe, 'km')
     rp = UnitFloat(planet.R + perizentrum_hoehe, 'km')
     ra = UnitFloat(planet.R + apozentrum_hoehe, 'km')
     print(f'Start Umlaufbahnhöhe: {perizentrum_hoehe}')
-    print(f'Perizentrum (Start Umlaufbahnhöhe + Radius des Planeten): {rp=}')
+    print(f'Radius Perizentrum (Start Umlaufbahnhöhe + Radius des Planeten): {rp=}')
     print(f'Ziel Umlaufbahnhöhe: {apozentrum_hoehe}')
-    print(f'Apozentrum (Ziel Umlaufbahnhöhe + Radius des Planeten): {ra=}')
+    print(f'Radius Apozentrum (Ziel Umlaufbahnhöhe + Radius des Planeten): {ra=}')
     print()
 
     print('Berechne allgemeine Parameter der Übergangsellipse:')
@@ -53,6 +53,7 @@ def hohmann(planet: Planet, perizentrum_hoehe: float, apozentrum_hoehe: float) -
     print(f'Kreisbahngeschwindigkeit bei Ziel-Umlaufbahnhöhe {apozentrum_hoehe}: {vk_ziel=}')
     delta_v2 = UnitFloat(vk_ziel - va, 'km/s')
     print(f'Schubimpuls Geschwindigkeitsdelta Δv2 = vk_ziel - va = {delta_v2}')
+    print()
 
     v_total = UnitFloat(abs(delta_v1) + abs(delta_v2), 'km/s')
     print(f'Benötigter Gesamt-Schubimpuls {v_total=}')

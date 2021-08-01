@@ -65,6 +65,7 @@ def apozentrum_radius(r: float) -> float:
 def geschwindigkeit(*, planet: Planet, r: float) -> float:
     """
     Berechnet die Geschwindigkeit auf einer Kreisbahn.
+    Die Herleitung aus dem Vis-Viva-Integral findet sich in der großen Übung 6 auf Seite 9.
 
     :param planet: Planet, an dem die Perizentrumsgeschwindigkeit berechnet werden soll.
     :param r: Radius des Planeten.

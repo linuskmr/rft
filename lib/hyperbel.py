@@ -25,7 +25,7 @@ def grosse_halbachse_planet_vinf(*, planet: Planet, vinf: float) -> float:
     45958.47 km
 
     :param planet: Planet, an dem die Fluchthyperbel berechnet werden soll.
-    :param vinf: Exzessgeschwindigkeit; Geschwindigkeit im Unendlichen in km/s.
+    :param vinf: Hyperbolische Exzessgeschwindigkeit; Geschwindigkeit im Unendlichen in km/s.
     :return: Große Halbachse a in km.
     """
     return planet.mu / (vinf**2)
@@ -55,15 +55,16 @@ def lineare_exzentrizitaet(*, a: float, rp: float) -> float:
     return a + rp
 
 
-def numerische_exzentrizitaet(*, a: float, rp: float) -> float:
+def numerische_exzentrizitaet(*, a: float, ra: float) -> float:
     """
     Berechnet die numerische Exzentrizität epsilon einer Hyperbel.
+    Die Herleitung findet sich in der großen Übung 6 auf Seite 9.
 
     :param a: Große Halbachse in km.
-    :param rp: Radius des Perizentrums in km, also der Ort mit minimaler Entfernung zum Planten.
+    :param ra: Radius des Apozentrums der Hyperbel in km.
     :return: Numerische Exzentrizität.
     """
-    return (rp / a) - 1
+    return (ra / a) - 1
 
 
 @return_unit('km')
@@ -91,7 +92,7 @@ def perizentrum_radius_a_epsilon(*, a: float, epsilon: float) -> float:
 
 
 @return_unit('km')
-def apozentrum_radius(*, a: float, epsilon: float) -> float:
+def apozentrum_radius_a_epsilon(*, a: float, epsilon: float) -> float:
     """
     Berechnet den Apozentrumsradius einer Hyperbel, also die Entfernung des Orts mit maximaler Entfernung zum Planeten.
 
@@ -100,6 +101,18 @@ def apozentrum_radius(*, a: float, epsilon: float) -> float:
     :return: Apozentrumsradius ra in km.
     """
     return a * (1 + epsilon)
+
+
+@return_unit('km')
+def apozentrum_radius_a_rp(*, a: float, rp: float) -> float:
+    """
+    Berechnet den Apozentrumsradius einer Hyperbel, also die Entfernung des Orts mit maximaler Entfernung zum Planeten.
+
+    :param a: Große Halbachse in km.
+    :param rp: Radius des Perizentrums in km, also der Ort mit minimaler Entfernung zum Planten.
+    :return: Apozentrumsradius ra in km.
+    """
+    return 2 * a + rp
 
 
 @return_unit('km/s')
