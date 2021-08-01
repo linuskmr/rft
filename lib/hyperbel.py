@@ -1,9 +1,11 @@
 import math
+
+from lib.planet import Planet
 from lib.unit_float import return_unit
 
 
 @return_unit('km')
-def grosse_halbachse(*, p: float, epsilon: float) -> float:
+def grosse_halbachse_p_epsilon(*, p: float, epsilon: float) -> float:
     """
     Berechnet die große Halbachse a einer Hyperbel.
 
@@ -12,6 +14,18 @@ def grosse_halbachse(*, p: float, epsilon: float) -> float:
     :return: Große Halbachse a in km.
     """
     return p / (epsilon**2 - 1)
+
+
+@return_unit('km')
+def grosse_halbachse_planet_vinf(*, planet: Planet, vinf: float) -> float:
+    """
+    Berechnet die große Halbachse a einer Fluchthyperbel.
+
+    :param planet: Planet, an dem die Fluchthyperbel berechnet werden soll.
+    :param vinf: Geschwindigkeit im Unendlichen.
+    :return: Große Halbachse a in km.
+    """
+    return planet.mu / (vinf**2)
 
 
 @return_unit('km')
@@ -38,8 +52,31 @@ def lineare_exzentrizitaet(*, a: float, rp: float) -> float:
     return a + rp
 
 
+def numerische_exzentrizitaet(*, a: float, rp: float) -> float:
+    """
+    Berechnet die numerische Exzentrizität epsilon einer Hyperbel.
+
+    :param a: Große Halbachse in km.
+    :param rp: Radius des Perizentrums in km, also der Ort mit minimaler Entfernung zum Planten.
+    :return: Numerische Exzentrizität.
+    """
+    return (rp / a) - 1
+
+
 @return_unit('km')
-def perizentrum_radius(*, a: float, epsilon: float) -> float:
+def bahnparameter_p(*, a: float, epsilon: float) -> float:
+    """
+    Berechnet den Bahnparameter p einer Hyperbel.
+
+    :param a: Große Halbachse in km.
+    :param epsilon: Numerische Exzentrizität.
+    :return: Bahnparameter p in km.
+    """
+    return a * (epsilon**2 - 1)
+
+
+@return_unit('km')
+def perizentrum_radius_a_epsilon(*, a: float, epsilon: float) -> float:
     """
     Berechnet den Perizentrumsradius einer Hyperbel, also die Entfernung des Orts mit minimaler Entfernung zum Planeten.
 

@@ -97,7 +97,7 @@ def main():
     apozentrum_hoehe = eval(input('Apozentrum Höhe über Planet (in km): '))
     print('---')
     data = hohmann(planet=planet, perizentrum_hoehe=perizentrum_hoehe, apozentrum_hoehe=apozentrum_hoehe)
-    data_json = json.dumps(data, indent='  ', default=lambda x: str(x))
+    data_json = json.dumps(data, indent='  ', default=lambda x: str(x), ensure_ascii=False)
     print()
     print('Raw data:')
     print(data_json)
