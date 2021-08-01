@@ -39,39 +39,23 @@ def hohmann(planet: Planet, perizentrum_hoehe: float, apozentrum_hoehe: float) -
     print(f'Lineare Exzentrizität {e=}')
     print()
 
-    print('Berechne benötigte Geschwindigkeit am Perizentrum:')
     vp = ellipse.perizentrum_geschwindigkeit_rp_ra(planet=planet, ra=ra, rp=rp)
-    print(f'Geschwindigkeit Perizentrum {vp=}')
-    print()
-
-    print(f'Berechne bereits vorhandene Geschwindigkeit auf Kreisbahn bei Start-Umlaufbahnhöhe:')
+    print(f'Benötigte Geschwindigkeit Perizentrum {vp=}')
     vk_start = kreis.geschwindigkeit(planet=planet, r=rp)
-    print(f'Kreisbahngeschwindigkeit bei Höhe {perizentrum_hoehe}: {vk_start=}')
-    print()
-
-    print('Berechne benötigten Schubimpuls v1:')
+    print(f'Bereits vorhandene Kreisbahngeschwindigkeit auf Start-Umlaufbahnhöhe {perizentrum_hoehe}: {vk_start=}')
     delta_v1 = UnitFloat(vp - vk_start, 'km/s')
-    print(f'Geschwindigkeitsdelta Δv1 = vp - vk_start = {delta_v1}')
+    print(f'Schubimpuls Geschwindigkeitsdelta Δv1 = vp - vk_start = {delta_v1}')
     print()
 
-    print('Berechne benötigte Geschwindigkeit am Apozentrum:')
     va = ellipse.apozentrum_geschwindigkeit(planet=planet, ra=ra, epsilon=epsilon, p=p)
-    print(f'Geschwindigkeit Apozentrum {va=}')
-    print()
-
-    print('Berechne Kreisbahngeschwindigkeit auf Kreisbahn bei Ziel-Umlaufbahnhöhe:')
+    print(f'Benötigte Geschwindigkeit Apozentrum {va=}')
     vk_ziel = kreis.geschwindigkeit(planet=planet, r=ra)
-    print(f'Kreisbahngeschwindigkeit bei Höhe {apozentrum_hoehe}: {vk_ziel=}')
-    print()
-
-    print('Berechne Schubimpuls (Bremsimpuls) v2:')
+    print(f'Kreisbahngeschwindigkeit bei Ziel-Umlaufbahnhöhe {apozentrum_hoehe}: {vk_ziel=}')
     delta_v2 = UnitFloat(vk_ziel - va, 'km/s')
-    print(f'Geschwindigkeitsdelta Δv2 = vk_ziel - va = {delta_v2}')
-    print()
+    print(f'Schubimpuls Geschwindigkeitsdelta Δv2 = vk_ziel - va = {delta_v2}')
 
     v_total = UnitFloat(abs(delta_v1) + abs(delta_v2), 'km/s')
     print(f'Benötigter Gesamt-Schubimpuls {v_total=}')
-
     tu = ellipse.umlaufzeit(planet=planet, a=a)
     flugdauer = 0.5 * tu
     print(f'Flugdauer (Halbe Umlaufzeit der Ellipse): {flugdauer} bzw. {flugdauer.total_seconds()} Sekunden')
