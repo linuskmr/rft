@@ -1,13 +1,13 @@
 import math
 from datetime import timedelta
-
+from decimal import *
 from lib import konstanten
 from lib.planet import Planet, ERDE
-from lib.unit_float import return_unit
+from lib.unit_decimal import return_unit
 
 
 @return_unit('km')
-def grosse_halbachse_p_epsilon(*, p: float, epsilon: float) -> float:
+def grosse_halbachse_p_epsilon(*, p: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet die große Halbachse a einer Ellipse.
 
@@ -19,12 +19,12 @@ def grosse_halbachse_p_epsilon(*, p: float, epsilon: float) -> float:
 
 
 @return_unit('km')
-def grosse_halbachse_ra_rp(*, ra: float, rp: float) -> float:
+def grosse_halbachse_ra_rp(*, ra: Decimal, rp: Decimal) -> Decimal:
     """
     Berechnet die große Halbachse a einer Ellipse.
 
     >>> grosse_halbachse_ra_rp(ra=ERDE.R+200, rp=konstanten.ERDE_GEO)
-    24371
+    24371.000 km
 
     :param ra: Radius Apozentrum, also der Ort mit maximaler Entfernung zum Planten.
     :param rp: Radius Perizentrum, also der Ort mit maximaler Entfernung zum Planten.
@@ -34,7 +34,7 @@ def grosse_halbachse_ra_rp(*, ra: float, rp: float) -> float:
 
 # TODO: Konflikt in Formelsammlung.
 # @return_unit('km')
-# def grosse_halbachse_p_epsilon(*, p: float, epsilon: float) -> float:
+# def grosse_halbachse_p_epsilon(*, p: Decimal, epsilon: Decimal) -> Decimal:
 #     """
 #     Berechnet die große Halbachse a einer Ellipse.
 #
@@ -46,7 +46,7 @@ def grosse_halbachse_ra_rp(*, ra: float, rp: float) -> float:
 
 
 @return_unit('km')
-def kleine_halbachse(*, a: float, e: float) -> float:
+def kleine_halbachse(*, a: Decimal, e: Decimal) -> Decimal:
     """
     Berechnet die kleine Halbachse b einer Ellipse.
 
@@ -54,11 +54,11 @@ def kleine_halbachse(*, a: float, e: float) -> float:
     :param e: Lineare Exzentrizität.
     :return: Kleine Halbachse b in km.
     """
-    return math.sqrt(a**2 - e**2)
+    return (a**2 - e**2).sqrt()
 
 
 @return_unit('km')
-def bahnparameter_p(*, rp: float, epsilon: float) -> float:
+def bahnparameter_p(*, rp: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet den Bahnparameter p.
 
@@ -70,7 +70,7 @@ def bahnparameter_p(*, rp: float, epsilon: float) -> float:
 
 
 @return_unit('km')
-def lineare_exzentrizitaet(*, a: float, rp: float) -> float:
+def lineare_exzentrizitaet(*, a: Decimal, rp: Decimal) -> Decimal:
     """
     Berechnet die lineare Exzentrizität e einer Ellipse.
 
@@ -82,7 +82,7 @@ def lineare_exzentrizitaet(*, a: float, rp: float) -> float:
 
 
 @return_unit('km')
-def perizentrum_radius_a_epsilon(*, a: float, epsilon: float) -> float:
+def perizentrum_radius_a_epsilon(*, a: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet den Perizentrumsradius einer Ellipse, also die Entfernung des Orts mit minimaler Entfernung zum Planeten.
 
@@ -94,7 +94,7 @@ def perizentrum_radius_a_epsilon(*, a: float, epsilon: float) -> float:
 
 
 @return_unit('km')
-def perizentrum_radius_p_epsilon(*, p: float, epsilon: float) -> float:
+def perizentrum_radius_p_epsilon(*, p: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet den Perizentrumsradius einer Ellipse, also die Entfernung des Orts mit minimaler Entfernung zum Planeten.
 
@@ -106,7 +106,7 @@ def perizentrum_radius_p_epsilon(*, p: float, epsilon: float) -> float:
 
 
 @return_unit('km')
-def perizentrum_radius_a_ra(*, a: float, ra: float) -> float:
+def perizentrum_radius_a_ra(*, a: Decimal, ra: Decimal) -> Decimal:
     """
     Berechnet den Perizentrumsradius einer Ellipse, also die Entfernung des Orts mit minimaler Entfernung zum Planeten.
 
@@ -118,7 +118,7 @@ def perizentrum_radius_a_ra(*, a: float, ra: float) -> float:
 
 
 @return_unit('km')
-def apozentrum_radius_a_epsilon(*, a: float, epsilon: float) -> float:
+def apozentrum_radius_a_epsilon(*, a: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet den Apozentrumsradius einer Ellipse, also die Entfernung des Orts mit maximaler Entfernung zum Planeten.
 
@@ -130,7 +130,7 @@ def apozentrum_radius_a_epsilon(*, a: float, epsilon: float) -> float:
 
 
 @return_unit('km')
-def apozentrum_radius_p_epsilon(*, p: float, epsilon: float) -> float:
+def apozentrum_radius_p_epsilon(*, p: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet den Apozentrumsradius einer Ellipse, also die Entfernung des Orts mit maximaler Entfernung zum Planeten.
 
@@ -142,7 +142,7 @@ def apozentrum_radius_p_epsilon(*, p: float, epsilon: float) -> float:
 
 
 @return_unit('km')
-def apozentrum_radius_a_e(*, a: float, e: float) -> float:
+def apozentrum_radius_a_e(*, a: Decimal, e: Decimal) -> Decimal:
     """
     Berechnet den Apozentrumsradius einer Ellipse, also die Entfernung des Orts mit maximaler Entfernung zum Planeten.
 
@@ -154,7 +154,7 @@ def apozentrum_radius_a_e(*, a: float, e: float) -> float:
 
 
 @return_unit('km/s')
-def perizentrum_geschwindigkeit_rp_ra(*, planet: Planet, rp: float, ra: float) -> float:
+def perizentrum_geschwindigkeit_rp_ra(*, planet: Planet, rp: Decimal, ra: Decimal) -> Decimal:
     """
     Berechnet die Perizentrumsgeschwindigkeit einer Ellipse, also die Geschwindigkeit am Ort mit minimaler Entfernung
     zum Planeten.
@@ -164,11 +164,11 @@ def perizentrum_geschwindigkeit_rp_ra(*, planet: Planet, rp: float, ra: float) -
     :param ra: Apozentrumsradius ra in km.
     :return: Perizentrumsgeschwindigkeit in km/s.
     """
-    return math.sqrt(2 * planet.mu * ((1 / rp) - (1 / (rp + ra))))
+    return (2 * planet.mu * ((1 / rp) - (1 / (rp + ra)))).sqrt()
 
 
 @return_unit('km/s')
-def perizentrum_geschwindigkeit_rp_p_epsilon(*, planet: Planet, rp: float, p: float, epsilon: float) -> float:
+def perizentrum_geschwindigkeit_rp_p_epsilon(*, planet: Planet, rp: Decimal, p: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet die Perizentrumsgeschwindigkeit einer Ellipse, also die Geschwindigkeit am Ort mit minimaler Entfernung
     zum Planeten.
@@ -178,11 +178,11 @@ def perizentrum_geschwindigkeit_rp_p_epsilon(*, planet: Planet, rp: float, p: fl
     :param p: Bahnparameter p in km.
     :return: Perizentrumsgeschwindigkeit in km/s.
     """
-    return math.sqrt(planet.mu * ((2 / rp) + ((epsilon**2 - 1) / p)))
+    return (planet.mu * ((2 / rp) + ((epsilon**2 - 1) / p))).sqrt()
 
 
 @return_unit('km/s')
-def apozentrum_geschwindigkeit(*, planet: Planet, ra: float, epsilon: float, p: float) -> float:
+def apozentrum_geschwindigkeit(*, planet: Planet, ra: Decimal, epsilon: Decimal, p: Decimal) -> Decimal:
     """
         Berechnet die Apozentrumsgeschwindigkeit einer Ellipse, also die Geschwindigkeit am Ort mit maximaler Entfernung
         zum Planeten.
@@ -193,10 +193,10 @@ def apozentrum_geschwindigkeit(*, planet: Planet, ra: float, epsilon: float, p: 
         :param p: Bahnparameter p in km.
         :return: Perizentrumsgeschwindigkeit in km/s.
         """
-    return math.sqrt(planet.mu * ((2 / ra) + ((epsilon**2 - 1) / p)))
+    return (planet.mu * ((2 / ra) + ((epsilon**2 - 1) / p))).sqrt()
 
 
-def umlaufzeit(*, planet: Planet, a: float) -> timedelta:
+def umlaufzeit(*, planet: Planet, a: Decimal) -> timedelta:
     """
     Berechnet die Umlaufzeit der Ellipse.
 

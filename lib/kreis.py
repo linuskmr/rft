@@ -1,13 +1,13 @@
 import math
 from datetime import timedelta
-
+from decimal import *
 from lib import konstanten
 from lib.planet import ERDE, Planet
-from lib.unit_float import return_unit
+from lib.unit_decimal import return_unit
 
 
 @return_unit('km')
-def grosse_halbachse(r: float) -> float:
+def grosse_halbachse(r: Decimal) -> Decimal:
     """
     Berechnet die große Halbachse a des Kreises.
     Hinweis: Die große Halbachse eines Kreises ist immer gleich mit seinem Radius.
@@ -19,7 +19,7 @@ def grosse_halbachse(r: float) -> float:
 
 
 @return_unit('km')
-def kleine_halbachse(r: float) -> float:
+def kleine_halbachse(r: Decimal) -> Decimal:
     """
     Berechnet die kleine Halbachse b eines Kreises.
     Hinweis: Die kleine Halbachse eines Kreises ist immer gleich mit seinem Radius.
@@ -31,7 +31,7 @@ def kleine_halbachse(r: float) -> float:
 
 
 @return_unit('km')
-def lineare_exzentrizitaet() -> float:
+def lineare_exzentrizitaet() -> Decimal:
     """
     Gibt die lineare Exzentrizität e einer Kreises zurück.
     Hinweis: Die lineare Exzentrizität ist immer 0.
@@ -40,7 +40,7 @@ def lineare_exzentrizitaet() -> float:
 
 
 @return_unit('km')
-def perizentrum_radius(r: float) -> float:
+def perizentrum_radius(r: Decimal) -> Decimal:
     """
     Berechnet den Perizentrumsradius eines Kreises, also die Entfernung des Orts mit minimaler Entfernung zum Planeten.
     Hinweis: Der Perizentrumsradius eines Kreises ist immer gleich mit seinem Radius.
@@ -52,7 +52,7 @@ def perizentrum_radius(r: float) -> float:
 
 
 @return_unit('km')
-def apozentrum_radius(r: float) -> float:
+def apozentrum_radius(r: Decimal) -> Decimal:
     """
     Berechnet den Apozentrumsradius eines Kreises, also die Entfernung des Orts mit minimaler Entfernung zum Planeten.
     Hinweis: Der Apozentrumsradius eines Kreises ist immer gleich mit seinem Radius.
@@ -64,7 +64,7 @@ def apozentrum_radius(r: float) -> float:
 
 
 @return_unit('km/s')
-def geschwindigkeit(*, planet: Planet, rk: float) -> float:
+def geschwindigkeit(*, planet: Planet, rk: Decimal) -> Decimal:
     """
     Berechnet die Geschwindigkeit auf einer Kreisbahn.
     Die Herleitung aus dem Vis-Viva-Integral findet sich in der großen Übung 6 auf Seite 9.
@@ -81,7 +81,7 @@ def geschwindigkeit(*, planet: Planet, rk: float) -> float:
     return math.sqrt(planet.mu / rk)
 
 
-def umlaufzeit(*, planet: Planet, r: float) -> timedelta:
+def umlaufzeit(*, planet: Planet, r: Decimal) -> timedelta:
     """
     Berechnet die Umlaufzeit des Kreises.
 

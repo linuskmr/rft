@@ -1,8 +1,9 @@
 import json
 from typing import Dict
+from decimal import *
 from fluchthyperbel import fluchthyperbel
 from lib.planet import *
-from lib.unit_float import UnitFloat
+from lib.unit_decimal import UnitDecimal
 from hohmann import hohmann
 
 
@@ -16,7 +17,7 @@ def print_mission_ablauf():
     print('4. Einschwenken in den Orbit um die Zielplaneten')
 
 
-def bahnaufstieg_1() -> Dict[str, float]:
+def bahnaufstieg_1() -> Dict[str, Decimal]:
     """
     Berechnet den Bahnaufstieg vom Startplaneten.
 
@@ -31,7 +32,7 @@ def bahnaufstieg_1() -> Dict[str, float]:
     }
 
 
-def uebergang_zielplanet_3(*, start_planet: Planet, ziel_planet: Planet) -> Dict[str, float]:
+def uebergang_zielplanet_3(*, start_planet: Planet, ziel_planet: Planet) -> Dict[str, Decimal]:
     """
     Berechnet den Hohmann-Transfer (Ellipse) vom Startplaneten zum Zielplanten.
 
@@ -44,7 +45,7 @@ def uebergang_zielplanet_3(*, start_planet: Planet, ziel_planet: Planet) -> Dict
     return uebergang_zielplanet_data
 
 
-def flucht_gravitationsfeld_2(planet: Planet, hp: float, vinf: float) -> Dict[str, float]:
+def flucht_gravitationsfeld_2(planet: Planet, hp: Decimal, vinf: Decimal) -> Dict[str, Decimal]:
     """
     2. Berechnet die Flucht aus dem Gravtiationsfeld des Startplaneten.
     
@@ -61,7 +62,7 @@ def flucht_gravitationsfeld_2(planet: Planet, hp: float, vinf: float) -> Dict[st
     return fluchthyperbel_data
 
 
-def einschwenken_orbit_zielplanet_4(ziel_planet: Planet, hp: float, vinf: float) -> Dict[str, float]:
+def einschwenken_orbit_zielplanet_4(ziel_planet: Planet, hp: Decimal, vinf: Decimal) -> Dict[str, Decimal]:
     """
     4. Berechnet das Einschwenken in den Orbit des Zielplanten.
 
@@ -79,9 +80,9 @@ def einschwenken_orbit_zielplanet_4(ziel_planet: Planet, hp: float, vinf: float)
 
 
 def mission(
-        start_planet: Planet, ziel_planet: Planet, start_planet_hoehe_umlaufbahn: float,
-        ziel_planet_hoehe_umlaufbahn: float
-) -> Dict[str, Dict[str, float]]:
+        start_planet: Planet, ziel_planet: Planet, start_planet_hoehe_umlaufbahn: Decimal,
+        ziel_planet_hoehe_umlaufbahn: Decimal
+) -> Dict[str, Dict[str, Decimal]]:
     """
     Berechnet eine vollständige Mission vom Startplanten zum Zielplaneten.
 
@@ -117,11 +118,11 @@ def main():
     print('Vollständige Mission 🚀 - Eingabe der Parameter')
     # Eingabe lesen
     start_planet = planet_from_name(input('Startplanet: '))
-    start_planet_hoehe_umlaufbahn = UnitFloat(float(
+    start_planet_hoehe_umlaufbahn = UnitDecimal(Decimal(
         input('Höhe Umlaufbahn über Plantenoberfläche des Startplanten (in km): ')
     ), 'km')
     ziel_planet = planet_from_name(input('Zielplanet: '))
-    ziel_planet_hoehe_umlaufbahn = UnitFloat(float(
+    ziel_planet_hoehe_umlaufbahn = UnitDecimal(Decimal(
         input('Höhe Umlaufbahn über Plantenoberfläche des Zielplanten (in km): ')
     ), 'km')
     print('---')

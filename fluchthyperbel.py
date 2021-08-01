@@ -1,11 +1,12 @@
 import json
 from typing import Dict
+from decimal import *
 from lib import kreis, hyperbel
 from lib.planet import *
-from lib.unit_float import UnitFloat
+from lib.unit_decimal import UnitDecimal
 
 
-def fluchthyperbel(planet: Planet, vinf: float, hp: float) -> Dict[str, float]:
+def fluchthyperbel(planet: Planet, vinf: Decimal, hp: Decimal) -> Dict[str, Decimal]:
     """
     Berechnet eine Fluchthyperbel am Startplaneten.
 
@@ -15,8 +16,8 @@ def fluchthyperbel(planet: Planet, vinf: float, hp: float) -> Dict[str, float]:
     :return: Sämtliche berechneten Werte.
     """
 
-    vinf = UnitFloat(vinf, 'km/s')
-    hp = UnitFloat(hp, 'km')
+    vinf = UnitDecimal(vinf, 'km/s')
+    hp = UnitDecimal(hp, 'km')
 
     print('Fluchthyperbel 🚀')
     print(f'{planet=}')
@@ -48,7 +49,7 @@ def fluchthyperbel(planet: Planet, vinf: float, hp: float) -> Dict[str, float]:
     print(f'Bereits vorhandene Kreisbahngeschwindigkeit bei Perizentrum mit Radius {rp}: {vk=}')
     vp = hyperbel.perizentrum_geschwindigkeit(vk=vk, vinf=vinf)
     print(f'Benötigte Perizentrumsgeschwindigkeit {vp=}')
-    v_total = UnitFloat(vp - vk, 'km/s')
+    v_total = UnitDecimal(vp - vk, 'km/s')
     print(f'Benötigter Gesamtschubimpuls {v_total=}')
 
     return {
@@ -60,8 +61,8 @@ def fluchthyperbel(planet: Planet, vinf: float, hp: float) -> Dict[str, float]:
 def main():
     print('Fluchthyperbel 🚀 - Eingabe der Parameter')
     planet = planet_from_name(input('Planet: '))
-    vinf = float(input('Geschwindigkeit im Unendlichen vinf (in km/s): '))
-    hp = float(input('Höhe Perizentrum über Planetenoberfläche (in km): '))
+    vinf = Decimal(input('Geschwindigkeit im Unendlichen vinf (in km/s): '))
+    hp = Decimal(input('Höhe Perizentrum über Planetenoberfläche (in km): '))
     print('---')
     data = fluchthyperbel(planet=planet, vinf=vinf, hp=hp)
     data_json = json.dumps(data, indent='  ', default=lambda x: str(x), ensure_ascii=False)

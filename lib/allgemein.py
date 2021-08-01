@@ -1,16 +1,17 @@
 import math
 from datetime import timedelta
+from decimal import *
 from lib.planet import *
-from lib.unit_float import return_unit, UnitFloat
+from lib.unit_decimal import return_unit, UnitDecimal
 
 
-def keplersche_zeitgleichung(planet: Planet, a: float, epsilon: float, psi: float):
+def keplersche_zeitgleichung(planet: Planet, a: Decimal, epsilon: Decimal, psi: Decimal):
     return math.sqrt(a**3 / planet.mu) * (2 * math.atan(math.sqrt((1 - epsilon) / (1 + epsilon)) * math.tan(psi / 2)))
     # Todo
 
 
 @return_unit('km')
-def bahngleichung(*, p: float, epsilon: float, psi: float) -> float:
+def bahngleichung(*, p: Decimal, epsilon: Decimal, psi: Decimal) -> Decimal:
     """
     Berechnet die allgemeine Bahngleichung / Kegelschnittgleichung in Polarkoordinaten.
 
@@ -23,7 +24,7 @@ def bahngleichung(*, p: float, epsilon: float, psi: float) -> float:
 
 
 @return_unit('km')
-def bahngleichung_perizentrum(*, p: float, epsilon: float) -> float:
+def bahngleichung_perizentrum(*, p: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet die Bahngleichung am Perizentrum, also der Ort mit minimaler Entfernung zum Planeten.
 
@@ -35,7 +36,7 @@ def bahngleichung_perizentrum(*, p: float, epsilon: float) -> float:
 
 
 @return_unit('km')
-def bahngleichung_apozentrum(*, p: float, epsilon: float) -> float:
+def bahngleichung_apozentrum(*, p: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet die Bahngleichung am Apozentrum, also der Ort mit maximaler Entfernung zum Planeten.
 
@@ -47,7 +48,7 @@ def bahngleichung_apozentrum(*, p: float, epsilon: float) -> float:
 
 
 @return_unit('km/s')
-def vis_viva_r_epsilon_p(*, planet: Planet, r: float, epsilon: float, p: float) -> float:
+def vis_viva_r_epsilon_p(*, planet: Planet, r: Decimal, epsilon: Decimal, p: Decimal) -> Decimal:
     """
     Berechnet das Vis-Viva-Integral.
 
@@ -66,7 +67,7 @@ def vis_viva_r_epsilon_p(*, planet: Planet, r: float, epsilon: float, p: float) 
 
 
 @return_unit('km/s')
-def vis_viva_r_a(*, planet: Planet, r: float, a: float) -> float:
+def vis_viva_r_a(*, planet: Planet, r: Decimal, a: Decimal) -> Decimal:
     """
     Berechnet das Vis-Viva-Integral.
 
@@ -78,7 +79,7 @@ def vis_viva_r_a(*, planet: Planet, r: float, a: float) -> float:
     return math.sqrt(planet.mu * ((2 / r) - (1 / a)))
 
 
-def numerische_exzentrizitaet_ra_rp(*, rp: float, ra: float) -> float:
+def numerische_exzentrizitaet_ra_rp(*, rp: Decimal, ra: Decimal) -> Decimal:
     """
     Berechnet die numerische Exzentrizität epsilon.
 
@@ -89,7 +90,7 @@ def numerische_exzentrizitaet_ra_rp(*, rp: float, ra: float) -> float:
     return (ra - rp) / (ra + rp)
 
 
-def numerische_exzentrizitaet_e_a(*, e: float, a: float) -> float:
+def numerische_exzentrizitaet_e_a(*, e: Decimal, a: Decimal) -> Decimal:
     """
     Berechnet die numerische Exzentrizität epsilon.
 
@@ -100,7 +101,7 @@ def numerische_exzentrizitaet_e_a(*, e: float, a: float) -> float:
     return e / a
 
 
-def numerische_exzentrizitaet_epsilon_a(*, epsilon: float, a: float) -> float:
+def numerische_exzentrizitaet_epsilon_a(*, epsilon: Decimal, a: Decimal) -> Decimal:
     """
     Berechnet die numerische Exzentrizität epsilon.
 
@@ -112,7 +113,7 @@ def numerische_exzentrizitaet_epsilon_a(*, epsilon: float, a: float) -> float:
 
 
 @return_unit('km')
-def lineare_exzentrizitaet_allgemein(*, a: float, epsilon: float) -> float:
+def lineare_exzentrizitaet_allgemein(*, a: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet die lineare Exzentrizität e.
 

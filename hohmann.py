@@ -1,12 +1,13 @@
 # ! Imports nicht optimieren bzw. welche rauslöschen, um in main() via eval() darauf Zugriff zu haben !
 import json
 from typing import Dict
+from decimal import *
 from lib import ellipse, kreis, allgemein, konstanten
 from lib.planet import *
-from lib.unit_float import UnitFloat
+from lib.unit_decimal import UnitDecimal
 
 
-def hohmann(planet: Planet, perizentrum_hoehe: float, apozentrum_hoehe: float) -> Dict[str, float]:
+def hohmann(planet: Planet, perizentrum_hoehe: Decimal, apozentrum_hoehe: Decimal) -> Dict[str, Decimal]:
     """
     Berechnet einen Hohmann-Transfer.
 
@@ -18,10 +19,10 @@ def hohmann(planet: Planet, perizentrum_hoehe: float, apozentrum_hoehe: float) -
     print('Hohmann Transfer 🚀')
     print(f'{planet=}')
 
-    perizentrum_hoehe = UnitFloat(perizentrum_hoehe, 'km')
-    apozentrum_hoehe = UnitFloat(apozentrum_hoehe, 'km')
-    rp = UnitFloat(planet.R + perizentrum_hoehe, 'km')
-    ra = UnitFloat(planet.R + apozentrum_hoehe, 'km')
+    perizentrum_hoehe = UnitDecimal(perizentrum_hoehe, 'km')
+    apozentrum_hoehe = UnitDecimal(apozentrum_hoehe, 'km')
+    rp = UnitDecimal(planet.R + perizentrum_hoehe, 'km')
+    ra = UnitDecimal(planet.R + apozentrum_hoehe, 'km')
     print(f'Start Umlaufbahnhöhe: {perizentrum_hoehe}')
     print(f'Radius Perizentrum (Start Umlaufbahnhöhe + Radius des Planeten): {rp=}')
     print(f'Ziel Umlaufbahnhöhe: {apozentrum_hoehe}')
@@ -43,7 +44,7 @@ def hohmann(planet: Planet, perizentrum_hoehe: float, apozentrum_hoehe: float) -
     print(f'Benötigte Geschwindigkeit Perizentrum {vp=}')
     vk_start = kreis.geschwindigkeit(planet=planet, rk=rp)
     print(f'Bereits vorhandene Kreisbahngeschwindigkeit auf Start-Umlaufbahnhöhe {perizentrum_hoehe}: {vk_start=}')
-    delta_v1 = UnitFloat(vp - vk_start, 'km/s')
+    delta_v1 = UnitDecimal(vp - vk_start, 'km/s')
     print(f'Schubimpuls Geschwindigkeitsdelta Δv1 = vp - vk_start = {delta_v1}')
     print()
 
@@ -51,11 +52,11 @@ def hohmann(planet: Planet, perizentrum_hoehe: float, apozentrum_hoehe: float) -
     print(f'Benötigte Geschwindigkeit Apozentrum {va=}')
     vk_ziel = kreis.geschwindigkeit(planet=planet, rk=ra)
     print(f'Kreisbahngeschwindigkeit bei Ziel-Umlaufbahnhöhe {apozentrum_hoehe}: {vk_ziel=}')
-    delta_v2 = UnitFloat(vk_ziel - va, 'km/s')
+    delta_v2 = UnitDecimal(vk_ziel - va, 'km/s')
     print(f'Schubimpuls Geschwindigkeitsdelta Δv2 = vk_ziel - va = {delta_v2}')
     print()
 
-    v_total = UnitFloat(abs(delta_v1) + abs(delta_v2), 'km/s')
+    v_total = UnitDecimal(abs(delta_v1) + abs(delta_v2), 'km/s')
     print(f'Benötigter Gesamt-Schubimpuls {v_total=}')
     tu = ellipse.umlaufzeit(planet=planet, a=a)
     flugdauer = 0.5 * tu
@@ -78,6 +79,7 @@ def main():
     print('Hohmann Transfer 🚀 - Eingabe der Parameter')
     # Eingabe lesen. eval() führt Eingabe als Programmcode aus. Daher ist es möglich
     planet = planet_from_name(input('Planet: '))
+    R = planet.R
     perizentrum_hoehe = eval(input('Perizentrum Höhe über Planet (in km): '))
     apozentrum_hoehe = eval(input('Apozentrum Höhe über Planet (in km): '))
     print('---')

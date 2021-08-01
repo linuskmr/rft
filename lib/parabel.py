@@ -1,9 +1,9 @@
 import math
-from lib.unit_float import return_unit
-
+from lib.unit_decimal import return_unit
+from decimal import *
 
 @return_unit('km')
-def grosse_halbachse() -> float:
+def grosse_halbachse() -> Decimal:
     """
     Gibt die große Halbachse a einer Parabel zurück.
     Hinweis: Die große Halbachse einer Parabel ist immer unendlich.
@@ -14,7 +14,7 @@ def grosse_halbachse() -> float:
 
 
 @return_unit('km')
-def lineare_exzentrizitaet() -> float:
+def lineare_exzentrizitaet() -> Decimal:
     """
     Gibt die lineare Exzentrizität e einer Parabel zurück.
     Hinweis: Die lineare Exzentrizität einer Parabel ist immer unendlich.
@@ -25,7 +25,7 @@ def lineare_exzentrizitaet() -> float:
 
 
 @return_unit('km')
-def perizentrum_radius(*, p: float) -> float:
+def perizentrum_radius(*, p: Decimal) -> Decimal:
     """
     Berechnet den Perizentrumsradius einer Parabel, also die Entfernung des Orts mit minimaler Entfernung zum Planeten.
 
@@ -36,7 +36,7 @@ def perizentrum_radius(*, p: float) -> float:
 
 
 @return_unit('km')
-def apozentrum_radius() -> float:
+def apozentrum_radius() -> Decimal:
     """
     Gibt den Apozentrumsradius einer Parabel zurück, also die Entfernung des Orts mit maximaler Entfernung zum Planeten.
     Hinweis: Der pozentrumsradius einer Parabel ist immer unendlich.
@@ -47,7 +47,7 @@ def apozentrum_radius() -> float:
 
 
 @return_unit('km/s')
-def perizentrum_geschwindigkeit(*, vk: float) -> float:
+def perizentrum_geschwindigkeit(*, vk: Decimal) -> Decimal:
     """
     Berechnet die Perizentrumsgeschwindigkeit einer Parabel, also die Geschwindigkeit am Ort mit minimaler Entfernung
     zum Planeten.
@@ -58,7 +58,7 @@ def perizentrum_geschwindigkeit(*, vk: float) -> float:
     return math.sqrt(2) * vk
 
 
-def unendlichkeitsanomalie() -> float:
+def unendlichkeitsanomalie() -> Decimal:
     """
     Gibt die Unendlichkeitsanomalie einer Parabel zurück.
     Hinweis: Die Unendlichkeitsanomalie einer Parabel ist immer unendlich.

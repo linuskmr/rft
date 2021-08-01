@@ -1,11 +1,11 @@
 import math
-
+from decimal import *
 from lib.planet import *
-from lib.unit_float import return_unit
+from lib.unit_decimal import return_unit
 
 
 @return_unit('km')
-def grosse_halbachse_p_epsilon(*, p: float, epsilon: float) -> float:
+def grosse_halbachse_p_epsilon(*, p: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet die große Halbachse a einer Hyperbel.
 
@@ -17,7 +17,7 @@ def grosse_halbachse_p_epsilon(*, p: float, epsilon: float) -> float:
 
 
 @return_unit('km')
-def grosse_halbachse_planet_vinf(*, planet: Planet, vinf: float) -> float:
+def grosse_halbachse_planet_vinf(*, planet: Planet, vinf: Decimal) -> Decimal:
     """
     Berechnet die große Halbachse a einer Fluchthyperbel.
 
@@ -32,7 +32,7 @@ def grosse_halbachse_planet_vinf(*, planet: Planet, vinf: float) -> float:
 
 
 @return_unit('km')
-def kleine_halbachse(*, a: float, e: float) -> float:
+def kleine_halbachse(*, a: Decimal, e: Decimal) -> Decimal:
     """
     Berechnet die kleine Halbachse b einer Hyperbel.
 
@@ -40,11 +40,11 @@ def kleine_halbachse(*, a: float, e: float) -> float:
     :param e: Lineare Exzentrizität.
     :return: Kleine Halbachse b in km.
     """
-    return math.sqrt(e**2 - a**2)
+    return (e**2 - a**2).sqrt()
 
 
 @return_unit('km')
-def lineare_exzentrizitaet(*, a: float, rp: float) -> float:
+def lineare_exzentrizitaet(*, a: Decimal, rp: Decimal) -> Decimal:
     """
     Berechnet die lineare Exzentrizität e einer Hyperbel.
 
@@ -55,7 +55,7 @@ def lineare_exzentrizitaet(*, a: float, rp: float) -> float:
     return a + rp
 
 
-def numerische_exzentrizitaet(*, a: float, ra: float) -> float:
+def numerische_exzentrizitaet(*, a: Decimal, ra: Decimal) -> Decimal:
     """
     Berechnet die numerische Exzentrizität epsilon einer Hyperbel.
     Die Herleitung findet sich in der großen Übung 6 auf Seite 9.
@@ -68,7 +68,7 @@ def numerische_exzentrizitaet(*, a: float, ra: float) -> float:
 
 
 @return_unit('km')
-def bahnparameter_p(*, a: float, epsilon: float) -> float:
+def bahnparameter_p(*, a: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet den Bahnparameter p einer Hyperbel.
 
@@ -80,7 +80,7 @@ def bahnparameter_p(*, a: float, epsilon: float) -> float:
 
 
 @return_unit('km')
-def perizentrum_radius_a_epsilon(*, a: float, epsilon: float) -> float:
+def perizentrum_radius_a_epsilon(*, a: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet den Perizentrumsradius einer Hyperbel, also die Entfernung des Orts mit minimaler Entfernung zum Planeten.
 
@@ -92,7 +92,7 @@ def perizentrum_radius_a_epsilon(*, a: float, epsilon: float) -> float:
 
 
 @return_unit('km')
-def apozentrum_radius_a_epsilon(*, a: float, epsilon: float) -> float:
+def apozentrum_radius_a_epsilon(*, a: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet den Apozentrumsradius einer Hyperbel, also die Entfernung des Orts mit maximaler Entfernung zum Planeten.
 
@@ -104,7 +104,7 @@ def apozentrum_radius_a_epsilon(*, a: float, epsilon: float) -> float:
 
 
 @return_unit('km')
-def apozentrum_radius_a_rp(*, a: float, rp: float) -> float:
+def apozentrum_radius_a_rp(*, a: Decimal, rp: Decimal) -> Decimal:
     """
     Berechnet den Apozentrumsradius einer Hyperbel, also die Entfernung des Orts mit maximaler Entfernung zum Planeten.
 
@@ -116,7 +116,7 @@ def apozentrum_radius_a_rp(*, a: float, rp: float) -> float:
 
 
 @return_unit('km/s')
-def perizentrum_geschwindigkeit(*, vk: float, vinf: float) -> float:
+def perizentrum_geschwindigkeit(*, vk: Decimal, vinf: Decimal) -> Decimal:
     """
     Berechnet die Perizentrumsgeschwindigkeit einer Hyperbel, also die Geschwindigkeit am Ort mit minimaler Entfernung
     zum Planeten.
@@ -125,10 +125,10 @@ def perizentrum_geschwindigkeit(*, vk: float, vinf: float) -> float:
     :param vinf: Die Geschwindigkeit im Unendlichen nach der Hyperbel in km/s.
     :return: Perizentrumsgeschwindigkeit in km/s.
     """
-    return math.sqrt(2 * vk**2 + vinf**2)
+    return (2 * vk**2 + vinf**2).sqrt()
 
 
-def unendlichkeitsanomalie(*, epsilon: float) -> float:
+def unendlichkeitsanomalie(*, epsilon: Decimal) -> Decimal:
     """
     Berechnet die Umlaufzeit der Hyperbel.
 
@@ -138,7 +138,7 @@ def unendlichkeitsanomalie(*, epsilon: float) -> float:
     return math.acos(-(1 / epsilon))
 
 
-def umlenkwinkel(epsilon: float) -> float:
+def umlenkwinkel(epsilon: Decimal) -> Decimal:
     """
     Berechnet den Umlenkwinkel der Parabel.
     :param epsilon: Die numerische Exzentrizität.
