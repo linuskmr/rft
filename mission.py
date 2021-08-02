@@ -1,6 +1,6 @@
 import dataclasses
 import json
-from typing import Dict
+from typing import Dict, Optional
 from decimal import *
 
 from bahnaufstieg import bahnaufstieg, Bahnaufstieg
@@ -13,7 +13,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class Mission:
-    bahnaufstieg_1: Bahnaufstieg
+    bahnaufstieg_1: Optional[Bahnaufstieg]
     """1. Das Starten der Rakete von der Oberfläche des Startplaneten in einen niedrigen Orbit."""
     flucht_gravitationsfeld_2: Fluchthyperbel
     """2. Die Flucht aus dem Gravitationsfeld des Startplaneten."""
@@ -90,7 +90,7 @@ def einschwenken_orbit_zielplanet_4(ziel_planet: Planet, hp: Decimal, vinf: Deci
 
 def mission(
         start_planet: Planet, ziel_planet: Planet, start_planet_hoehe_umlaufbahn: Decimal,
-        ziel_planet_hoehe_umlaufbahn: Decimal
+        ziel_planet_hoehe_umlaufbahn: Decimal, bahnaufstieg_machen: bool
 ) -> Mission:
     """
     Berechnet eine vollständige Mission vom Startplanten zum Zielplaneten.
@@ -99,11 +99,12 @@ def mission(
     :param ziel_planet: Zielplanet.
     :param start_planet_hoehe_umlaufbahn: Die Höhe der Umlaufbahn über der Planetenoberfläche des Startplaneten.
     :param ziel_planet_hoehe_umlaufbahn: Die Höhe der Umlaufbahn über der Planetenoberfläche des Zielplanten.
+    :param bahnaufstieg_machen: Gibt an, ob ein Bahnaufstieg vom Startplaneten durchgeführt werden soll.
     :return: Sämtliche berechneten Werte.
     """
     print_mission_ablauf()
     print('\n---\n')
-    bahnaufstieg_1_data = bahnaufstieg_1()
+    bahnaufstieg_1_data = bahnaufstieg_1() if bahnaufstieg_machen else None
     print('\n---\n')
     uebergang_zielplanet_3_data = uebergang_zielplanet_3(start_planet=start_planet, ziel_planet=ziel_planet)
     print('\n---\n')
@@ -116,10 +117,10 @@ def mission(
     )
 
     return Mission(
-        bahnaufstieg=bahnaufstieg_1_data,
-        uebergang_zielplanet=uebergang_zielplanet_3_data,
-        flucht_gravitationsfeld=flucht_gravitationsfeld_2_data,
-        einschwenken_orbit_zielplanet=einschwenken_orbit_zielplanet_4_data
+        bahnaufstieg_1=bahnaufstieg_1_data,
+        uebergang_zielplanet_3=uebergang_zielplanet_3_data,
+        flucht_gravitationsfeld_2=flucht_gravitationsfeld_2_data,
+        einschwenken_orbit_zielplanet_4=einschwenken_orbit_zielplanet_4_data
     )
 
 
@@ -130,6 +131,8 @@ def main():
     start_planet_hoehe_umlaufbahn = UnitDecimal(Decimal(
         input('Höhe Umlaufbahn über Plantenoberfläche des Startplanten (in km): ')
     ), 'km')
+    bahnaufstieg_machen = input('Bahnaufstieg beim Startplaneten machen (True/False)? ').lower() == 'true'
+    print(f'{bahnaufstieg_machen=}')
     ziel_planet = planet_from_name(input('Zielplanet: '))
     ziel_planet_hoehe_umlaufbahn = UnitDecimal(Decimal(
         input('Höhe Umlaufbahn über Plantenoberfläche des Zielplanten (in km): ')
@@ -137,7 +140,7 @@ def main():
     print('---')
     data = mission(
         start_planet=start_planet, ziel_planet=ziel_planet, start_planet_hoehe_umlaufbahn=start_planet_hoehe_umlaufbahn,
-        ziel_planet_hoehe_umlaufbahn=ziel_planet_hoehe_umlaufbahn
+        ziel_planet_hoehe_umlaufbahn=ziel_planet_hoehe_umlaufbahn, bahnaufstieg_machen=bahnaufstieg_machen
     )
     data_json = json.dumps(dataclasses.asdict(data), indent='  ', default=lambda x: str(x), ensure_ascii=False)
     print()
