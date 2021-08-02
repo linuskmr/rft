@@ -76,6 +76,40 @@ JUPITER = Planet(
     R=UnitDecimal('71_398', 'km'),
     v=UnitDecimal('13.058', 'km/s'),
 )
+# Ab hier sind die Planeten-Daten von Wikipedia. Am besten nochmal mit den in der Aufgabenstellung angegebenen Daten
+# vergleichen.
+MERKUR = Planet(
+    name='Merkur',
+    M=UnitDecimal('3.301e23', 'kg'),
+    mu=UnitDecimal('398_479', 'km³/s²'),
+    a=UnitDecimal('57909335,7', 'km'),
+    R=UnitDecimal('4_879', 'km'),
+    v=UnitDecimal('47.36', 'km/s')
+)
+URANUS = Planet(
+    name='Uranus',
+    M=UnitDecimal('8.681e25', 'kg'),
+    mu=UnitDecimal('5_791_963', 'km³/s²'),
+    a=UnitDecimal('2.87243e12', 'km'),
+    R=UnitDecimal('51_118', 'km'),
+    v=UnitDecimal('6.81', 'km/s')
+)
+NEPTUN = Planet(
+    name='Neptun',
+    M=UnitDecimal('1.024e26', 'kg'),
+    mu=UnitDecimal('6_832_128', 'km³/s²'),
+    a=UnitDecimal('4.49497e12', 'km'),
+    R=UnitDecimal('49_528', 'km'),
+    v=UnitDecimal('5.43', 'km/s')
+)
+PLUTO = Planet(
+    name='Pluto',
+    M=UnitDecimal('1.303e22', 'kg'),
+    mu=UnitDecimal('869', 'km³/s²'),
+    a=UnitDecimal('5,90642e12', 'km'),
+    R=UnitDecimal('2374', 'km'),
+    v=UnitDecimal('4.67', 'km/s')
+)
 
 
 def planet_from_name(planet_name: str) -> Planet:
