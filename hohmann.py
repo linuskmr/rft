@@ -1,13 +1,48 @@
 # ! Imports nicht optimieren bzw. welche rauslöschen, um in main() via eval() darauf Zugriff zu haben !
+import dataclasses
 import json
+from datetime import timedelta
 from typing import Dict
 from decimal import *
 from lib import ellipse, kreis, allgemein, konstanten
 from lib.planet import *
 from lib.unit_decimal import UnitDecimal
+from dataclasses import dataclass
 
 
-def hohmann(planet: Planet, perizentrum_hoehe: Decimal, apozentrum_hoehe: Decimal) -> Dict[str, Decimal]:
+@dataclass(frozen=True)
+class HohmannTransfer:
+    ra: UnitDecimal
+    """Radius Apozentrum in km."""
+    rp: UnitDecimal
+    """Radius Perizentrum in km."""
+    epsilon: UnitDecimal
+    """Numerische Exzentrizität."""
+    p: UnitDecimal
+    """Bahnparameter p in km."""
+    a: UnitDecimal
+    """Große Halbachse in km."""
+    e: UnitDecimal
+    """Lineare Exzentrizität."""
+    vp: UnitDecimal
+    """Geschwindigkeit am Perizentrum in km/s"""
+    vk_start: UnitDecimal
+    """Geschwindigkeit auf Kreisbahn um Startplaneten."""
+    delta_v1: UnitDecimal
+    """Geschwindigkeitsdelta/Schubimpuls Nr.1 in km/s."""
+    va: UnitDecimal
+    """Geschwindigkeit am Apozentrum in km/s."""
+    vk_ziel: UnitDecimal
+    """Geschwindigkeit auf Kreisbahn um Zielplaneten."""
+    delta_v2: UnitDecimal
+    """Geschwindigkeitsdelta/Schubimpuls Nr.2 in km/s."""
+    v_total: UnitDecimal
+    """Insgesamt benötigter Geschwindigkeitsimpuls in km/s."""
+    flugdauer: timedelta
+    """Flugdauer des Hohmann Transfers."""
+
+
+def hohmann(planet: Planet, perizentrum_hoehe: Decimal, apozentrum_hoehe: Decimal) -> HohmannTransfer:
     """
     Berechnet einen Hohmann-Transfer.
 
@@ -62,12 +97,10 @@ def hohmann(planet: Planet, perizentrum_hoehe: Decimal, apozentrum_hoehe: Decima
     flugdauer = 0.5 * tu
     print(f'Flugdauer (Halbe Umlaufzeit der Ellipse): {flugdauer} bzw. {flugdauer.total_seconds()} Sekunden')
 
-    data = {
-        'ra': ra, 'rp': rp, 'epsilon': epsilon, 'p': p, 'a': a, 'e': e, 'vp': vp, 'vk_start': vk_start,
-        'delta_v1': delta_v1, 'va': va, 'vk_ziel': vk_ziel, 'delta_v2': delta_v2, 'v_total': v_total,
-        'flugdauer': flugdauer
-    }
-    return data
+    return HohmannTransfer(
+        ra=ra, rp=rp, epsilon=epsilon, p=p, a=a, e=e, vp=vp, vk_start=vk_start, delta_v1=delta_v1, va=va,
+        vk_ziel=vk_ziel, delta_v2=delta_v2, v_total=v_total, flugdauer=flugdauer
+    )
 
 
 def main():
@@ -84,7 +117,7 @@ def main():
     apozentrum_hoehe = eval(input('Apozentrum Höhe über Planet (in km): '))
     print('---')
     data = hohmann(planet=planet, perizentrum_hoehe=perizentrum_hoehe, apozentrum_hoehe=apozentrum_hoehe)
-    data_json = json.dumps(data, indent='  ', default=lambda x: str(x), ensure_ascii=False)
+    data_json = json.dumps(dataclasses.asdict(data), indent='  ', default=lambda x: str(x), ensure_ascii=False)
     print()
     print('Raw data:')
     print(data_json)

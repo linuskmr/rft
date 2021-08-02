@@ -1,10 +1,26 @@
+import dataclasses
 import json
 from typing import Dict
 from decimal import *
-from fluchthyperbel import fluchthyperbel
+
+from bahnaufstieg import bahnaufstieg, Bahnaufstieg
+from fluchthyperbel import fluchthyperbel, Fluchthyperbel
 from lib.planet import *
 from lib.unit_decimal import UnitDecimal
-from hohmann import hohmann
+from hohmann import hohmann, HohmannTransfer
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Mission:
+    bahnaufstieg_1: Bahnaufstieg
+    """1. Das Starten der Rakete von der Oberfläche des Startplaneten in einen niedrigen Orbit."""
+    flucht_gravitationsfeld_2: Fluchthyperbel
+    """2. Die Flucht aus dem Gravitationsfeld des Startplaneten."""
+    uebergang_zielplanet_3: HohmannTransfer
+    """3. Der Hohmann-Transfeer vom Startplaneten zum Zielplaneten."""
+    einschwenken_orbit_zielplanet_4: Fluchthyperbel
+    """4. Eine 'umgedrehte' Fluchthyperbel zum Einschwenken in den Orbit um den Zielplaneten."""
 
 
 def print_mission_ablauf():
@@ -17,22 +33,16 @@ def print_mission_ablauf():
     print('4. Einschwenken in den Orbit um die Zielplaneten')
 
 
-def bahnaufstieg_1() -> Dict[str, Decimal]:
+def bahnaufstieg_1() -> Bahnaufstieg:
     """
     Berechnet den Bahnaufstieg vom Startplaneten.
 
     :return: Sämtliche berechneten Werte.
     """
-    # TODO: Tatsächlichen Wert ausrechnen
-    print('1. Bahnaufstieg in eine 200-km-Bahn.')
-    delta_v = 9.58
-    print(f'TODO: Fester Wert für eine 200km Umlaufbahn: {delta_v=}')
-    return {
-        'delta_v': delta_v
-    }
+    return bahnaufstieg()
 
 
-def uebergang_zielplanet_3(*, start_planet: Planet, ziel_planet: Planet) -> Dict[str, Decimal]:
+def uebergang_zielplanet_3(*, start_planet: Planet, ziel_planet: Planet) -> HohmannTransfer:
     """
     Berechnet den Hohmann-Transfer (Ellipse) vom Startplaneten zum Zielplanten.
 
@@ -45,7 +55,7 @@ def uebergang_zielplanet_3(*, start_planet: Planet, ziel_planet: Planet) -> Dict
     return uebergang_zielplanet_data
 
 
-def flucht_gravitationsfeld_2(planet: Planet, hp: Decimal, vinf: Decimal) -> Dict[str, Decimal]:
+def flucht_gravitationsfeld_2(planet: Planet, hp: Decimal, vinf: Decimal) -> Fluchthyperbel:
     """
     2. Berechnet die Flucht aus dem Gravtiationsfeld des Startplaneten.
     
@@ -58,11 +68,10 @@ def flucht_gravitationsfeld_2(planet: Planet, hp: Decimal, vinf: Decimal) -> Dic
     print(f'Berechne Fluchthyperbel von {planet=}')
     print(f'Höhe des Perizentrums über der Planetenoberfläche {hp=}')
     print(f'Exzessgeschwindigkeit delta_v1 (vom Hohmann-Übergang) {vinf=}')
-    fluchthyperbel_data = fluchthyperbel(planet=planet, hp=hp, vinf=vinf)
-    return fluchthyperbel_data
+    return fluchthyperbel(planet=planet, hp=hp, vinf=vinf)
 
 
-def einschwenken_orbit_zielplanet_4(ziel_planet: Planet, hp: Decimal, vinf: Decimal) -> Dict[str, Decimal]:
+def einschwenken_orbit_zielplanet_4(ziel_planet: Planet, hp: Decimal, vinf: Decimal) -> Fluchthyperbel:
     """
     4. Berechnet das Einschwenken in den Orbit des Zielplanten.
 
@@ -82,7 +91,7 @@ def einschwenken_orbit_zielplanet_4(ziel_planet: Planet, hp: Decimal, vinf: Deci
 def mission(
         start_planet: Planet, ziel_planet: Planet, start_planet_hoehe_umlaufbahn: Decimal,
         ziel_planet_hoehe_umlaufbahn: Decimal
-) -> Dict[str, Dict[str, Decimal]]:
+) -> Mission:
     """
     Berechnet eine vollständige Mission vom Startplanten zum Zielplaneten.
 
@@ -99,19 +108,19 @@ def mission(
     uebergang_zielplanet_3_data = uebergang_zielplanet_3(start_planet=start_planet, ziel_planet=ziel_planet)
     print('\n---\n')
     flucht_gravitationsfeld_2_data = flucht_gravitationsfeld_2(
-        planet=start_planet, hp=start_planet_hoehe_umlaufbahn, vinf=uebergang_zielplanet_3_data['vp']
+        planet=start_planet, hp=start_planet_hoehe_umlaufbahn, vinf=uebergang_zielplanet_3_data.vp
     )
     print('\n---\n')
     einschwenken_orbit_zielplanet_4_data = einschwenken_orbit_zielplanet_4(
-        ziel_planet=ziel_planet, hp=ziel_planet_hoehe_umlaufbahn, vinf=uebergang_zielplanet_3_data['va']
+        ziel_planet=ziel_planet, hp=ziel_planet_hoehe_umlaufbahn, vinf=uebergang_zielplanet_3_data.va
     )
 
-    return {
-        'Bahnaufstieg': bahnaufstieg_1_data,
-        'Übergang Zielplanet': uebergang_zielplanet_3_data,
-        'Flucht Gravitationsfeld': flucht_gravitationsfeld_2_data,
-        'Einschwenken Orbit Zielplanet': einschwenken_orbit_zielplanet_4_data
-    }
+    return Mission(
+        bahnaufstieg=bahnaufstieg_1_data,
+        uebergang_zielplanet=uebergang_zielplanet_3_data,
+        flucht_gravitationsfeld=flucht_gravitationsfeld_2_data,
+        einschwenken_orbit_zielplanet=einschwenken_orbit_zielplanet_4_data
+    )
 
 
 def main():
@@ -130,7 +139,7 @@ def main():
         start_planet=start_planet, ziel_planet=ziel_planet, start_planet_hoehe_umlaufbahn=start_planet_hoehe_umlaufbahn,
         ziel_planet_hoehe_umlaufbahn=ziel_planet_hoehe_umlaufbahn
     )
-    data_json = json.dumps(data, indent='  ', default=lambda x: str(x), ensure_ascii=False)
+    data_json = json.dumps(dataclasses.asdict(data), indent='  ', default=lambda x: str(x), ensure_ascii=False)
     print()
     print('Raw data:')
     print(data_json)
