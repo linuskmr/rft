@@ -82,7 +82,7 @@ MERKUR = Planet(
     name='Merkur',
     M=UnitDecimal('3.301e23', 'kg'),
     mu=UnitDecimal('398_479', 'km³/s²'),
-    a=UnitDecimal('57909335,7', 'km'),
+    a=UnitDecimal('57909335.7', 'km'),
     R=UnitDecimal('4_879', 'km'),
     v=UnitDecimal('47.36', 'km/s')
 )
@@ -106,7 +106,7 @@ PLUTO = Planet(
     name='Pluto',
     M=UnitDecimal('1.303e22', 'kg'),
     mu=UnitDecimal('869', 'km³/s²'),
-    a=UnitDecimal('5,90642e12', 'km'),
+    a=UnitDecimal('5.90642e12', 'km'),
     R=UnitDecimal('2374', 'km'),
     v=UnitDecimal('4.67', 'km/s')
 )
