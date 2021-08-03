@@ -81,6 +81,17 @@ def geschwindigkeit(*, planet: Planet, rk: Decimal) -> Decimal:
     return Decimal(math.sqrt(planet.mu / rk))
 
 
+def winkelgeschwindigkeit(*, planet: Planet, rk: Decimal) -> Decimal:
+    """
+    Berechnet die Winkelgeschwindigkeit einer Kreisbahn um einen Planeten mit dem angegebenen Radius.
+
+    :param planet: Planet, um den die Kreisbahn geflogen wird.
+    :param rk: Radius des Kreises in km.
+    :return: Winkelgeschwindigkeit TODO: welche Einheit?.
+    """
+    return (planet.mu / rk**3).sqrt()
+
+
 def umlaufzeit(*, planet: Planet, r: Decimal) -> timedelta:
     """
     Berechnet die Umlaufzeit des Kreises.
