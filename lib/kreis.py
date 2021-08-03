@@ -36,7 +36,7 @@ def lineare_exzentrizitaet() -> Decimal:
     Gibt die lineare Exzentrizität e einer Kreises zurück.
     Hinweis: Die lineare Exzentrizität ist immer 0.
     """
-    return 0
+    return Decimal(0)
 
 
 @return_unit('km')
@@ -78,7 +78,7 @@ def geschwindigkeit(*, planet: Planet, rk: Decimal) -> Decimal:
     :param rk: Radius der Kreisbahn.
     :return: Kreisbahngeschwindigkeit in km/s.
     """
-    return math.sqrt(planet.mu / rk)
+    return Decimal(math.sqrt(planet.mu / rk))
 
 
 def umlaufzeit(*, planet: Planet, r: Decimal) -> timedelta:

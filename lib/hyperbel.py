@@ -135,7 +135,7 @@ def unendlichkeitsanomalie(*, epsilon: Decimal) -> Decimal:
     :param epsilon: Die numerische Exzentrizität.
     :return: Unendlichkeitsanomalie.
     """
-    return math.acos(-(1 / epsilon))
+    return Decimal(math.acos(-(1 / epsilon)))
 
 
 def umlenkwinkel(epsilon: Decimal) -> Decimal:

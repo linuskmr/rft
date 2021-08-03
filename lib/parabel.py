@@ -2,6 +2,7 @@ import math
 from lib.unit_decimal import return_unit
 from decimal import *
 
+
 @return_unit('km')
 def grosse_halbachse() -> Decimal:
     """
@@ -10,7 +11,7 @@ def grosse_halbachse() -> Decimal:
 
     :return: Große Halbachse a in km.
     """
-    return math.inf
+    return Decimal(math.inf)
 
 
 @return_unit('km')
@@ -21,7 +22,7 @@ def lineare_exzentrizitaet() -> Decimal:
 
     :return: Lineare Exzentrizität in km.
     """
-    return math.inf
+    return Decimal(math.inf)
 
 
 @return_unit('km')
@@ -43,7 +44,7 @@ def apozentrum_radius() -> Decimal:
 
     :return: Der Apozentrumsradius ra in km.
     """
-    return math.inf
+    return Decimal(math.inf)
 
 
 @return_unit('km/s')
@@ -55,7 +56,7 @@ def perizentrum_geschwindigkeit(*, vk: Decimal) -> Decimal:
     :param vk: Die Kreisgeschwindigkeit.
     :return: Die Perizentrumsgeschwindigkeit in km/s.
     """
-    return math.sqrt(2) * vk
+    return Decimal(math.sqrt(2)) * vk
 
 
 def unendlichkeitsanomalie() -> Decimal:
@@ -65,4 +66,4 @@ def unendlichkeitsanomalie() -> Decimal:
 
     :return: Die Unendlichkeitsanomalie.
     """
-    return math.inf
+    return Decimal(math.inf)

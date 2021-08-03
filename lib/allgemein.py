@@ -6,7 +6,7 @@ from lib.unit_decimal import return_unit, UnitDecimal
 
 
 def keplersche_zeitgleichung(planet: Planet, a: Decimal, epsilon: Decimal, psi: Decimal):
-    return math.sqrt(a**3 / planet.mu) * (2 * math.atan(math.sqrt((1 - epsilon) / (1 + epsilon)) * math.tan(psi / 2)))
+    return math.sqrt(a ** 3 / planet.mu) * (2 * math.atan(math.sqrt((1 - epsilon) / (1 + epsilon)) * math.tan(psi / 2)))
     # Todo
 
 
@@ -20,7 +20,7 @@ def bahngleichung(*, p: Decimal, epsilon: Decimal, psi: Decimal) -> Decimal:
     :param psi: Wahre Anomalie.
     :return: Radius r in km.
     """
-    return p / (1 + epsilon * math.cos(psi))
+    return p / (1 + epsilon * Decimal(math.cos(psi)))
 
 
 @return_unit('km')
@@ -63,7 +63,7 @@ def vis_viva_r_epsilon_p(*, planet: Planet, r: Decimal, epsilon: Decimal, p: Dec
     :param p: Bahnparameter p in km.
     :return: Geschwindigkeit des Satelliten in km/s.
     """
-    return math.sqrt(planet.mu * ((2 / r) + ((epsilon ** 2 - 1) / p)))
+    return Decimal(math.sqrt(planet.mu * ((2 / r) + ((epsilon ** 2 - 1) / p))))
 
 
 @return_unit('km/s')
@@ -76,7 +76,7 @@ def vis_viva_r_a(*, planet: Planet, r: Decimal, a: Decimal) -> Decimal:
     :param a: Große Halbachse in km.
     :return: Geschwindigkeit des Satelliten in km/s.
     """
-    return math.sqrt(planet.mu * ((2 / r) - (1 / a)))
+    return Decimal(math.sqrt(planet.mu * ((2 / r) - (1 / a))))
 
 
 def numerische_exzentrizitaet_ra_rp(*, rp: Decimal, ra: Decimal) -> Decimal:
