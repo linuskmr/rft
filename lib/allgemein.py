@@ -6,8 +6,10 @@ from lib.unit_decimal import return_unit, UnitDecimal
 
 
 def keplersche_zeitgleichung(planet: Planet, a: Decimal, epsilon: Decimal, psi: Decimal):
-    return math.sqrt(a ** 3 / planet.mu) * (2 * math.atan(math.sqrt((1 - epsilon) / (1 + epsilon)) * math.tan(psi / 2)))
-    # Todo
+    return math.sqrt(a ** 3 / planet.mu) * (
+            2 * math.atan(math.sqrt((1 - epsilon) / (1 + epsilon)) * math.tan(psi / 2))
+            - ((float(epsilon) * math.sqrt(1 - epsilon**2) * math.sin(psi)) / (1 + float(epsilon) * math.cos(psi)))
+    )
 
 
 @return_unit('km')
