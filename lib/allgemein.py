@@ -5,24 +5,24 @@ from lib.planet import *
 from lib.unit_decimal import return_unit, UnitDecimal
 
 
-def keplersche_zeitgleichung(planet: Planet, a: Decimal, epsilon: Decimal, psi: Decimal):
+def keplersche_zeitgleichung(planet: Planet, a: Decimal, epsilon: Decimal, phi: Decimal):
     return math.sqrt(a ** 3 / planet.mu) * (
-            2 * math.atan(math.sqrt((1 - epsilon) / (1 + epsilon)) * math.tan(psi / 2))
-            - ((float(epsilon) * math.sqrt(1 - epsilon**2) * math.sin(psi)) / (1 + float(epsilon) * math.cos(psi)))
+            2 * math.atan(math.sqrt((1 - epsilon) / (1 + epsilon)) * math.tan(phi / 2))
+            - ((float(epsilon) * math.sqrt(1 - epsilon**2) * math.sin(phi)) / (1 + float(epsilon) * math.cos(phi)))
     )
 
 
 @return_unit('km')
-def bahngleichung(*, p: Decimal, epsilon: Decimal, psi: Decimal) -> Decimal:
+def bahngleichung(*, p: Decimal, epsilon: Decimal, phi: Decimal) -> Decimal:
     """
     Berechnet die allgemeine Bahngleichung / Kegelschnittgleichung in Polarkoordinaten.
 
     :param p: Bahnparameter p.
     :param epsilon: Numerische Exzentrizität.
-    :param psi: Wahre Anomalie.
+    :param phi: Wahre Anomalie in Radiant.
     :return: Radius r in km.
     """
-    return p / (1 + epsilon * Decimal(math.cos(psi)))
+    return p / (1 + epsilon * Decimal(math.cos(phi)))
 
 
 @return_unit('km')
