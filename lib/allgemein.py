@@ -124,3 +124,22 @@ def lineare_exzentrizitaet_allgemein(*, a: Decimal, epsilon: Decimal) -> Decimal
     :return: Lineare Exzentrizität  in km.
     """
     return a * epsilon
+
+
+@return_unit("°")
+def rad_zu_grad(rad: Decimal) -> Decimal:
+    """Konvertiert Wert von Radiant/Bogenmaß zu Grad.
+
+    >>> rad_zu_grad(rad=0)
+    0 °
+
+    >>> rad_zu_grad(rad=math.pi)
+    180 °
+
+    Args:
+        rad (Decimal): Ursprungswert in Radiant.
+
+    Returns:
+        Decimal: Gleicher Wert in Grad.
+    """
+    return rad / math.pi * 180
