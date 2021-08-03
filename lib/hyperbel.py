@@ -21,8 +21,10 @@ def grosse_halbachse_planet_vinf(*, planet: Planet, vinf: Decimal) -> Decimal:
     """
     Berechnet die große Halbachse a einer Fluchthyperbel.
 
-    >>> grosse_halbachse_planet_vinf(planet=ERDE, vinf=Decimal('32.73'))
-    45958.47 km
+    >>> from lib.unit_decimal import UnitDecimal
+    >>> UnitDecimal.output_decimal_points = 3
+    >>> grosse_halbachse_planet_vinf(planet=ERDE, vinf=Decimal('2.495'))
+    64031.711 km
 
     :param planet: Planet, an dem die Fluchthyperbel berechnet werden soll.
     :param vinf: Hyperbolische Exzessgeschwindigkeit; Geschwindigkeit im Unendlichen in km/s.
