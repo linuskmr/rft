@@ -231,6 +231,8 @@ class Ellipse(Solvable):
     """Geschwindigkeit am Apozentrum in km/s."""
     zentralgestirn: Planet
     """Zentraler Körper um den sich die Bahn bewegt."""
+    umlaufzeit: timedelta
+    """Dauer einer Umrundung der Ellipse."""
 
     param_funcs: dict = {
         "ra": [apozentrum_radius_a_e,
@@ -245,7 +247,8 @@ class Ellipse(Solvable):
         "vp": [perizentrum_geschwindigkeit_rp_p_epsilon,
                perizentrum_geschwindigkeit_rp_ra],
         "va": [apozentrum_geschwindigkeit],
-        "zentralgestirn": []
+        "zentralgestirn": [],
+        "umlaufzeit": [umlaufzeit]
     }
     """All bekannten Funktionen, welche einen gegebenen paramter berechnen."""
 
