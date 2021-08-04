@@ -51,7 +51,7 @@ def uebergang_zielplanet_3(*, start_planet: Planet, ziel_planet: Planet) -> Hohm
     :return: Sämtliche berechneten Werte.
     """
     print('3. Übergang zum Zielplaneten')
-    uebergang_zielplanet_data = hohmann(planet=SONNE, perizentrum_hoehe=start_planet.a, apozentrum_hoehe=ziel_planet.a)
+    uebergang_zielplanet_data = hohmann(zentralgestirn=SONNE, perizentrum_hoehe=start_planet.a, apozentrum_hoehe=ziel_planet.a)
     return uebergang_zielplanet_data
 
 

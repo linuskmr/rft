@@ -42,26 +42,22 @@ class HohmannTransfer:
     """Flugdauer des Hohmann Transfers."""
 
 
-def hohmann(planet: Planet, perizentrum_hoehe: Decimal, apozentrum_hoehe: Decimal) -> HohmannTransfer:
+def hohmann(zentralgestirn: Planet, rp: Decimal, ra: Decimal) -> HohmannTransfer:
     """
     Berechnet einen Hohmann-Transfer.
 
-    :param planet: Planet, bei dem der Hohmann-Transfer ausgeführt wird.
-    :param perizentrum_hoehe: Höhe des Perizentrums über der Oberfläche des Planeten.
-    :param apozentrum_hoehe: Höhe des Apozentrums über der Oberfläche des Planeten.
+    :param zentralgestirn: Gestirn als Brennpunkt der Übergangsellipse.
+    :param rp: Radius des Perizentrums.
+    :param ra: Radius des Apozentrums.
     :return: Sämtliche berechneten Werte.
     """
     print('Hohmann Transfer 🚀')
-    print(f'{planet=}')
+    print(f'{zentralgestirn=}')
 
-    perizentrum_hoehe = UnitDecimal(perizentrum_hoehe, 'km')
-    apozentrum_hoehe = UnitDecimal(apozentrum_hoehe, 'km')
-    rp = UnitDecimal(planet.R + perizentrum_hoehe, 'km')
-    ra = UnitDecimal(planet.R + apozentrum_hoehe, 'km')
-    print(f'Start Umlaufbahnhöhe: {perizentrum_hoehe}')
-    print(f'Radius Perizentrum (Start Umlaufbahnhöhe + Radius des Planeten): {rp=}')
-    print(f'Ziel Umlaufbahnhöhe: {apozentrum_hoehe}')
-    print(f'Radius Apozentrum (Ziel Umlaufbahnhöhe + Radius des Planeten): {ra=}')
+    rp = UnitDecimal(rp, 'km')
+    ra = UnitDecimal(ra, 'km')
+    print(f'Radius Perizentrum {rp=}')
+    print(f'Radius Apozentrum {ra=}')
     print()
 
     print('Berechne allgemeine Parameter der Übergangsellipse:')
@@ -75,25 +71,25 @@ def hohmann(planet: Planet, perizentrum_hoehe: Decimal, apozentrum_hoehe: Decima
     print(f'Lineare Exzentrizität {e=}')
     print()
 
-    vp = ellipse.perizentrum_geschwindigkeit_rp_ra(planet=planet, ra=ra, rp=rp)
+    vp = ellipse.perizentrum_geschwindigkeit_rp_ra(planet=zentralgestirn, ra=ra, rp=rp)
     print(f'Benötigte Geschwindigkeit Perizentrum {vp=}')
-    vk_start = kreis.geschwindigkeit(planet=planet, rk=rp)
-    print(f'Bereits vorhandene Kreisbahngeschwindigkeit auf Start-Umlaufbahnhöhe {perizentrum_hoehe}: {vk_start=}')
+    vk_start = kreis.geschwindigkeit(planet=zentralgestirn, rk=rp)
+    print(f'Bereits vorhandene Kreisbahngeschwindigkeit bei Perizentrum {rp=}: {vk_start=}')
     delta_v1 = UnitDecimal(vp - vk_start, 'km/s')
     print(f'Schubimpuls Geschwindigkeitsdelta Δv1 = vp - vk_start = {delta_v1}')
     print()
 
-    va = ellipse.apozentrum_geschwindigkeit(planet=planet, ra=ra, epsilon=epsilon, p=p)
+    va = ellipse.apozentrum_geschwindigkeit(planet=zentralgestirn, ra=ra, epsilon=epsilon, p=p)
     print(f'Benötigte Geschwindigkeit Apozentrum {va=}')
-    vk_ziel = kreis.geschwindigkeit(planet=planet, rk=ra)
-    print(f'Kreisbahngeschwindigkeit bei Ziel-Umlaufbahnhöhe {apozentrum_hoehe}: {vk_ziel=}')
+    vk_ziel = kreis.geschwindigkeit(planet=zentralgestirn, rk=ra)
+    print(f'Kreisbahngeschwindigkeit bei Apozentrum {ra=}: {vk_ziel=}')
     delta_v2 = UnitDecimal(vk_ziel - va, 'km/s')
     print(f'Schubimpuls Geschwindigkeitsdelta Δv2 = vk_ziel - va = {delta_v2}')
     print()
 
     v_total = UnitDecimal(abs(delta_v1) + abs(delta_v2), 'km/s')
     print(f'Benötigter Gesamt-Schubimpuls {v_total=}')
-    tu = ellipse.umlaufzeit(planet=planet, a=a)
+    tu = ellipse.umlaufzeit(planet=zentralgestirn, a=a)
     flugdauer = 0.5 * tu
     print(f'Flugdauer (Halbe Umlaufzeit der Ellipse): {flugdauer} bzw. {flugdauer.total_seconds()} Sekunden')
 
@@ -116,7 +112,7 @@ def main():
     perizentrum_hoehe = eval(input('Perizentrum Höhe über Planet (in km): '))
     apozentrum_hoehe = eval(input('Apozentrum Höhe über Planet (in km): '))
     print('---')
-    data = hohmann(planet=planet, perizentrum_hoehe=perizentrum_hoehe, apozentrum_hoehe=apozentrum_hoehe)
+    data = hohmann(zentralgestirn=planet, perizentrum_hoehe=perizentrum_hoehe, apozentrum_hoehe=apozentrum_hoehe)
     data_json = json.dumps(dataclasses.asdict(data), indent='  ', default=lambda x: str(x), ensure_ascii=False)
     print()
     print('Raw data:')
