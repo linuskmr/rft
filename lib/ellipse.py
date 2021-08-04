@@ -4,37 +4,8 @@ from decimal import *
 from lib import konstanten
 from lib.planet import Planet, ERDE
 from lib.unit_decimal import return_unit, UnitDecimal
-
-
-class Ellipse:
-    ra: UnitDecimal
-    """Radius Apozentrum in km."""
-    rp: UnitDecimal
-    """Radius Perizentrum in km."""
-    epsilon: UnitDecimal
-    """Numerische Exzentrizität."""
-    p: UnitDecimal
-    """Bahnparameter p in km."""
-    a: UnitDecimal
-    """Große Halbachse in km."""
-    e: UnitDecimal
-    """Lineare Exzentrizität."""
-    vp: UnitDecimal
-    """Geschwindigkeit am Perizentrum in km/s"""
-    va: UnitDecimal
-    """Geschwindigkeit am Apozentrum in km/s."""
-    
-    
-    def __init__(self, **kwargs):
-        super().__init__()
-
-        if len(kwargs) > 0:
-            self.solve(kwargs)
-
-
-    def solve_ellipse(self, **kwargs) -> Ellipse:
-
-        return self
+import inspect
+from typing import Optional
 
 
 @return_unit('km')
@@ -185,7 +156,7 @@ def apozentrum_radius_a_e(*, a: Decimal, e: Decimal) -> Decimal:
 
 
 @return_unit('km/s')
-def perizentrum_geschwindigkeit_rp_ra(*, planet: Planet, rp: Decimal, ra: Decimal) -> Decimal:
+def perizentrum_geschwindigkeit_rp_ra(*, zentralgestirn: Planet, rp: Decimal, ra: Decimal) -> Decimal:
     """
     Berechnet die Perizentrumsgeschwindigkeit einer Ellipse, also die Geschwindigkeit am Ort mit minimaler Entfernung
     zum Planeten.
@@ -195,11 +166,11 @@ def perizentrum_geschwindigkeit_rp_ra(*, planet: Planet, rp: Decimal, ra: Decima
     :param ra: Apozentrumsradius ra in km.
     :return: Perizentrumsgeschwindigkeit in km/s.
     """
-    return (2 * planet.mu * ((1 / rp) - (1 / (rp + ra)))).sqrt()
+    return (2 * zentralgestirn.mu * ((1 / rp) - (1 / (rp + ra)))).sqrt()
 
 
 @return_unit('km/s')
-def perizentrum_geschwindigkeit_rp_p_epsilon(*, planet: Planet, rp: Decimal, p: Decimal, epsilon: Decimal) -> Decimal:
+def perizentrum_geschwindigkeit_rp_p_epsilon(*, zentralgestirn: Planet, rp: Decimal, p: Decimal, epsilon: Decimal) -> Decimal:
     """
     Berechnet die Perizentrumsgeschwindigkeit einer Ellipse, also die Geschwindigkeit am Ort mit minimaler Entfernung
     zum Planeten.
@@ -209,11 +180,11 @@ def perizentrum_geschwindigkeit_rp_p_epsilon(*, planet: Planet, rp: Decimal, p: 
     :param p: Bahnparameter p in km.
     :return: Perizentrumsgeschwindigkeit in km/s.
     """
-    return (planet.mu * ((2 / rp) + ((epsilon**2 - 1) / p))).sqrt()
+    return (zentralgestirn.mu * ((2 / rp) + ((epsilon**2 - 1) / p))).sqrt()
 
 
 @return_unit('km/s')
-def apozentrum_geschwindigkeit(*, planet: Planet, ra: Decimal, epsilon: Decimal, p: Decimal) -> Decimal:
+def apozentrum_geschwindigkeit(*, zentralgestirn: Planet, ra: Decimal, epsilon: Decimal, p: Decimal) -> Decimal:
     """
     Berechnet die Apozentrumsgeschwindigkeit einer Ellipse, also die Geschwindigkeit am Ort mit maximaler Entfernung
     zum Planeten.
@@ -224,10 +195,10 @@ def apozentrum_geschwindigkeit(*, planet: Planet, ra: Decimal, epsilon: Decimal,
     :param p: Bahnparameter p in km.
     :return: Perizentrumsgeschwindigkeit in km/s.
     """
-    return (planet.mu * ((2 / ra) + ((epsilon**2 - 1) / p))).sqrt()
+    return (zentralgestirn.mu * ((2 / ra) + ((epsilon**2 - 1) / p))).sqrt()
 
 
-def umlaufzeit(*, planet: Planet, a: Decimal) -> timedelta:
+def umlaufzeit(*, zentralgestirn: Planet, a: Decimal) -> timedelta:
     """
     Berechnet die Umlaufzeit der Ellipse.
 
@@ -235,4 +206,98 @@ def umlaufzeit(*, planet: Planet, a: Decimal) -> timedelta:
     :param a: Große Halbachse in km.
     :return: Umlaufzeit.
     """
-    return timedelta(seconds=2 * math.pi * math.sqrt(a**3 / planet.mu))
+    return timedelta(seconds=2 * math.pi * math.sqrt(a**3 / zentralgestirn.mu))
+
+
+class Ellipse:
+    ra: UnitDecimal
+    """Radius Apozentrum in km."""
+    rp: UnitDecimal
+    """Radius Perizentrum in km."""
+    epsilon: UnitDecimal
+    """Numerische Exzentrizität."""
+    p: UnitDecimal
+    """Bahnparameter p in km."""
+    a: UnitDecimal
+    """Große Halbachse in km."""
+    b: UnitDecimal
+    """Kleine Halbachse in km."""
+    e: UnitDecimal
+    """Lineare Exzentrizität."""
+    vp: UnitDecimal
+    """Geschwindigkeit am Perizentrum in km/s"""
+    va: UnitDecimal
+    """Geschwindigkeit am Apozentrum in km/s."""
+    zentralgestirn: Planet
+    """Zentraler Körper um den sich die Bahn bewegt."""
+
+    param_funcs: dict = {
+        "ra": [apozentrum_radius_a_e,
+               apozentrum_radius_a_epsilon, apozentrum_radius_p_epsilon],
+        "rp": [perizentrum_radius_a_epsilon,
+               perizentrum_radius_a_ra, perizentrum_radius_p_epsilon],
+        "epsilon": [],
+        "p": [bahnparameter_p],
+        "a": [grosse_halbachse_p_epsilon, grosse_halbachse_ra_rp],
+        "b": [kleine_halbachse],
+        "e": [lineare_exzentrizitaet],
+        "vp": [perizentrum_geschwindigkeit_rp_p_epsilon,
+               perizentrum_geschwindigkeit_rp_ra],
+        "va": [apozentrum_geschwindigkeit],
+        "zentralgestirn": []
+    }
+    """All bekannten Funktionen, welche einen gegebenen paramter berechnen."""
+
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        if len(kwargs) > 0:
+            self.solve_ellipse(kwargs)
+
+    def solve_ellipse(self, kwargs) -> 'Ellipse':
+        open_params = ["ra", "rp", "epsilon", "p", "a", "b", "e", "vp", "va", "zentralgestirn"]
+        previous_size = len(open_params) + 1
+
+        while previous_size > len(open_params) and len(open_params) > 0:
+            previous_size = len(open_params)
+            
+            for param in open_params:
+                result = self.solve_param(param, kwargs)
+                if result is None:
+                    continue
+
+                setattr(self, param, result)
+                kwargs[param] = result
+                open_params.remove(param)
+
+        if len(open_params) > 0:
+            raise Exception("Could not solve. Missing " + str(open_params))
+
+        return self
+
+    def solve_param(self, param: str, given_params: dict) -> Optional[Decimal]:
+        if param in given_params:
+            return given_params[param]
+
+        for func in self.param_funcs[param]:
+            func_args = inspect.signature(func)
+            required_kwargs = {}
+
+            works = True
+            for arg in func_args.parameters.keys():
+                if arg not in given_params.keys():
+                    works = False
+                    break
+                else:
+                    required_kwargs[arg] = given_params[arg]
+
+            if works is False:
+                continue
+
+            # All params given, so calculate
+            return func(**required_kwargs)
+
+        return None
+
+
+
