@@ -28,7 +28,7 @@ class Solvable:
                 solvable_params.remove(param)
 
         if len(solvable_params) > 0:
-            raise Exception("Could not solve. Missing " + str(solvable_params))
+            print("ATTENTION: Could not solve. Missing " + str(solvable_params))
 
         return self
 
