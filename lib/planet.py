@@ -1,5 +1,6 @@
 import math
 from decimal import *
+from datetime import datetime
 from dataclasses import dataclass
 from lib.unit_decimal import UnitDecimal
 from lib.allgemein import grad_zu_rad
@@ -29,6 +30,9 @@ class Planet:
 
     L0: Decimal
     """Referenzposition des Planeten am 12.10.1987 in Radiant."""
+
+    L0_DATETIME: datetime = datetime(1987, 10, 12, 0, 0, 0, 0, datetime.now().tzinfo)
+    """Referenzzeitpunkt für L0."""
 
 
 # Definition einiger Planeten
