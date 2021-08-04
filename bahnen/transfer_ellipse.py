@@ -50,7 +50,7 @@ class TransferEllipse(Ellipse):
         "psi": [],
         "delta_t": [],
         "startzeit_periode": [],
-    }.update(Ellipse.param_func)
+    }.update(Ellipse.param_funcs)
 
 
     def startzeitpunkt_nach_index(self, n: int) -> datetime:

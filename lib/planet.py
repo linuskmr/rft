@@ -31,11 +31,11 @@ class Planet:
     L0: Decimal
     """Referenzposition des Planeten am 12.10.1987 in Radiant."""
 
-    L0_DATETIME: datetime = datetime(1987, 10, 12, 0, 0, 0, 0, datetime.now().tzinfo)
-    """Referenzzeitpunkt für L0."""
-
     T: Decimal
     """Umlaufzeit des Planeten um die Sonne in Jahren."""
+
+    L0_DATETIME: datetime = datetime(1987, 10, 12, 0, 0, 0, 0, datetime.now().tzinfo)
+    """Referenzzeitpunkt für L0."""
 
 
 # Definition einiger Planeten
