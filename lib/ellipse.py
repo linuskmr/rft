@@ -4,9 +4,9 @@ from decimal import *
 from lib import konstanten
 from lib.planet import Planet, ERDE
 from lib.unit_decimal import return_unit, UnitDecimal
-import inspect
 from typing import Optional
 from lib.allgemein import *
+from lib.solvable import Solvable
 
 
 @return_unit('km')
@@ -210,7 +210,7 @@ def umlaufzeit(*, zentralgestirn: Planet, a: Decimal) -> timedelta:
     return timedelta(seconds=2 * math.pi * math.sqrt(a**3 / zentralgestirn.mu))
 
 
-class Ellipse:
+class Ellipse(Solvable):
     ra: UnitDecimal
     """Radius Apozentrum in km."""
     rp: UnitDecimal
@@ -250,56 +250,4 @@ class Ellipse:
     """All bekannten Funktionen, welche einen gegebenen paramter berechnen."""
 
     def __init__(self, **kwargs):
-        super().__init__()
-
-        if len(kwargs) > 0:
-            self.solve_ellipse(kwargs)
-
-    def solve_ellipse(self, kwargs) -> 'Ellipse':
-        open_params = ["ra", "rp", "epsilon", "p", "a",
-                       "b", "e", "vp", "va", "zentralgestirn"]
-        previous_size = len(open_params) + 1
-
-        while previous_size > len(open_params) and len(open_params) > 0:
-            previous_size = len(open_params)
-
-            for param in open_params:
-                result = self.solve_param(param, kwargs)
-                if result is None:
-                    continue
-
-                setattr(self, param, result)
-                kwargs[param] = result
-                open_params.remove(param)
-
-        if len(open_params) > 0:
-            raise Exception("Could not solve. Missing " + str(open_params))
-
-        return self
-
-    def solve_param(self, param: str, given_params: dict) -> Optional[Decimal]:
-        if param in given_params:
-            print(f'[{param}] given as {given_params[param]}')
-            return given_params[param]
-
-        for func in self.param_funcs[param]:
-            func_args = inspect.signature(func)
-            required_kwargs = {}
-
-            works = True
-            for arg in func_args.parameters.keys():
-                if arg not in given_params.keys():
-                    works = False
-                    break
-                else:
-                    required_kwargs[arg] = given_params[arg]
-
-            if works is False:
-                continue
-
-            # All params given, so calculate
-            print(
-                f'Calculating [{param}] through {func} with {required_kwargs}')
-            return func(**required_kwargs)
-
-        return None
+        super().__init__(**kwargs)
