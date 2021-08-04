@@ -36,6 +36,23 @@ class TransferEllipse(Ellipse):
     startzeit_periode: timedelta
     """Dauer nach einem Startzeitpunkt, bis zum Auftreten des nächsten."""
 
+
+    param_funcs: dict = {
+        "start_planet": [],
+        "ziel_planet": [],
+        "vk_start": [],
+        "vk_ziel": [],
+        "delta_v1": [],
+        "delta_v2": [],
+        "v_total": [],
+        "phi_ankunft": [],
+        "transfer_dauer": [],
+        "psi": [],
+        "delta_t": [],
+        "startzeit_periode": [],
+    }.update(Ellipse.param_func)
+
+
     def startzeitpunkt_nach_index(self, n: int) -> datetime:
         """Berechnet den n-te Startzeitpunkt der nach dem Referenzdatum.
 
@@ -70,33 +87,3 @@ class TransferEllipse(Ellipse):
         return (self.startzeitpunkt_nach_index(n_kleinste_obere_schranke - 1),
                 self.startzeitpunkt_nach_index(n_kleinste_obere_schranke))
 
-
-def transfer_ellipse() -> TransferEllipse:
-    """
-    Berechnet die Transferellipse vom Start- zum Zielplaneten.
-
-    :return: Transferellipsesinstanz.
-    """
-    # TODO
-    return TransferEllipse()
-
-
-def main():
-    print('Transferellipse 🌍 🚀 🪐 - Eingabe der Parameter')
-
-    # Eingabe lesen
-    start_planet = planet_from_name(input('Startplanet: '))
-    start_planet_hoehe_umlaufbahn = UnitDecimal(Decimal(
-        input('Höhe Umlaufbahn über Plantenoberfläche des Startplanten (in km): ')
-    ), 'km')
-
-    ziel_planet = planet_from_name(input('Zielplanet: '))
-    ziel_planet_hoehe_umlaufbahn = UnitDecimal(Decimal(
-        input('Höhe Umlaufbahn über Plantenoberfläche des Zielplanten (in km): ')
-    ), 'km')
-
-    print('---')
-
-
-if __name__ == '__main__':
-    main()
