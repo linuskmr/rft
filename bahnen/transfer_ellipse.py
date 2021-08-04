@@ -1,5 +1,5 @@
 from lib.planet import Planet
-from datetime import timedelta
+from datetime import timedelta, datetime
 from lib.allgemein import gleicher_tag
 from lib.planet import planet_from_name
 from lib.unit_decimal import UnitDecimal
@@ -24,7 +24,6 @@ class TransferEllipse:
     periode: timedelta
     """Dauer nach einem Startzeitpunkt, bis zum Auftreten des nächsten."""
 
-
     def startzeitpunkt_nach_index(self, n: int) -> datetime:
         """Berechnet den n-te Startzeitpunkt der nach dem Referenzdatum.
 
@@ -36,7 +35,6 @@ class TransferEllipse:
         """
         erster_startzeitpunkt = self.start_planet.L0_DATETIME + self.delta_t
         return erster_startzeitpunkt + n * self.periode
-
 
     def startzeitpunkt_um_datum(self, datum: datetime) -> tuple:
         """Berechnet den am nächsten liegenden Startzeitpunkt zum gegebenen Datum.
