@@ -6,6 +6,37 @@ from lib.planet import Planet, ERDE
 from lib.unit_decimal import return_unit
 
 
+class Ellipse:
+    ra: UnitDecimal
+    """Radius Apozentrum in km."""
+    rp: UnitDecimal
+    """Radius Perizentrum in km."""
+    epsilon: UnitDecimal
+    """Numerische Exzentrizität."""
+    p: UnitDecimal
+    """Bahnparameter p in km."""
+    a: UnitDecimal
+    """Große Halbachse in km."""
+    e: UnitDecimal
+    """Lineare Exzentrizität."""
+    vp: UnitDecimal
+    """Geschwindigkeit am Perizentrum in km/s"""
+    va: UnitDecimal
+    """Geschwindigkeit am Apozentrum in km/s."""
+    
+    
+    def __init__(self, **kwargs):
+        super().__init__()
+
+        if len(kwargs) > 0:
+            self.solve(kwargs)
+
+
+    def solve_ellipse(self, **kwargs) -> Ellipse:
+
+        return self
+
+
 @return_unit('km')
 def grosse_halbachse_p_epsilon(*, p: Decimal, epsilon: Decimal) -> Decimal:
     """
