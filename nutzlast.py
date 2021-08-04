@@ -1,3 +1,4 @@
+import json
 from decimal import Decimal
 from lib.unit_decimal import UnitDecimal
 
@@ -20,7 +21,7 @@ class Nutzlast:
     lambda_: UnitDecimal
     """Nutzlastverhältnis (mN/m0)"""
 
-    def __init__(self, *, mN: Decimal, m0: Decimal, mK: Decimal):
+    def __init__(self, *, mN: UnitDecimal, m0: UnitDecimal, mK: UnitDecimal):
         """
 
         Args:
@@ -38,3 +39,13 @@ class Nutzlast:
         self.lambda_ = self.mN / self.m0
 
 
+def main():
+    mN = UnitDecimal(input('Nutzlast in kg: '), 'kg')
+    m0 = UnitDecimal(input('Startmasse in kg: '), 'kg')
+    mK = UnitDecimal(input('Konstruktionsmasse in kg: '), 'kg')
+    nutzlast = Nutzlast(mN=mN, m0=m0, mK=mK)
+    print(json.dumps(nutzlast.__dict__, indent='  ', default=lambda x: str(x)))
+
+
+if __name__ == '__main__':
+    main()
