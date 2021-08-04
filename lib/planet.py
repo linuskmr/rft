@@ -3,7 +3,7 @@ from decimal import *
 from datetime import datetime
 from dataclasses import dataclass
 from lib.unit_decimal import UnitDecimal
-from lib.allgemein import grad_zu_rad
+from lib.helper import grad_zu_rad
 
 
 @dataclass(frozen=True)

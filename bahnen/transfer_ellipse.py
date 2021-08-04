@@ -1,29 +1,40 @@
 from decimal import Decimal
 
+from lib.ellipse import Ellipse
 from lib.planet import Planet
 from datetime import timedelta, datetime
-from lib.allgemein import gleicher_tag
+from lib.helper import gleicher_tag
 from lib.planet import planet_from_name
 from lib.unit_decimal import UnitDecimal
 
 
-class TransferEllipse:
+class TransferEllipse(Ellipse):
     start_planet: Planet
     """Planet, von dem aus man starten möchte."""
-
     ziel_planet: Planet
     """Planet, den man erreichen möchte."""
 
-    psi: UnitDecimal
-    """Benötigte Konstellation der Planeten zueinander zum Starten. Genauer: Winkel von Start- zu Zielplanet."""
+    vk_start: UnitDecimal
+    """Geschwindigkeit auf Kreisbahn um Startplaneten."""
+    vk_ziel: UnitDecimal
+    """Geschwindigkeit auf Kreisbahn um Zielplaneten."""
 
-    delta_t: UnitDecimal
-    """Delta Zeit bis zum ersten Erreichen der Startkonstellation nach dem Referenzzeitpunkt."""
+    delta_v1: UnitDecimal
+    """Geschwindigkeitsdelta/Schubimpuls Nr.1 in km/s."""
+    delta_v2: UnitDecimal
+    """Geschwindigkeitsdelta/Schubimpuls Nr.2 in km/s."""
+    v_total: UnitDecimal
+    """Insgesamt benötigter Geschwindigkeitsimpuls in km/s."""
 
+    phi_ankunft: UnitDecimal
+    """Bei welchem Winkel man auf den Zielplaneten trifft."""
     transfer_dauer: timedelta
     """Dauer des Transfers vom Start- zum Zielplanet."""
-
-    periode: timedelta
+    psi: UnitDecimal
+    """Benötigte Konstellation der Planeten zueinander zum Starten. Genauer: Winkel von Start- zu Zielplanet."""
+    delta_t: UnitDecimal
+    """Delta Zeit bis zum ersten Erreichen der Startkonstellation nach dem Referenzzeitpunkt."""
+    startzeit_periode: timedelta
     """Dauer nach einem Startzeitpunkt, bis zum Auftreten des nächsten."""
 
     def startzeitpunkt_nach_index(self, n: int) -> datetime:
