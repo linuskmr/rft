@@ -2,9 +2,8 @@
 import dataclasses
 import json
 from datetime import timedelta
-from typing import Dict
-from decimal import *
-from lib import ellipse, kreis, allgemein, konstanten
+from lib import kreis, allgemein
+from bahnen import ellipse
 from lib.planet import *
 from lib.unit_decimal import UnitDecimal
 from dataclasses import dataclass

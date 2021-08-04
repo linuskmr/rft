@@ -1,4 +1,4 @@
-from lib.ellipse import Ellipse
+from bahnen.ellipse import Ellipse
 from lib.planet import *
 from lib.unit_decimal import UnitDecimal
 

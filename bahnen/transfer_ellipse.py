@@ -1,9 +1,8 @@
 from decimal import Decimal
 
-from lib.ellipse import Ellipse
+from bahnen.ellipse import Ellipse
 from lib.planet import Planet
 from datetime import timedelta, datetime
-from lib.helper import gleicher_tag
 from lib.planet import planet_from_name
 from lib.unit_decimal import UnitDecimal
 
