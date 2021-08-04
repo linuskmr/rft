@@ -143,3 +143,22 @@ def rad_zu_grad(rad: Decimal) -> Decimal:
         Decimal: Gleicher Wert in Grad.
     """
     return rad / math.pi * 180
+
+
+@return_unit("rad")
+def grad_zu_rad(grad: Decimal) -> Decimal:
+    """Konvertiert Wert von Grad zu Radiant/Bogenmaß.
+
+    >>> grad_zu_rad(grad=0)
+    0 rad
+
+    >>> grad_zu_rad(grad=180)
+    3.142 rad
+
+    Args:
+        grad (Decimal): Ursprungswert in Grad.
+
+    Returns:
+        Decimal: Gleicher Wert in Rad.
+    """
+    return grad * math.pi / 180
