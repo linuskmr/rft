@@ -42,7 +42,7 @@ class HohmannTransfer:
     """Flugdauer des Hohmann Transfers."""
 
 
-def hohmann(zentralgestirn: Planet, rp: Decimal, ra: Decimal) -> HohmannTransfer:
+def hohmann(*, zentralgestirn: Planet, rp: Decimal, ra: Decimal) -> HohmannTransfer:
     """
     Berechnet einen Hohmann-Transfer.
 

@@ -1,7 +1,7 @@
 import math
 from datetime import timedelta
 from decimal import *
-from lib.planet import *
+from lib.planet import Planet
 from lib.unit_decimal import return_unit, UnitDecimal
 
 

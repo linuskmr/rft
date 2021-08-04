@@ -51,7 +51,7 @@ def uebergang_zielplanet_3(*, start_planet: Planet, ziel_planet: Planet) -> Hohm
     :return: Sämtliche berechneten Werte.
     """
     print('3. Übergang zum Zielplaneten')
-    uebergang_zielplanet_data = hohmann(zentralgestirn=SONNE, perizentrum_hoehe=start_planet.a, apozentrum_hoehe=ziel_planet.a)
+    uebergang_zielplanet_data = hohmann(zentralgestirn=SONNE, rp=start_planet.a, ra=ziel_planet.a)
     return uebergang_zielplanet_data
 
 
@@ -89,7 +89,7 @@ def einschwenken_orbit_zielplanet_4(ziel_planet: Planet, hp: Decimal, vinf: Deci
 
 
 def mission(
-        start_planet: Planet, ziel_planet: Planet, start_planet_hoehe_umlaufbahn: Decimal,
+        *, start_planet: Planet, ziel_planet: Planet, start_planet_hoehe_umlaufbahn: Decimal,
         ziel_planet_hoehe_umlaufbahn: Decimal, bahnaufstieg_machen: bool
 ) -> Mission:
     """
@@ -129,13 +129,13 @@ def main():
     # Eingabe lesen
     start_planet = planet_from_name(input('Startplanet: '))
     start_planet_hoehe_umlaufbahn = UnitDecimal(Decimal(
-        input('Höhe Umlaufbahn über Plantenoberfläche des Startplanten (in km): ')
+        input('Radius Umlaufbahn bei Startplanet (in km): ')
     ), 'km')
     bahnaufstieg_machen = input('Bahnaufstieg beim Startplaneten machen (True/False)? ').lower() == 'true'
     print(f'{bahnaufstieg_machen=}')
     ziel_planet = planet_from_name(input('Zielplanet: '))
     ziel_planet_hoehe_umlaufbahn = UnitDecimal(Decimal(
-        input('Höhe Umlaufbahn über Plantenoberfläche des Zielplanten (in km): ')
+        input('Radius Umlaufbahn bei Zielplanet (in km): ')
     ), 'km')
     print('---')
     data = mission(
