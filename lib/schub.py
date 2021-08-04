@@ -8,9 +8,9 @@ def raketengrundgleichung_deltav_w(*, delta_v: Decimal, w: Decimal) -> Decimal:
     Die Raketengrundgleichung.
 
     >>> from decimal import getcontext
-    >>> getcontext().prec = 4
-    >>> raketengrundgleichung_deltav_w(delta_v=Decimal('9.7'), w=Decimal('3'))
-    0.039
+    >>> getcontext().prec = 3
+    >>> float(raketengrundgleichung_deltav_w(delta_v=Decimal('9.7'), w=Decimal('3')))
+    0.0396
 
     Args:
         delta_v: Geschwindigkeitszuwachs in km/s.
