@@ -6,6 +6,7 @@ from lib.planet import Planet, ERDE
 from lib.unit_decimal import return_unit, UnitDecimal
 import inspect
 from typing import Optional
+from lib.allgemein import *
 
 
 @return_unit('km')
@@ -68,7 +69,7 @@ def bahnparameter_p(*, rp: Decimal, epsilon: Decimal) -> Decimal:
     :param epsilon: Numerische Exzentrizität.
     :return: Bahnparameter p in km.
     """
-    return rp * (1 + epsilon)
+    return rp * (Decimal(1) + epsilon)
 
 
 @return_unit('km')
@@ -92,7 +93,7 @@ def perizentrum_radius_a_epsilon(*, a: Decimal, epsilon: Decimal) -> Decimal:
     :param epsilon: Numerische Exzentrizität.
     :return: Perizentrumsradius rp in km.
     """
-    return a * (1 - epsilon)
+    return a * (Decimal(1) - epsilon)
 
 
 @return_unit('km')
@@ -236,7 +237,7 @@ class Ellipse:
                apozentrum_radius_a_epsilon, apozentrum_radius_p_epsilon],
         "rp": [perizentrum_radius_a_epsilon,
                perizentrum_radius_a_ra, perizentrum_radius_p_epsilon],
-        "epsilon": [],
+        "epsilon": [numerische_exzentrizitaet_e_a, numerische_exzentrizitaet_epsilon_a, numerische_exzentrizitaet_ra_rp],
         "p": [bahnparameter_p],
         "a": [grosse_halbachse_p_epsilon, grosse_halbachse_ra_rp],
         "b": [kleine_halbachse],
@@ -255,12 +256,13 @@ class Ellipse:
             self.solve_ellipse(kwargs)
 
     def solve_ellipse(self, kwargs) -> 'Ellipse':
-        open_params = ["ra", "rp", "epsilon", "p", "a", "b", "e", "vp", "va", "zentralgestirn"]
+        open_params = ["ra", "rp", "epsilon", "p", "a",
+                       "b", "e", "vp", "va", "zentralgestirn"]
         previous_size = len(open_params) + 1
 
         while previous_size > len(open_params) and len(open_params) > 0:
             previous_size = len(open_params)
-            
+
             for param in open_params:
                 result = self.solve_param(param, kwargs)
                 if result is None:
@@ -296,7 +298,8 @@ class Ellipse:
                 continue
 
             # All params given, so calculate
-            print(f'Calculating [{param}] through {func} with {required_kwargs}')
+            print(
+                f'Calculating [{param}] through {func} with {required_kwargs}')
             return func(**required_kwargs)
 
         return None
