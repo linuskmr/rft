@@ -3,7 +3,7 @@ from datetime import timedelta
 from decimal import *
 from lib import konstanten
 from lib.planet import Planet, ERDE
-from lib.unit_decimal import return_unit
+from lib.unit_decimal import return_unit, UnitDecimal
 
 
 class Ellipse:
