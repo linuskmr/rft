@@ -184,15 +184,15 @@ def perizentrum_geschwindigkeit_rp_p_epsilon(*, planet: Planet, rp: Decimal, p: 
 @return_unit('km/s')
 def apozentrum_geschwindigkeit(*, planet: Planet, ra: Decimal, epsilon: Decimal, p: Decimal) -> Decimal:
     """
-        Berechnet die Apozentrumsgeschwindigkeit einer Ellipse, also die Geschwindigkeit am Ort mit maximaler Entfernung
-        zum Planeten.
+    Berechnet die Apozentrumsgeschwindigkeit einer Ellipse, also die Geschwindigkeit am Ort mit maximaler Entfernung
+    zum Planeten.
 
-        :param planet: Der Planet, an dem die Apozentrumsgeschwindigkeit berechnet werden soll.
-        :param ra: Apozentrumsradius ra in km.
-        :param epsilon: Numerische Exzentrizität.
-        :param p: Bahnparameter p in km.
-        :return: Perizentrumsgeschwindigkeit in km/s.
-        """
+    :param planet: Der Planet, an dem die Apozentrumsgeschwindigkeit berechnet werden soll.
+    :param ra: Apozentrumsradius ra in km.
+    :param epsilon: Numerische Exzentrizität.
+    :param p: Bahnparameter p in km.
+    :return: Perizentrumsgeschwindigkeit in km/s.
+    """
     return (planet.mu * ((2 / ra) + ((epsilon**2 - 1) / p))).sqrt()
 
 
