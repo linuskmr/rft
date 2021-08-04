@@ -130,11 +130,12 @@ def lineare_exzentrizitaet_allgemein(*, a: Decimal, epsilon: Decimal) -> Decimal
 def rad_zu_grad(rad: Decimal) -> Decimal:
     """Konvertiert Wert von Radiant/Bogenmaß zu Grad.
 
-    >>> rad_zu_grad(rad=0)
-    0 °
-
-    >>> rad_zu_grad(rad=math.pi)
-    180 °
+    >>> import lib.unit_decimal
+    >>> lib.unit_decimal.UnitDecimal.output_decimal_points = 3
+    >>> rad_zu_grad(rad=Decimal(0))
+    0.000 °
+    >>> rad_zu_grad(rad=Decimal(math.pi))
+    180.000 °
 
     Args:
         rad (Decimal): Ursprungswert in Radiant.
@@ -142,16 +143,17 @@ def rad_zu_grad(rad: Decimal) -> Decimal:
     Returns:
         Decimal: Gleicher Wert in Grad.
     """
-    return rad / math.pi * 180
+    return rad / Decimal(math.pi) * 180
 
 
 @return_unit("rad")
 def grad_zu_rad(grad: Decimal) -> Decimal:
     """Konvertiert Wert von Grad zu Radiant/Bogenmaß.
 
+    >>> import lib.unit_decimal
+    >>> lib.unit_decimal.UnitDecimal.output_decimal_points = 3
     >>> grad_zu_rad(grad=0)
-    0 rad
-
+    0.000 rad
     >>> grad_zu_rad(grad=180)
     3.142 rad
 
@@ -161,4 +163,4 @@ def grad_zu_rad(grad: Decimal) -> Decimal:
     Returns:
         Decimal: Gleicher Wert in Rad.
     """
-    return grad * math.pi / 180
+    return grad * Decimal(math.pi) / 180
