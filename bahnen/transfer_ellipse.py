@@ -52,8 +52,7 @@ class TransferEllipse:
         if self.startzeitpunkt_nach_index(0) > datum:
             schritt = -1
 
-        while (self.startzeitpunkt_nach_index(n_kleinste_obere_schranke) > datum
-               and self.startzeitpunkt_nach_index(n_kleinste_obere_schranke - 1) <= datum) == False:
+        while not self.startzeitpunkt_nach_index(n_kleinste_obere_schranke) > datum >= self.startzeitpunkt_nach_index(n_kleinste_obere_schranke - 1):
             n_kleinste_obere_schranke += schritt
 
         return (self.startzeitpunkt_nach_index(n_kleinste_obere_schranke - 1),
