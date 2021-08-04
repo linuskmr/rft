@@ -2,6 +2,7 @@ import math
 from decimal import *
 from dataclasses import dataclass
 from lib.unit_decimal import UnitDecimal
+from lib.allgemein import grad_zu_rad
 
 
 @dataclass(frozen=True)
@@ -26,6 +27,9 @@ class Planet:
     v: Decimal
     """Geschwindigkeit in km/s um die Sonne."""
 
+    L0: Decimal
+    """Referenzposition des Planeten am 12.10.1987 in Radiant."""
+
 
 # Definition einiger Planeten
 SONNE = Planet(
@@ -35,6 +39,7 @@ SONNE = Planet(
     a=UnitDecimal(math.nan, 'km'),  # Die Sonne hat keine große Halbachse um sich selber
     R=UnitDecimal('60_000', 'km'),
     v=UnitDecimal(math.nan, 'km/s'),  # Die Sonne hat keine Geschwindigkeit um sich selber
+    L0=UnitDecimal(math.nan, "rad"),    # Die Sonne kreist nicht um sich selber
 )
 ERDE = Planet(
     name='Erde',
@@ -43,6 +48,7 @@ ERDE = Planet(
     a=UnitDecimal('149_599_366', 'km'),
     R=UnitDecimal('6_378', 'km'),
     v=UnitDecimal('29.784', 'km/s'),
+    L0=grad_zu_rad(Decimal('20.042_7')),
 )
 VENUS = Planet(
     name='Venus',
@@ -51,6 +57,7 @@ VENUS = Planet(
     a=UnitDecimal('108_208_777', 'km'),
     R=UnitDecimal('6_052', 'km'),
     v=UnitDecimal('35.020', 'km/s'),
+    L0=grad_zu_rad(Decimal('229.096_1')),
 )
 MARS = Planet(
     name='Mars',
@@ -59,6 +66,7 @@ MARS = Planet(
     a=UnitDecimal('227_946_314', 'km'),
     R=UnitDecimal('3_397', 'km'),
     v=UnitDecimal('24.129', 'km/s'),
+    L0=grad_zu_rad(Decimal('175.736_5')),
 )
 SATURN = Planet(
     name='Saturn',
@@ -67,6 +75,7 @@ SATURN = Planet(
     a=UnitDecimal('1_425_945_953', 'km'),
     R=UnitDecimal('60_000', 'km'),
     v=UnitDecimal('9.647', 'km/s'),
+    L0=grad_zu_rad(Decimal('260.522_9')),
 )
 JUPITER = Planet(
     name='Jupiter',
@@ -75,6 +84,7 @@ JUPITER = Planet(
     a=UnitDecimal('778_344_254', 'km'),
     R=UnitDecimal('71_398', 'km'),
     v=UnitDecimal('13.058', 'km/s'),
+    L0=grad_zu_rad(Decimal('23.270_7')),
 )
 # Ab hier sind die Planeten-Daten von Wikipedia. Am besten nochmal mit den in der Aufgabenstellung angegebenen Daten
 # vergleichen.
@@ -84,7 +94,8 @@ MERKUR = Planet(
     mu=UnitDecimal('398_479', 'km³/s²'),
     a=UnitDecimal('57909335.7', 'km'),
     R=UnitDecimal('4_879', 'km'),
-    v=UnitDecimal('47.36', 'km/s')
+    v=UnitDecimal('47.36', 'km/s'),
+    L0=UnitDecimal(math.nan, "rad"),    # Unknown
 )
 URANUS = Planet(
     name='Uranus',
@@ -92,7 +103,8 @@ URANUS = Planet(
     mu=UnitDecimal('5_791_963', 'km³/s²'),
     a=UnitDecimal('2.87243e12', 'km'),
     R=UnitDecimal('51_118', 'km'),
-    v=UnitDecimal('6.81', 'km/s')
+    v=UnitDecimal('6.81', 'km/s'),
+    L0=UnitDecimal(math.nan, "rad"),    # Unknown
 )
 NEPTUN = Planet(
     name='Neptun',
@@ -100,7 +112,8 @@ NEPTUN = Planet(
     mu=UnitDecimal('6_832_128', 'km³/s²'),
     a=UnitDecimal('4.49497e12', 'km'),
     R=UnitDecimal('49_528', 'km'),
-    v=UnitDecimal('5.43', 'km/s')
+    v=UnitDecimal('5.43', 'km/s'),
+    L0=UnitDecimal(math.nan, "rad"),    # Unknown
 )
 PLUTO = Planet(
     name='Pluto',
@@ -108,7 +121,8 @@ PLUTO = Planet(
     mu=UnitDecimal('869', 'km³/s²'),
     a=UnitDecimal('5.90642e12', 'km'),
     R=UnitDecimal('2374', 'km'),
-    v=UnitDecimal('4.67', 'km/s')
+    v=UnitDecimal('4.67', 'km/s'),
+    L0=UnitDecimal(math.nan, "rad"),    # Unknown
 )
 
 
