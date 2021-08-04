@@ -1,9 +1,14 @@
-from bahnen.ellipse import Ellipse
+from bahnen.transfer_ellipse import TransferEllipse
 from lib.planet import *
 from lib.unit_decimal import UnitDecimal
 
-el = Ellipse(a=UnitDecimal('463_971_810', 'km'),
-             e=UnitDecimal('314_372_451', 'km'),
-             zentralgestirn=SONNE)
+transfer: TransferEllipse = TransferEllipse(zentralgestirn=SONNE,
+                           start_planet=ERDE,
+                           ziel_planet=MARS,
+                           epsilon=UnitDecimal('0.5237',''),
+                           p=MARS.a)
 
-print(el.p)
+for i in range(10):
+    print(transfer.startzeitpunkt_nach_index(i))
+
+print("Done")
