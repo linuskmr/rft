@@ -277,6 +277,7 @@ class Ellipse:
 
     def solve_param(self, param: str, given_params: dict) -> Optional[Decimal]:
         if param in given_params:
+            print(f'[{param}] given as {given_params[param]}')
             return given_params[param]
 
         for func in self.param_funcs[param]:
@@ -295,9 +296,7 @@ class Ellipse:
                 continue
 
             # All params given, so calculate
+            print(f'Calculating [{param}] through {func} with {required_kwargs}')
             return func(**required_kwargs)
 
         return None
-
-
-
