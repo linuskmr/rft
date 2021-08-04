@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from lib.planet import Planet
 from datetime import timedelta, datetime
 from lib.allgemein import gleicher_tag
