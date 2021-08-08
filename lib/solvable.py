@@ -2,8 +2,9 @@ from decimal import Decimal
 from typing import Optional
 import inspect
 
+
 class Solvable:
-    param_funcs: dict   # {param: [func, ...], ...}
+    param_funcs: dict  # {param: [func, ...], ...}
 
     def __init__(self, **kwargs):
         super().__init__()

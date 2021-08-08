@@ -1,13 +1,12 @@
 import dataclasses
 import json
-from typing import Dict, Optional
-from decimal import *
+from typing import Optional
 
 from bahnaufstieg import bahnaufstieg, Bahnaufstieg
 from fluchthyperbel import fluchthyperbel, Fluchthyperbel
 from lib.planet import *
 from lib.unit_decimal import UnitDecimal
-from hohmann import hohmann, HohmannTransfer
+from bahnen.hohmann import hohmann, HohmannTransfer
 from dataclasses import dataclass
 
 
