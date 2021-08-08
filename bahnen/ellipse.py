@@ -26,7 +26,7 @@ def grosse_halbachse_ra_rp(*, ra: Decimal, rp: Decimal) -> Decimal:
     """
     Berechnet die große Halbachse a einer Ellipse.
 
-    >>> grosse_halbachse_ra_rp(ra=ERDE.R+200, rp=konstanten.ERDE_GEO_MIT_ERDRADIUS)
+    >>> grosse_halbachse_ra_rp(ra=ERDE.R+200, rp=konstanten.GEO_RADIUS)
     24371.000 km
 
     :param ra: Radius Apozentrum, also der Ort mit maximaler Entfernung zum Planten.

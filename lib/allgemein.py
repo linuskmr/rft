@@ -124,3 +124,17 @@ def lineare_exzentrizitaet_allgemein(*, a: Decimal, epsilon: Decimal) -> Decimal
     :return: Lineare Exzentrizität  in km.
     """
     return a * epsilon
+
+
+def inklinationsaenderung(*, v: Decimal, delta_i: Decimal) -> Decimal:
+    """
+    Berechnet den Verlust durch ein Bahnebenendrehungsmanöver bzw. eine Inklinationsänderung.
+
+    Args:
+        v: Die Geschwindigkeit auf der Bahn in km/s.
+        delta_i: Der Winkel, um den die Bahn geändert werden soll in Radiant.
+
+    Returns:
+        Decimal: Das notwendige delta_v für die Bahnebenendrehung.
+    """
+    return 2 * v * Decimal(math.sin(delta_i / 2))

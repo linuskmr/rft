@@ -71,7 +71,7 @@ def geschwindigkeit(*, planet: Planet, rk: Decimal) -> Decimal:
 
     >>> geschwindigkeit(planet=ERDE, rk=ERDE.R + 200)
     7.784 km/s
-    >>> geschwindigkeit(planet=ERDE, rk=konstanten.ERDE_GEO_MIT_ERDRADIUS)
+    >>> geschwindigkeit(planet=ERDE, rk=konstanten.GEO_RADIUS)
     3.075 km/s
 
     :param planet: Planet, an dem die Perizentrumsgeschwindigkeit berechnet werden soll.
