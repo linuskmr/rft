@@ -56,7 +56,7 @@ def vis_viva_r_epsilon_p(*, planet: Planet, r: Decimal, epsilon: Decimal, p: Dec
 
     Beispiel: Das Vis-Viva-Integral der Erde um die Sonne sollte die Geschwindigkeit der Erde ergeben.
 
-    >>> vis_viva_r_epsilon_p(planet=SONNE, r=ERDE.a, epsilon=0, p=ERDE.a)
+    >>> vis_viva_r_epsilon_p(planet=SONNE, r=ERDE.a, epsilon=Decimal(0), p=ERDE.a)
     29.784 km/s
 
     :param planet: Planet, an dem das Vis-Viva-Integral berechnet werden soll.
