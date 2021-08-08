@@ -5,11 +5,11 @@ from lib.planet import Planet
 from datetime import timedelta, datetime
 from lib.planet import planet_from_name, ERDE
 from lib.unit_decimal import UnitDecimal, return_unit
-from lib.helper import jahre_zu_timedelta, merge_param_funcs, timedelta_zu_jahre
+from lib.helper import jahre_zu_timedelta, merge_param_funcs, timedelta_zu_jahre, rad_zu_grad, grad_zu_rad
 import math
 
 
-@return_unit("rad")
+@return_unit("°")
 def phi_ankunft(*, epsilon: Decimal, a: Decimal, ziel_planet: Planet) -> Decimal:
     """Berechnet die Winkelposition, zu der der Zielplanet erreicht wird.
 
@@ -19,9 +19,9 @@ def phi_ankunft(*, epsilon: Decimal, a: Decimal, ziel_planet: Planet) -> Decimal
         ziel_planet (Planet): Zielplanet.
 
     Returns:
-        Decimal: Ankunftswinkelposition in rad.
+        Decimal: Ankunftswinkelposition in Grad.
     """
-    return Decimal(math.acos(1 / epsilon * ((a * (1 - epsilon**2) / ziel_planet.a) - 1)))
+    return rad_zu_grad(Decimal(math.acos(1 / epsilon * ((a * (1 - epsilon**2) / ziel_planet.a) - 1))))
 
 
 def transfer_dauer(*, zentralgestirn: Planet, a: Decimal, epsilon: Decimal, phi_ankunft: Decimal) -> timedelta:
@@ -31,7 +31,7 @@ def transfer_dauer(*, zentralgestirn: Planet, a: Decimal, epsilon: Decimal, phi_
         zentralgestirn (Planet): Zentralgestirn um den die Bahn liegt.
         a (Decimal): Große Halbachse in km.
         epsilon (Decimal): Numerische Exzentrizität.
-        phi_ankunft (Decimal): Ankunftswinkel in rad.
+        phi_ankunft (Decimal): Ankunftswinkel in Grad.
 
     Returns:
         timedelta: Dauer des Transfers.
@@ -45,17 +45,17 @@ def transfer_dauer(*, zentralgestirn: Planet, a: Decimal, epsilon: Decimal, phi_
                     math.sqrt(
                         (1 - epsilon)/(1 + epsilon)
                     )) * Decimal(
-                        math.tan(phi_ankunft/2)
+                        math.tan(grad_zu_rad(phi_ankunft)/2)
                     )
                 )
             ) - (
                 epsilon * Decimal(
                     math.sqrt(1 - epsilon**2)
                 ) * Decimal(
-                    math.sin(phi_ankunft)
+                    math.sin(grad_zu_rad(phi_ankunft))
                 )/(
                     1 + epsilon * Decimal(
-                        math.cos(phi_ankunft)
+                        math.cos(grad_zu_rad(phi_ankunft))
                     )
                 )
             )
@@ -77,19 +77,19 @@ def vk(*, zentralgestirn: Planet, radius: Decimal) -> Decimal:
     return Decimal(math.sqrt(zentralgestirn.mu/radius))
 
 
-@return_unit("rad")
+@return_unit("°")
 def psi(*, phi_ankunft: Decimal, transfer_dauer: timedelta, ziel_planet: Planet) -> Decimal:
     """Winkeldelta welches zwischen Start- und Zielplanet zum Startzeitpunkt herrschen muss, damit man beim Zielplaneten ankommt.
 
     Args:
-        phi_ankunft (Decimal): Ankunftswinkel in rad.
+        phi_ankunft (Decimal): Ankunftswinkel in Grad.
         transfer_dauer (timedelta): Transferdauer als timedelta.
         ziel_planet (Planet): Zielplanet.
 
     Returns:
-        Decimal: Psi in rad.
+        Decimal: Psi in Grad.
     """
-    return phi_ankunft - timedelta_zu_jahre(transfer_dauer) * 2 * Decimal(math.pi) / ziel_planet.T
+    return rad_zu_grad(grad_zu_rad(phi_ankunft) - timedelta_zu_jahre(transfer_dauer) * 2 * Decimal(math.pi) / ziel_planet.T)
 
 
 @return_unit("a")
@@ -111,7 +111,7 @@ def delta_t(*, psi: Decimal, start_planet: Planet, ziel_planet: Planet) -> Decim
     """Das Delta an Zeit bis zum Eintreten des ersten Startzeitpunkts nach dem Referenzdatum der Planeten.
 
     Args:
-        psi (Decimal): Psi in rad.
+        psi (Decimal): Psi in Grad.
         start_planet (Planet): Startplanet.
         ziel_planet (Planet): Zielplanet.
 
@@ -140,11 +140,11 @@ class TransferEllipse(Ellipse):
     """Insgesamt benötigter Geschwindigkeitsimpuls in km/s."""
 
     phi_ankunft: UnitDecimal
-    """Bei welchem Winkel man auf den Zielplaneten trifft."""
+    """Bei welchem Winkel man auf den Zielplaneten trifft in Grad."""
     transfer_dauer: timedelta
     """Dauer des Transfers vom Start- zum Zielplanet."""
     psi: UnitDecimal
-    """Benötigte Konstellation der Planeten zueinander zum Starten. Genauer: Winkel von Start- zu Zielplanet."""
+    """Benötigte Konstellation der Planeten zueinander zum Starten in Grad. Genauer: Winkel von Start- zu Zielplanet."""
     delta_t: UnitDecimal
     """Delta Zeit bis zum ersten Erreichen der Startkonstellation nach dem Referenzzeitpunkt in Jahren."""
     synodische_periode: UnitDecimal
