@@ -13,6 +13,7 @@ print("Ellipse from WS 20/21 A.6 done")
 
 
 hohmann: HohmannTransfer = HohmannTransfer(
+    zentralgestirn=SONNE,
     ziel_planet=PLUTO,
     start_planet=ERDE
 )
