@@ -1,6 +1,6 @@
 import math
 from datetime import timedelta
-from decimal import *
+from decimal import Decimal
 from lib.planet import *
 from lib.unit_decimal import return_unit, UnitDecimal
 

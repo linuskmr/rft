@@ -1,5 +1,5 @@
 from functools import wraps
-from decimal import *
+from decimal import Decimal
 
 
 class UnitDecimal(Decimal):

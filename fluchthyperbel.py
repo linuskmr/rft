@@ -1,7 +1,7 @@
 import dataclasses
 import json
 from typing import Dict
-from decimal import *
+from decimal import Decimal
 from lib import kreis, hyperbel
 from lib.planet import *
 from lib.unit_decimal import UnitDecimal

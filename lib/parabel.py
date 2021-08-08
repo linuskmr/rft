@@ -1,6 +1,6 @@
 import math
 from lib.unit_decimal import return_unit
-from decimal import *
+from decimal import Decimal
 
 
 @return_unit('km')
