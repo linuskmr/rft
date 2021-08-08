@@ -247,7 +247,7 @@ class Ellipse(Solvable):
         "vp": [perizentrum_geschwindigkeit_rp_p_epsilon,
                perizentrum_geschwindigkeit_rp_ra],
         "va": [apozentrum_geschwindigkeit],
-        "zentralgestirn": [],
+        "zentralgestirn": [lambda: SONNE],
         "umlaufzeit": [umlaufzeit]
     }
     """All bekannten Funktionen, welche einen gegebenen paramter berechnen."""
