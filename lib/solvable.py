@@ -61,5 +61,5 @@ class Solvable:
         return None
 
     def __str__(self):
-        key_value_pairs = map(lambda item: f'{item[0]} = {item[1]}', vars(self).items())
-        return '\n'.join(key_value_pairs)
+        key_value_pairs = map(lambda item: f'{str(item[0])} = {str(item[1])}', vars(self).items())
+        return '{\n' + '\n'.join(f'  {x}' for x in key_value_pairs) + '\n}'
