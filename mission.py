@@ -6,7 +6,7 @@ from bahnaufstieg import bahnaufstieg, Bahnaufstieg
 from fluchthyperbel import fluchthyperbel, Fluchthyperbel
 from lib.planet import *
 from lib.unit_decimal import UnitDecimal
-from bahnen.hohmann import hohmann, HohmannTransfer
+from bahnen.hohmann import HohmannTransfer
 from dataclasses import dataclass
 
 
@@ -50,7 +50,7 @@ def uebergang_zielplanet_3(*, start_planet: Planet, ziel_planet: Planet) -> Hohm
     :return: Sämtliche berechneten Werte.
     """
     print('3. Übergang zum Zielplaneten')
-    uebergang_zielplanet_data = hohmann(zentralgestirn=SONNE, rp=start_planet.a, ra=ziel_planet.a)
+    uebergang_zielplanet_data = HohmannTransfer(zentralgestirn=SONNE, rp=start_planet.a, ra=ziel_planet.a)
     return uebergang_zielplanet_data
 
 
