@@ -19,8 +19,8 @@ def gewinn_erdrotation(beta: Decimal) -> Decimal:
     """
     Berechnet den Gewinn durch die Erdrotation auf dem Breitengrad beta.
 
-    >>> from decimal import getcontext
-    >>> getcontext().prec = 3
+    >>> from lib.unit_decimal import UnitDecimal
+    >>> UnitDecimal.output_decimal_points = 3
     >>> gewinn_erdrotation(Decimal(0))
     0.465 km/s
     >>> gewinn_erdrotation(Decimal(90))
