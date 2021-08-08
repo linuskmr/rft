@@ -1,101 +1,75 @@
 # ! Imports nicht optimieren bzw. welche rauslöschen, um in main() via eval() darauf Zugriff zu haben !
-import dataclasses
-import json
-from datetime import timedelta
-from lib import kreis, allgemein
-from bahnen import ellipse
+from bahnen.transfer_ellipse import TransferEllipse, vk
+from lib.helper import merge_param_funcs
 from lib.planet import *
 from lib.unit_decimal import UnitDecimal
-from dataclasses import dataclass
 
 
-@dataclass(frozen=True)
-class HohmannTransfer:
-    ra: UnitDecimal
-    """Radius Apozentrum in km."""
-    rp: UnitDecimal
-    """Radius Perizentrum in km."""
-    epsilon: UnitDecimal
-    """Numerische Exzentrizität."""
-    p: UnitDecimal
-    """Bahnparameter p in km."""
-    a: UnitDecimal
-    """Große Halbachse in km."""
-    e: UnitDecimal
-    """Lineare Exzentrizität."""
-    vp: UnitDecimal
-    """Geschwindigkeit am Perizentrum in km/s"""
-    vk_start: UnitDecimal
-    """Geschwindigkeit auf Kreisbahn um Startplaneten."""
-    delta_v1: UnitDecimal
-    """Geschwindigkeitsdelta/Schubimpuls Nr.1 in km/s."""
-    va: UnitDecimal
-    """Geschwindigkeit am Apozentrum in km/s."""
-    vk_ziel: UnitDecimal
-    """Geschwindigkeit auf Kreisbahn um Zielplaneten."""
-    delta_v2: UnitDecimal
-    """Geschwindigkeitsdelta/Schubimpuls Nr.2 in km/s."""
-    v_total: UnitDecimal
-    """Insgesamt benötigter Geschwindigkeitsimpuls in km/s."""
-    flugdauer: timedelta
-    """Flugdauer des Hohmann Transfers."""
+class HohmannTransfer(TransferEllipse):
+    param_funcs: dict = merge_param_funcs({
+        "vk_ziel": [lambda ra, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=ra)],
+        "ra": [lambda ziel_planet: ziel_planet.a]
+    }, TransferEllipse.param_funcs)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs, phi_ankunft=UnitDecimal(math.pi, 'rad'))
 
 
-def hohmann(*, zentralgestirn: Planet, rp: Decimal, ra: Decimal) -> HohmannTransfer:
-    """
-    Berechnet einen Hohmann-Transfer.
+# def hohmann(*, zentralgestirn: Planet, rp: Decimal, ra: Decimal) -> HohmannTransfer:
+#     """
+#     Berechnet einen Hohmann-Transfer.
 
-    :param zentralgestirn: Gestirn als Brennpunkt der Übergangsellipse.
-    :param rp: Radius des Perizentrums.
-    :param ra: Radius des Apozentrums.
-    :return: Sämtliche berechneten Werte.
-    """
-    print('Hohmann Transfer 🚀')
-    print(f'{zentralgestirn=}')
+#     :param zentralgestirn: Gestirn als Brennpunkt der Übergangsellipse.
+#     :param rp: Radius des Perizentrums.
+#     :param ra: Radius des Apozentrums.
+#     :return: Sämtliche berechneten Werte.
+#     """
+#     print('Hohmann Transfer 🚀')
+#     print(f'{zentralgestirn=}')
 
-    rp = UnitDecimal(rp, 'km')
-    ra = UnitDecimal(ra, 'km')
-    print(f'Radius Perizentrum {rp=}')
-    print(f'Radius Apozentrum {ra=}')
-    print()
+#     rp = UnitDecimal(rp, 'km')
+#     ra = UnitDecimal(ra, 'km')
+#     print(f'Radius Perizentrum {rp=}')
+#     print(f'Radius Apozentrum {ra=}')
+#     print()
 
-    print('Berechne allgemeine Parameter der Übergangsellipse:')
-    epsilon = allgemein.numerische_exzentrizitaet_ra_rp(rp=rp, ra=ra)
-    print(f'Numerische Exzentrizität {epsilon=}')
-    p = ellipse.bahnparameter_p(rp=ra, epsilon=epsilon)
-    print(f'Bahnparameter {p=}')
-    a = ellipse.grosse_halbachse_ra_rp(rp=rp, ra=ra)
-    print(f'Große Halbachse {a=}')
-    e = ellipse.lineare_exzentrizitaet(a=a, rp=rp)
-    print(f'Lineare Exzentrizität {e=}')
-    print()
+#     print('Berechne allgemeine Parameter der Übergangsellipse:')
+#     epsilon = allgemein.numerische_exzentrizitaet_ra_rp(rp=rp, ra=ra)
+#     print(f'Numerische Exzentrizität {epsilon=}')
+#     p = ellipse.bahnparameter_p(rp=ra, epsilon=epsilon)
+#     print(f'Bahnparameter {p=}')
+#     a = ellipse.grosse_halbachse_ra_rp(rp=rp, ra=ra)
+#     print(f'Große Halbachse {a=}')
+#     e = ellipse.lineare_exzentrizitaet(a=a, rp=rp)
+#     print(f'Lineare Exzentrizität {e=}')
+#     print()
 
-    vp = ellipse.perizentrum_geschwindigkeit_rp_ra(planet=zentralgestirn, ra=ra, rp=rp)
-    print(f'Benötigte Geschwindigkeit Perizentrum {vp=}')
-    vk_start = kreis.geschwindigkeit(planet=zentralgestirn, rk=rp)
-    print(f'Bereits vorhandene Kreisbahngeschwindigkeit bei Perizentrum {rp=}: {vk_start=}')
-    delta_v1 = UnitDecimal(vp - vk_start, 'km/s')
-    print(f'Schubimpuls Geschwindigkeitsdelta Δv1 = vp - vk_start = {delta_v1}')
-    print()
+#     vp = ellipse.perizentrum_geschwindigkeit_rp_ra(planet=zentralgestirn, ra=ra, rp=rp)
+#     print(f'Benötigte Geschwindigkeit Perizentrum {vp=}')
+#     vk_start = kreis.geschwindigkeit(planet=zentralgestirn, rk=rp)
+#     print(f'Bereits vorhandene Kreisbahngeschwindigkeit bei Perizentrum {rp=}: {vk_start=}')
+#     delta_v1 = UnitDecimal(vp - vk_start, 'km/s')
+#     print(f'Schubimpuls Geschwindigkeitsdelta Δv1 = vp - vk_start = {delta_v1}')
+#     print()
 
-    va = ellipse.apozentrum_geschwindigkeit(planet=zentralgestirn, ra=ra, epsilon=epsilon, p=p)
-    print(f'Benötigte Geschwindigkeit Apozentrum {va=}')
-    vk_ziel = kreis.geschwindigkeit(planet=zentralgestirn, rk=ra)
-    print(f'Kreisbahngeschwindigkeit bei Apozentrum {ra=}: {vk_ziel=}')
-    delta_v2 = UnitDecimal(vk_ziel - va, 'km/s')
-    print(f'Schubimpuls Geschwindigkeitsdelta Δv2 = vk_ziel - va = {delta_v2}')
-    print()
+#     va = ellipse.apozentrum_geschwindigkeit(planet=zentralgestirn, ra=ra, epsilon=epsilon, p=p)
+#     print(f'Benötigte Geschwindigkeit Apozentrum {va=}')
+#     vk_ziel = kreis.geschwindigkeit(planet=zentralgestirn, rk=ra)
+#     print(f'Kreisbahngeschwindigkeit bei Apozentrum {ra=}: {vk_ziel=}')
+#     delta_v2 = UnitDecimal(vk_ziel - va, 'km/s')
+#     print(f'Schubimpuls Geschwindigkeitsdelta Δv2 = vk_ziel - va = {delta_v2}')
+#     print()
 
-    v_total = UnitDecimal(abs(delta_v1) + abs(delta_v2), 'km/s')
-    print(f'Benötigter Gesamt-Schubimpuls {v_total=}')
-    tu = ellipse.umlaufzeit(planet=zentralgestirn, a=a)
-    flugdauer = 0.5 * tu
-    print(f'Flugdauer (Halbe Umlaufzeit der Ellipse): {flugdauer} bzw. {flugdauer.total_seconds()} Sekunden')
+#     v_total = UnitDecimal(abs(delta_v1) + abs(delta_v2), 'km/s')
+#     print(f'Benötigter Gesamt-Schubimpuls {v_total=}')
+#     tu = ellipse.umlaufzeit(planet=zentralgestirn, a=a)
+#     flugdauer = 0.5 * tu
+#     print(f'Flugdauer (Halbe Umlaufzeit der Ellipse): {flugdauer} bzw. {flugdauer.total_seconds()} Sekunden')
 
-    return HohmannTransfer(
-        ra=ra, rp=rp, epsilon=epsilon, p=p, a=a, e=e, vp=vp, vk_start=vk_start, delta_v1=delta_v1, va=va,
-        vk_ziel=vk_ziel, delta_v2=delta_v2, v_total=v_total, flugdauer=flugdauer
-    )
+#     return HohmannTransfer(
+#         ra=ra, rp=rp, epsilon=epsilon, p=p, a=a, e=e, vp=vp, vk_start=vk_start, delta_v1=delta_v1, va=va,
+#         vk_ziel=vk_ziel, delta_v2=delta_v2, v_total=v_total, flugdauer=flugdauer
+#     )
 
 
 def main():
@@ -104,18 +78,18 @@ def main():
     ausgewertet. Daher kann auf Konstanten
     :return:
     """
-    print('Hohmann Transfer 🚀 - Eingabe der Parameter')
-    # Eingabe lesen. eval() führt Eingabe als Programmcode aus. Daher ist es möglich
-    planet = planet_from_name(input('Planet: '))
-    R = planet.R
-    perizentrum_hoehe = eval(input('Perizentrum Höhe über Planet (in km): '))
-    apozentrum_hoehe = eval(input('Apozentrum Höhe über Planet (in km): '))
-    print('---')
-    data = hohmann(zentralgestirn=planet, perizentrum_hoehe=perizentrum_hoehe, apozentrum_hoehe=apozentrum_hoehe)
-    data_json = json.dumps(dataclasses.asdict(data), indent='  ', default=lambda x: str(x), ensure_ascii=False)
-    print()
-    print('Raw data:')
-    print(data_json)
+    # print('Hohmann Transfer 🚀 - Eingabe der Parameter')
+    # # Eingabe lesen. eval() führt Eingabe als Programmcode aus. Daher ist es möglich
+    # planet = planet_from_name(input('Planet: '))
+    # R = planet.R
+    # perizentrum_hoehe = eval(input('Perizentrum Höhe über Planet (in km): '))
+    # apozentrum_hoehe = eval(input('Apozentrum Höhe über Planet (in km): '))
+    # print('---')
+    # data = hohmann(zentralgestirn=planet, perizentrum_hoehe=perizentrum_hoehe, apozentrum_hoehe=apozentrum_hoehe)
+    # data_json = json.dumps(dataclasses.asdict(data), indent='  ', default=lambda x: str(x), ensure_ascii=False)
+    # print()
+    # print('Raw data:')
+    # print(data_json)
 
 
 if __name__ == '__main__':
