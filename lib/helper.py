@@ -30,9 +30,9 @@ def grad_zu_rad(grad: Decimal) -> Decimal:
 
     >>> import lib.unit_decimal
     >>> lib.unit_decimal.UnitDecimal.output_decimal_points = 3
-    >>> grad_zu_rad(grad=0)
+    >>> grad_zu_rad(grad=Decimal(0))
     0.000 rad
-    >>> grad_zu_rad(grad=180)
+    >>> grad_zu_rad(grad=Decimal(180))
     3.142 rad
 
     Args:
