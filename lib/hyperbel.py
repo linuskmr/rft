@@ -1,5 +1,5 @@
 import math
-from decimal import *
+from decimal import Decimal
 from lib.planet import *
 from lib.unit_decimal import return_unit
 

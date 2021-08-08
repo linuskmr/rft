@@ -1,5 +1,5 @@
 import math
-from decimal import *
+from decimal import Decimal
 from datetime import datetime, timedelta
 from dataclasses import dataclass
 from lib.unit_decimal import UnitDecimal

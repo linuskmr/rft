@@ -1,5 +1,5 @@
 from datetime import timedelta
-from decimal import *
+from decimal import Decimal
 from lib.unit_decimal import UnitDecimal
 
 SIDERISCHER_WINKELGESCHWINDIGKEIT_GRAD_PRO_TAG = UnitDecimal(Decimal('360') / Decimal('365.2422'), '°/d')

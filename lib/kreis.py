@@ -1,6 +1,6 @@
 import math
 from datetime import timedelta
-from decimal import *
+from decimal import Decimal
 from lib import konstanten
 from lib.planet import ERDE, Planet
 from lib.unit_decimal import return_unit
