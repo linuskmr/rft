@@ -34,6 +34,18 @@ def grosse_halbachse_planet_vinf(*, planet: Planet, vinf: Decimal) -> Decimal:
 
 
 @return_unit('km')
+def grosse_halbachse_ra_rp(*, ra: Decimal, rp: Decimal) -> Decimal:
+    """
+    Berechnet die große Halbachse a einer Hyperbel.
+
+    :param ra: Radius Apozentrum in km.
+    :param rp: Radius Perizentrum in km.
+    :return: Große Halbachse a in km.
+    """
+    return (ra - rp) / 2
+
+
+@return_unit('km')
 def kleine_halbachse(*, a: Decimal, e: Decimal) -> Decimal:
     """
     Berechnet die kleine Halbachse b einer Hyperbel.
