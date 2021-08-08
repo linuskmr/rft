@@ -3,7 +3,7 @@ from decimal import Decimal
 from bahnen.ellipse import Ellipse
 from lib.planet import Planet
 from datetime import timedelta, datetime
-from lib.planet import planet_from_name
+from lib.planet import planet_from_name, ERDE
 from lib.unit_decimal import UnitDecimal, return_unit
 from lib.helper import jahre_zu_timedelta, merge_param_funcs, timedelta_zu_jahre
 import math
@@ -153,8 +153,8 @@ class TransferEllipse(Ellipse):
     param_funcs: dict = merge_param_funcs({
         "start_planet": [],
         "ziel_planet": [],
-        "vk_start": [lambda start_planet, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=start_planet.a)],
-        "vk_ziel": [lambda ziel_planet, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=ziel_planet.a)],
+        "vk_start": [lambda rp, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=rp)],
+        "vk_ziel": [],
         "delta_v1": [lambda vp, vk_start: UnitDecimal(vp - vk_start, "km/s")],
         "delta_v2": [],
         "v_total": [lambda delta_v1, delta_v2: UnitDecimal(delta_v1.copy_abs() + delta_v2.copy_abs(), "km/s")],
