@@ -12,7 +12,7 @@ class HohmannTransfer(TransferEllipse):
     }, TransferEllipse.param_funcs)
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs, phi_ankunft=UnitDecimal(math.pi, 'rad'))
+        super().__init__(**kwargs, phi_ankunft=UnitDecimal('180', '°'))
 
 
 # def hohmann(*, zentralgestirn: Planet, rp: Decimal, ra: Decimal) -> HohmannTransfer:
