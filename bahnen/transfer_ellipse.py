@@ -122,12 +122,12 @@ def delta_t(*, psi: Decimal, start_planet: Planet, ziel_planet: Planet) -> Decim
 
 
 @return_unit("km/s")
-def delta_va(*, zentralgestirn: Planet, vp: UnitDecimal, start_planet: Planet, ziel_planet: Planet, epsilon: Decimal) -> Decimal:
-    """Berechnet das Delta va bei einem schnellen Übergang, bei dem man nicht notwendiger Weise tangential am Zielplaneten eintrifft.
+def delta_v2(*, zentralgestirn: Planet, v_start: UnitDecimal, start_planet: Planet, ziel_planet: Planet, epsilon: Decimal) -> Decimal:
+    """Berechnet das Delta v2 bei einem schnellen Übergang, bei dem man nicht notwendiger Weise tangential am Zielplaneten eintrifft.
 
     Args:
         zentralgestirn (Planet): Zentralgestirn, welches die Bahn der Sonde bestimmt.
-        vp (UnitDecimal): Geschwindigkeit im Perizentrum der Bahn in km/s.
+        v_start (UnitDecimal): Geschwindigkeit im Startpunkt der Bahn in km/s.
         start_planet (Planet): Startplanet der Transferellipse.
         ziel_planet (Planet): Zielplanet der Transferellipse
         epsilon (Decimal): Epsilon der Transferellipse.
@@ -141,8 +141,40 @@ def delta_va(*, zentralgestirn: Planet, vp: UnitDecimal, start_planet: Planet, z
     # Geschwindigkeit des Zielplaneten auf seiner Bahn
     v_pl = vk(zentralgestirn=zentralgestirn, radius=ziel_planet.a)
     # Cosinus-Satz
-    cos_b = UnitDecimal((start_planet.a * vp) / (ziel_planet.a * v_phi), '°')
-    return Decimal(math.sqrt(v_pl**2 + v_phi**2 - 2 * v_phi * v_pl * cos_b))
+    cos_b = UnitDecimal((start_planet.a * v_start) / (ziel_planet.a * v_phi), '°')
+    return -Decimal(math.sqrt(v_pl**2 + v_phi**2 - 2 * v_phi * v_pl * cos_b)).copy_abs()
+
+
+@return_unit('km/s')
+def delta_vp_or_delta_v2(*, vkp: UnitDecimal, flug_zu_innerem_planet: bool, zentralgestirn: Planet, vp: UnitDecimal, start_planet: Planet, ziel_planet: Planet, epsilon: Decimal) -> Decimal:
+    if flug_zu_innerem_planet:
+        return delta_v2(zentralgestirn=zentralgestirn, v_start=vp, start_planet=start_planet, ziel_planet=ziel_planet, epsilon=epsilon)
+    else:
+        return (vp - vkp).copy_abs()
+
+
+@return_unit('km/s')
+def delta_va_or_delta_v2(*, vka: UnitDecimal, flug_zu_innerem_planet: bool, zentralgestirn: Planet, va: UnitDecimal, start_planet: Planet, ziel_planet: Planet, epsilon: Decimal) -> Decimal:
+    if flug_zu_innerem_planet:
+        return (va - vka).copy_abs()
+    else:
+        return delta_v2(zentralgestirn=zentralgestirn, v_start=va, start_planet=start_planet, ziel_planet=ziel_planet, epsilon=epsilon)
+
+
+@return_unit("km/s")
+def vkp(*, flug_zu_innerem_planet: bool, zentralgestirn: Planet, planet_p: Planet, rp: UnitDecimal) -> Decimal:
+    if flug_zu_innerem_planet:
+        return vk(zentralgestirn=zentralgestirn, radius=planet_p.a)
+    else:
+        return vk(zentralgestirn=zentralgestirn, radius=rp)
+
+
+@return_unit("km/s")
+def vka(*, flug_zu_innerem_planet: bool, zentralgestirn: Planet, planet_a: Planet, ra: UnitDecimal) -> Decimal:
+    if flug_zu_innerem_planet:
+        return vk(zentralgestirn=zentralgestirn, radius=ra)
+    else:
+        return vk(zentralgestirn=zentralgestirn, radius=planet_a.a)
 
 
 class TransferEllipse(Ellipse):
@@ -188,10 +220,10 @@ class TransferEllipse(Ellipse):
                          planet_a if flug_zu_innerem_planet else planet_p],
         "ziel_planet": [lambda planet_p, planet_a, flug_zu_innerem_planet:
                         planet_p if flug_zu_innerem_planet else planet_a],
-        "vkp": [lambda rp, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=rp)],
-        "vka": [lambda ziel_planet, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=ziel_planet.a)],
-        "delta_vp": [lambda vp, vkp: UnitDecimal((vp - vkp).copy_abs(), "km/s")],
-        "delta_va": [delta_va],
+        "vkp": [vkp],
+        "vka": [vka],
+        "delta_vp": [delta_vp_or_delta_v2],
+        "delta_va": [delta_va_or_delta_v2],
         "v_total": [lambda delta_vp, delta_va: UnitDecimal(delta_vp.copy_abs() + delta_va.copy_abs(), "km/s")],
         "phi_ankunft": [phi_ankunft],
         "transfer_dauer": [transfer_dauer],
@@ -218,9 +250,9 @@ class TransferEllipse(Ellipse):
     }, Ellipse.param_funcs)
 
     def __init__(self, **kwargs):
-        super().__init__()
+        super().__init__(**kwargs)
 
-        if 'ra' in self.__dict__.keys() and 'rp' in self.__dict__.keys() and self.ra < self.rp:
+        if self.ra < self.rp:
             raise Exception('Apozentrum muss größer sein als Perizentrum.')
 
     def startzeitpunkt_nach_index(self, n: int) -> datetime:
