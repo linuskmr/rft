@@ -4,6 +4,7 @@ from bahnen.hohmann import HohmannTransfer
 from lib.planet import *
 from lib.unit_decimal import UnitDecimal
 from datetime import timedelta
+from lib.konstanten import *
 
 ellipse: Ellipse = Ellipse(zentralgestirn=SONNE,
                            ra=UnitDecimal('147_134_000', 'km'),
@@ -16,6 +17,15 @@ hohmann: HohmannTransfer = HohmannTransfer(
     zentralgestirn=SONNE,
     ziel_planet=PLUTO,
     start_planet=ERDE
+)
+
+print(hohmann.transfer_dauer)
+
+
+hohmann: HohmannTransfer = HohmannTransfer(
+    zentralgestirn=ERDE,
+    rp=ERDE.R + 200,
+    ra=GEO_RADIUS
 )
 
 print(hohmann.transfer_dauer)
