@@ -136,9 +136,10 @@ def delta_va(*, zentralgestirn: Planet, vp: UnitDecimal, start_planet: Planet, z
         Decimal: Delta v2 der Transferellipse in km/s.
     """
     # Geschwindigkeit der Sonde auf dessen Bahn beim Zielplaneten
-    v_phi = UnitDecimal(math.sqrt(zentralgestirn.mu / ziel_planet.a * (1 + epsilon**2)), 'km/s')
+    v_phi = UnitDecimal(math.sqrt(zentralgestirn.mu /
+                        ziel_planet.a * (1 + epsilon**2)), 'km/s')
     # Geschwindigkeit des Zielplaneten auf seiner Bahn
-    v_pl = vk(zentralgestirn = zentralgestirn,radius = ziel_planet.a)
+    v_pl = vk(zentralgestirn=zentralgestirn, radius=ziel_planet.a)
     # Cosinus-Satz
     cos_b = UnitDecimal((start_planet.a * vp) / (ziel_planet.a * v_phi), '°')
     return Decimal(math.sqrt(v_pl**2 + v_phi**2 - 2 * v_phi * v_pl * cos_b))
@@ -149,6 +150,11 @@ class TransferEllipse(Ellipse):
     """Planet, von dem aus man starten möchte."""
     ziel_planet: Planet
     """Planet, den man erreichen möchte."""
+
+    planet_p: Planet
+    """Planet im Perizentrum."""
+    planet_a: Planet
+    """Planet im Apozentrum."""
 
     vkp: UnitDecimal
     """Geschwindigkeit auf Kreisbahn bei Perizentrumsplanet."""
@@ -178,8 +184,10 @@ class TransferEllipse(Ellipse):
     Planeten zu einem äußeren Planeten fliegt."""
 
     param_funcs: dict = merge_param_funcs({
-        "start_planet": [],
-        "ziel_planet": [],
+        "start_planet": [lambda planet_p, planet_a, flug_zu_innerem_planet:
+                         planet_a if flug_zu_innerem_planet else planet_p],
+        "ziel_planet": [lambda planet_p, planet_a, flug_zu_innerem_planet:
+                        planet_p if flug_zu_innerem_planet else planet_a],
         "vkp": [lambda rp, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=rp)],
         "vka": [lambda ziel_planet, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=ziel_planet.a)],
         "delta_vp": [lambda vp, vkp: UnitDecimal((vp - vkp).copy_abs(), "km/s")],
@@ -191,20 +199,28 @@ class TransferEllipse(Ellipse):
         "delta_t": [delta_t],
         "synodische_periode": [synodische_periode],
         "rp": [
-            lambda start_planet, ziel_planet, flug_zu_innerem_planet:
-                ziel_planet.a if flug_zu_innerem_planet else start_planet.a
+            lambda planet_b, flug_zu_innerem_planet:
+                None if flug_zu_innerem_planet else planet_b.a
         ],
         "ra": [
+            lambda planet_a, flug_zu_innerem_planet:
+                planet_a.a if flug_zu_innerem_planet else None
+        ],
+        "planet_p": [
             lambda start_planet, ziel_planet, flug_zu_innerem_planet:
-            start_planet.a if flug_zu_innerem_planet else ziel_planet.a
+                ziel_planet if flug_zu_innerem_planet else start_planet
+        ],
+        "planet_a": [
+            lambda start_planet, ziel_planet, flug_zu_innerem_planet:
+                start_planet if flug_zu_innerem_planet else ziel_planet
         ],
         "flug_zu_innerem_planet": [lambda start_planet, ziel_planet: ziel_planet.a < start_planet.a]
     }, Ellipse.param_funcs)
 
     def __init__(self, **kwargs):
         super().__init__()
-        
-        if self.ra < self.rp:
+
+        if 'ra' in self.__dict__.keys() and 'rp' in self.__dict__.keys() and self.ra < self.rp:
             raise Exception('Apozentrum muss größer sein als Perizentrum.')
 
     def startzeitpunkt_nach_index(self, n: int) -> datetime:
