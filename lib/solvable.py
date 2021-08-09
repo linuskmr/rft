@@ -54,9 +54,15 @@ class Solvable:
                 continue
 
             # All params given, so calculate
+            result = func(**required_kwargs)
+
+            # If none, this result should be ignored
+            if result is None:
+                continue
+
             print(
-                f'Calculating [{param}] through {func} with {required_kwargs}')
-            return func(**required_kwargs)
+                f'Calculating [{param}] through {func} with {required_kwargs} as {result}')
+            return result
 
         return None
 
