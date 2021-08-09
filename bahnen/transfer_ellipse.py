@@ -197,7 +197,8 @@ class TransferEllipse(Ellipse):
         "ra": [
             lambda start_planet, ziel_planet, flug_zu_innerem_planet:
             start_planet.a if flug_zu_innerem_planet else ziel_planet.a
-        ]
+        ],
+        "flug_zu_innerem_planet": [lambda start_planet, ziel_planet: ziel_planet.a < start_planet.a]
     }, Ellipse.param_funcs)
 
     def startzeitpunkt_nach_index(self, n: int) -> datetime:
