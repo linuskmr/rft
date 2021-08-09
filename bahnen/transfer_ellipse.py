@@ -201,6 +201,12 @@ class TransferEllipse(Ellipse):
         "flug_zu_innerem_planet": [lambda start_planet, ziel_planet: ziel_planet.a < start_planet.a]
     }, Ellipse.param_funcs)
 
+    def __init__(self, **kwargs):
+        super().__init__()
+        
+        if self.ra < self.rp:
+            raise Exception('Apozentrum muss größer sein als Perizentrum.')
+
     def startzeitpunkt_nach_index(self, n: int) -> datetime:
         """Berechnet den n-te Startzeitpunkt der nach dem Referenzdatum.
 
