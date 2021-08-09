@@ -173,12 +173,16 @@ class TransferEllipse(Ellipse):
     synodische_periode: UnitDecimal
     """Dauer nach einem Startzeitpunkt, bis zum Auftreten des nächsten in Jahren."""
 
+    flug_zu_innerem_planet: bool
+    """True, wenn man von einem äußeren Planeten zu einem inneren Planeten fliegt. False, wenn man von einem inneren 
+    Planeten zu einem äußeren Planeten fliegt."""
+
     param_funcs: dict = merge_param_funcs({
         "start_planet": [],
         "ziel_planet": [],
         "vk_start": [lambda rp, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=rp)],
         "vk_ziel": [lambda ziel_planet, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=ziel_planet.a)],
-        "delta_v1": [lambda vp, vk_start: UnitDecimal(vp - vk_start, "km/s")],
+        "delta_v1": [lambda vp, vk_start: UnitDecimal((vp - vk_start).copy_abs(), "km/s")],
         "delta_v2": [delta_v2],
         "v_total": [lambda delta_v1, delta_v2: UnitDecimal(delta_v1.copy_abs() + delta_v2.copy_abs(), "km/s")],
         "phi_ankunft": [phi_ankunft],
@@ -186,7 +190,14 @@ class TransferEllipse(Ellipse):
         "psi": [psi],
         "delta_t": [delta_t],
         "synodische_periode": [synodische_periode],
-        "rp": [lambda start_planet: start_planet.a]
+        "rp": [
+            lambda start_planet, ziel_planet, flug_zu_innerem_planet:
+                ziel_planet.a if flug_zu_innerem_planet else start_planet.a
+        ],
+        "ra": [
+            lambda start_planet, ziel_planet, flug_zu_innerem_planet:
+            start_planet.a if flug_zu_innerem_planet else ziel_planet.a
+        ]
     }, Ellipse.param_funcs)
 
     def startzeitpunkt_nach_index(self, n: int) -> datetime:
