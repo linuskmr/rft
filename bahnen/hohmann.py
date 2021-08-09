@@ -57,11 +57,11 @@ class HohmannTransfer(TransferEllipse):
 #     print(f'Benötigte Geschwindigkeit Apozentrum {va=}')
 #     vk_ziel = kreis.geschwindigkeit(planet=zentralgestirn, rk=ra)
 #     print(f'Kreisbahngeschwindigkeit bei Apozentrum {ra=}: {vk_ziel=}')
-#     delta_v2 = UnitDecimal(vk_ziel - va, 'km/s')
-#     print(f'Schubimpuls Geschwindigkeitsdelta Δv2 = vk_ziel - va = {delta_v2}')
+#     delta_va = UnitDecimal(vk_ziel - va, 'km/s')
+#     print(f'Schubimpuls Geschwindigkeitsdelta Δv2 = vk_ziel - va = {delta_va}')
 #     print()
 
-#     v_total = UnitDecimal(abs(delta_v1) + abs(delta_v2), 'km/s')
+#     v_total = UnitDecimal(abs(delta_v1) + abs(delta_va), 'km/s')
 #     print(f'Benötigter Gesamt-Schubimpuls {v_total=}')
 #     tu = ellipse.umlaufzeit(planet=zentralgestirn, a=a)
 #     flugdauer = 0.5 * tu
@@ -69,7 +69,7 @@ class HohmannTransfer(TransferEllipse):
 
 #     return HohmannTransfer(
 #         ra=ra, rp=rp, epsilon=epsilon, p=p, a=a, e=e, vp=vp, vk_start=vk_start, delta_v1=delta_v1, va=va,
-#         vk_ziel=vk_ziel, delta_v2=delta_v2, v_total=v_total, flugdauer=flugdauer
+#         vk_ziel=vk_ziel, delta_va=delta_va, v_total=v_total, flugdauer=flugdauer
 #     )
 
 

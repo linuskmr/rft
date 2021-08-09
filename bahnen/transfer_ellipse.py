@@ -122,8 +122,8 @@ def delta_t(*, psi: Decimal, start_planet: Planet, ziel_planet: Planet) -> Decim
 
 
 @return_unit("km/s")
-def delta_v2(*, zentralgestirn: Planet, vp: UnitDecimal, start_planet: Planet, ziel_planet: Planet, epsilon: Decimal) -> Decimal:
-    """Berechnet das Delta v2 bei einem schnellen Übergang, bei dem man nicht notwendiger Weise tangential am Zielplaneten eintrifft.
+def delta_va(*, zentralgestirn: Planet, vp: UnitDecimal, start_planet: Planet, ziel_planet: Planet, epsilon: Decimal) -> Decimal:
+    """Berechnet das Delta va bei einem schnellen Übergang, bei dem man nicht notwendiger Weise tangential am Zielplaneten eintrifft.
 
     Args:
         zentralgestirn (Planet): Zentralgestirn, welches die Bahn der Sonde bestimmt.
@@ -183,7 +183,7 @@ class TransferEllipse(Ellipse):
         "vkp": [lambda rp, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=rp)],
         "vka": [lambda ziel_planet, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=ziel_planet.a)],
         "delta_vp": [lambda vp, vkp: UnitDecimal((vp - vkp).copy_abs(), "km/s")],
-        "delta_va": [delta_v2],
+        "delta_va": [delta_va],
         "v_total": [lambda delta_vp, delta_va: UnitDecimal(delta_vp.copy_abs() + delta_va.copy_abs(), "km/s")],
         "phi_ankunft": [phi_ankunft],
         "transfer_dauer": [transfer_dauer],
