@@ -121,6 +121,11 @@ def delta_t(*, psi: Decimal, start_planet: Planet, ziel_planet: Planet) -> Decim
     return (psi + start_planet.L0 - ziel_planet.L0)/(2 * Decimal(math.pi) * ((1/ziel_planet.T) - (1/start_planet.T)))
 
 
+@return_unit("km/s")
+def delta_v2() -> Decimal:
+    # TODO
+    pass
+
 class TransferEllipse(Ellipse):
     start_planet: Planet
     """Planet, von dem aus man starten möchte."""
@@ -154,9 +159,9 @@ class TransferEllipse(Ellipse):
         "start_planet": [],
         "ziel_planet": [],
         "vk_start": [lambda rp, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=rp)],
-        "vk_ziel": [],
+        "vk_ziel": [lambda ziel_planet, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=ziel_planet.a)],
         "delta_v1": [lambda vp, vk_start: UnitDecimal(vp - vk_start, "km/s")],
-        "delta_v2": [],
+        "delta_v2": [delta_v2],
         "v_total": [lambda delta_v1, delta_v2: UnitDecimal(delta_v1.copy_abs() + delta_v2.copy_abs(), "km/s")],
         "phi_ankunft": [phi_ankunft],
         "transfer_dauer": [transfer_dauer],
