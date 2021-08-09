@@ -150,15 +150,15 @@ class TransferEllipse(Ellipse):
     ziel_planet: Planet
     """Planet, den man erreichen möchte."""
 
-    vk_start: UnitDecimal
-    """Geschwindigkeit auf Kreisbahn um Startplaneten."""
-    vk_ziel: UnitDecimal
-    """Geschwindigkeit auf Kreisbahn um Zielplaneten."""
+    vkp: UnitDecimal
+    """Geschwindigkeit auf Kreisbahn bei Perizentrumsplanet."""
+    vka: UnitDecimal
+    """Geschwindigkeit auf Kreisbahn um Apozentrumsplanet."""
 
-    delta_v1: UnitDecimal
-    """Geschwindigkeitsdelta/Schubimpuls Nr.1 in km/s."""
-    delta_v2: UnitDecimal
-    """Geschwindigkeitsdelta/Schubimpuls Nr.2 in km/s."""
+    delta_vp: UnitDecimal
+    """Geschwindigkeitsdelta/Schubimpuls bei Perizentrum in km/s."""
+    delta_va: UnitDecimal
+    """Geschwindigkeitsdelta/Schubimpuls Apozentrum in km/s."""
     v_total: UnitDecimal
     """Insgesamt benötigter Geschwindigkeitsimpuls in km/s."""
 
@@ -180,11 +180,11 @@ class TransferEllipse(Ellipse):
     param_funcs: dict = merge_param_funcs({
         "start_planet": [],
         "ziel_planet": [],
-        "vk_start": [lambda rp, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=rp)],
-        "vk_ziel": [lambda ziel_planet, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=ziel_planet.a)],
-        "delta_v1": [lambda vp, vk_start: UnitDecimal((vp - vk_start).copy_abs(), "km/s")],
-        "delta_v2": [delta_v2],
-        "v_total": [lambda delta_v1, delta_v2: UnitDecimal(delta_v1.copy_abs() + delta_v2.copy_abs(), "km/s")],
+        "vkp": [lambda rp, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=rp)],
+        "vka": [lambda ziel_planet, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=ziel_planet.a)],
+        "delta_vp": [lambda vp, vkp: UnitDecimal((vp - vkp).copy_abs(), "km/s")],
+        "delta_va": [delta_v2],
+        "v_total": [lambda delta_vp, delta_va: UnitDecimal(delta_vp.copy_abs() + delta_va.copy_abs(), "km/s")],
         "phi_ankunft": [phi_ankunft],
         "transfer_dauer": [transfer_dauer],
         "psi": [psi],

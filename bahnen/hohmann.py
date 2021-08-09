@@ -7,9 +7,9 @@ from lib.unit_decimal import UnitDecimal
 
 class HohmannTransfer(TransferEllipse):
     param_funcs: dict = merge_param_funcs({
-        "vk_ziel": [lambda ra, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=ra)],
+        "vka": [lambda ra, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=ra)],
         "ra": [lambda ziel_planet: ziel_planet.a],
-        "delta_v2": [lambda va, vk_ziel: UnitDecimal(vk_ziel - va, 'km/s')]
+        "delta_va": [lambda va, vka: UnitDecimal(vka - va, 'km/s')]
     }, TransferEllipse.param_funcs)
 
     def __init__(self, **kwargs):
