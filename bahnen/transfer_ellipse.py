@@ -46,7 +46,7 @@ def transfer_dauer(*, zentralgestirn: Planet, a: Decimal, epsilon: Decimal, phi_
                         (1 - epsilon)/(1 + epsilon)
                     )) * Decimal(
                         math.tan(grad_zu_rad(phi_ankunft)/2)
-                    )
+                )
                 )
             ) - (
                 epsilon * Decimal(
@@ -123,8 +123,8 @@ def delta_t(*, psi: Decimal, start_planet: Planet, ziel_planet: Planet) -> Decim
 
 @return_unit("km/s")
 def delta_v2() -> Decimal:
-    # TODO
-    pass
+    return Decimal('0')
+
 
 class TransferEllipse(Ellipse):
     start_planet: Planet
