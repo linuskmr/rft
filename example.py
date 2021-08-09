@@ -22,6 +22,7 @@ hohmann: HohmannTransfer = HohmannTransfer(
 print(hohmann.transfer_dauer)
 
 
+#! TODO Delta v1 und v2 können nicht ausgerechenet werden, sollte aber möglich sein!
 hohmann: HohmannTransfer = HohmannTransfer(
     zentralgestirn=ERDE,
     rp=ERDE.R + 200,
