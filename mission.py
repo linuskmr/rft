@@ -127,14 +127,16 @@ def main():
     print('Vollständige Mission 🚀 - Eingabe der Parameter')
     # Eingabe lesen
     start_planet = planet_from_name(input('Startplanet: '))
+    R = start_planet.R
     start_planet_hoehe_umlaufbahn = UnitDecimal(Decimal(
-        input('Radius Umlaufbahn bei Startplanet (in km): ')
+        eval(input('Radius Umlaufbahn bei Startplanet (in km): '))
     ), 'km')
     bahnaufstieg_machen = input('Bahnaufstieg beim Startplaneten machen (True/False)? ').lower() == 'true'
     print(f'{bahnaufstieg_machen=}')
     ziel_planet = planet_from_name(input('Zielplanet: '))
+    R = ziel_planet.R
     ziel_planet_hoehe_umlaufbahn = UnitDecimal(Decimal(
-        input('Radius Umlaufbahn bei Zielplanet (in km): ')
+        eval(input('Radius Umlaufbahn bei Zielplanet (in km): '))
     ), 'km')
     print('---')
     data = mission(
