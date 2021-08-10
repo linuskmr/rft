@@ -1,6 +1,9 @@
+import json
 from decimal import Decimal
-from typing import Optional
+from typing import Optional, List
 import inspect
+
+from lib.planet import Planet
 
 
 class Solvable:
@@ -35,7 +38,7 @@ class Solvable:
 
     def solve_param(self, param: str, given_params: dict) -> Optional[Decimal]:
         if param in given_params:
-            print(f'[{param}] given as {given_params[param]}')
+            # print(f'[{param}] given as {given_params[param]}')
             return given_params[param]
 
         for func in self.param_funcs[param]:
@@ -60,8 +63,16 @@ class Solvable:
             if result is None:
                 continue
 
-            print(
-                f'Calculating [{param}] through {func} with {required_kwargs} as {result}')
+            output = {
+                'berechneter Wert': param,
+                'function': {
+                    'name': func.__name__,
+                    'parameter': [
+                        {key: value for key, value in required_kwargs.items()}
+                    ]
+                }
+            }
+            print(json.dumps(output, indent='  ', default=str, ensure_ascii=False))
             return result
 
         return None
