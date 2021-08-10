@@ -252,7 +252,7 @@ class TransferEllipse(Ellipse):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        if self.ra < self.rp:
+        if hasattr(self, 'ra') and hasattr(self, 'rp') and self.ra < self.rp:
             raise Exception('Apozentrum muss größer sein als Perizentrum.')
 
     def startzeitpunkt_nach_index(self, n: int) -> datetime:
