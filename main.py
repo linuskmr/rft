@@ -4,5 +4,6 @@ from bahnen.hohmann import HohmannTransfer
 from lib.planet import *
 from lib.unit_decimal import UnitDecimal
 from datetime import timedelta
+from lib.konstanten import *
 
 # Let the journey begin 🚀
