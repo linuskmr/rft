@@ -84,7 +84,7 @@ def einschwenken_orbit_zielplanet_4(ziel_planet: Planet, hp: Decimal, vinf: Deci
     print(f'{ziel_planet=}')
     print(f'Höhe Perizentrum über Plantenoberfläche {hp=}')
     print(f'Anfluggeschwindigkeit vom Hohmann-Transfer (va) hier als hyperbolische Exzessgeschwindigkeit {vinf=}')
-    return fluchthyperbel(planet=ziel_planet, hp=hp, vinf=ziel_planet.v)
+    return fluchthyperbel(planet=ziel_planet, hp=hp, vinf=vinf)
 
 
 def mission(
