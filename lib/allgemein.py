@@ -1,8 +1,26 @@
 import math
 from datetime import timedelta
 from decimal import Decimal
+from typing import Any
 from lib.planet import *
 from lib.unit_decimal import return_unit, UnitDecimal
+
+
+def print_tint(text: Any, color: str = None):
+    """Used to print a tinted console text."""
+    color = color.lower()
+    text = str(text)
+    colors = {
+        'purple': '\033[95m',
+        'blue': '\033[94m',
+        'cyan': '\033[96m',
+        'green': '\033[92m',
+        'yellow': '\033[93m',
+        'red': '\033[91m',
+    }
+    reset = '\033[0m'
+    text = colors.get(color) + text + reset
+    print(text)
 
 
 def keplersche_zeitgleichung(planet: Planet, a: Decimal, epsilon: Decimal, phi: Decimal):
