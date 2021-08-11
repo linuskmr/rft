@@ -21,6 +21,7 @@ class Mission:
     """3. Der Hohmann-Transfeer vom Startplaneten zum Zielplaneten."""
     einschwenken_orbit_zielplanet_4: Fluchthyperbel
     """4. Eine 'umgedrehte' Fluchthyperbel zum Einschwenken in den Orbit um den Zielplaneten."""
+    delta_v_total: UnitDecimal
 
     def __str__(self):
         return json.dumps(
@@ -127,7 +128,12 @@ def mission(
         bahnaufstieg_1=bahnaufstieg_1_data,
         uebergang_zielplanet_3=uebergang_zielplanet_3_data,
         flucht_gravitationsfeld_2=flucht_gravitationsfeld_2_data,
-        einschwenken_orbit_zielplanet_4=einschwenken_orbit_zielplanet_4_data
+        einschwenken_orbit_zielplanet_4=einschwenken_orbit_zielplanet_4_data,
+        delta_v_total=UnitDecimal(
+            flucht_gravitationsfeld_2_data.v_total.copy_abs()
+            + einschwenken_orbit_zielplanet_4_data.v_total.copy_abs(),
+            'km/s'
+        )
     )
 
 
