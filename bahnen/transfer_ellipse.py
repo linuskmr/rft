@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from bahnen.ellipse import Ellipse
+from lib import kreis
 from lib.planet import Planet
 from datetime import timedelta, datetime
 from lib.planet import planet_from_name, ERDE
@@ -74,7 +75,7 @@ def vk(*, zentralgestirn: Planet, radius: Decimal) -> Decimal:
     Returns:
         Decimal: Geschwindigkeit in km/s.
     """
-    return Decimal(math.sqrt(zentralgestirn.mu/radius))
+    return kreis.geschwindigkeit(planet=zentralgestirn, rk=radius)
 
 
 @return_unit("°")

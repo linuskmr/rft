@@ -4,7 +4,7 @@ from decimal import Decimal
 from lib import konstanten
 from lib.planet import Planet, ERDE
 from lib.unit_decimal import return_unit, UnitDecimal
-from typing import Optional
+from typing import Optional, List, Callable, Dict
 from lib.allgemein import *
 from lib.solvable import Solvable
 
@@ -210,6 +210,11 @@ def umlaufzeit(*, zentralgestirn: Planet, a: Decimal) -> timedelta:
     return timedelta(seconds=2 * math.pi * math.sqrt(a**3 / zentralgestirn.mu))
 
 
+@return_unit('km')
+def grosse_halbachse_umlaufzeit_zentralgestirn(*, umlaufzeit: timedelta, zentralgestirn: Planet):
+    return (Decimal(umlaufzeit.total_seconds() / (2 * math.pi)) ** 2 * zentralgestirn.mu) ** (Decimal(1 / 3))
+
+
 class Ellipse(Solvable):
     ra: UnitDecimal
     """Radius Apozentrum in km."""
@@ -234,15 +239,14 @@ class Ellipse(Solvable):
     umlaufzeit: timedelta
     """Dauer einer Umrundung der Ellipse."""
 
-    param_funcs: dict = {
+    param_funcs: Dict[str, List[Callable]] = {
         "ra": [apozentrum_radius_a_e,
                apozentrum_radius_a_epsilon, apozentrum_radius_p_epsilon],
         "rp": [perizentrum_radius_a_epsilon,
                perizentrum_radius_a_ra, perizentrum_radius_p_epsilon],
         "epsilon": [numerische_exzentrizitaet_e_a, numerische_exzentrizitaet_epsilon_a, numerische_exzentrizitaet_ra_rp],
         "p": [bahnparameter_p],
-        "a": [grosse_halbachse_p_epsilon, grosse_halbachse_ra_rp,
-              lambda umlaufzeit, zentralgestirn: UnitDecimal((Decimal(umlaufzeit.total_seconds() / (2 * math.pi))**2 * zentralgestirn.mu)**(Decimal(1/3)), 'km')],
+        "a": [grosse_halbachse_p_epsilon, grosse_halbachse_ra_rp, grosse_halbachse_umlaufzeit_zentralgestirn],
         "b": [kleine_halbachse],
         "e": [lineare_exzentrizitaet],
         "vp": [perizentrum_geschwindigkeit_rp_p_epsilon,
