@@ -146,6 +146,7 @@ def lineare_exzentrizitaet_allgemein(*, a: Decimal, epsilon: Decimal) -> Decimal
     return a * epsilon
 
 
+@return_unit('km/s')
 def inklinationsaenderung(*, v: Decimal, delta_i: Decimal) -> Decimal:
     """
     Berechnet den Verlust durch ein Bahnebenendrehungsmanöver bzw. eine Inklinationsänderung.
