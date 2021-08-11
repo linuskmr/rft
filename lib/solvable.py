@@ -2,6 +2,7 @@ import json
 from decimal import Decimal
 from typing import Optional, List
 import inspect
+import random
 
 from lib.planet import Planet
 
@@ -21,6 +22,7 @@ class Solvable:
 
         while previous_size > len(solvable_params) and len(solvable_params) > 0:
             previous_size = len(solvable_params)
+            random.shuffle(solvable_params)
 
             for param in solvable_params:
                 result = self.solve_param(param, given_params)
@@ -41,6 +43,7 @@ class Solvable:
             # print(f'[{param}] given as {given_params[param]}')
             return given_params[param]
 
+        random.shuffle(self.param_funcs[param])
         for func in self.param_funcs[param]:
             func_args = inspect.signature(func)
             required_kwargs = {}
@@ -78,5 +81,6 @@ class Solvable:
         return None
 
     def __str__(self):
-        key_value_pairs = map(lambda item: f'{str(item[0])} = {str(item[1])}', vars(self).items())
+        key_value_pairs = map(
+            lambda item: f'{str(item[0])} = {str(item[1])}', vars(self).items())
         return '{\n' + '\n'.join(f'  {x}' for x in key_value_pairs) + '\n}'
