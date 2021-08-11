@@ -193,10 +193,14 @@ class TransferEllipse(Ellipse):
     vka: UnitDecimal
     """Geschwindigkeit auf Kreisbahn um Apozentrumsplanet."""
 
+    delta_v1: UnitDecimal
+    """Geschwindigkeitsdelta/Schubimpuls beim Startplanet in km/s."""
+    delta_v2: UnitDecimal
+    """Geschwindigkeitsdelta/Schubimpuls beim Zieplanet in km/s."""
     delta_vp: UnitDecimal
-    """Geschwindigkeitsdelta/Schubimpuls bei Perizentrum in km/s."""
+    """Geschwindigkeitsdelta/Schubimpuls im Perizentrum in km/s."""
     delta_va: UnitDecimal
-    """Geschwindigkeitsdelta/Schubimpuls Apozentrum in km/s."""
+    """Geschwindigkeitsdelta/Schubimpuls im Apozentrum in km/s."""
     v_total: UnitDecimal
     """Insgesamt benötigter Geschwindigkeitsimpuls in km/s."""
 
@@ -224,6 +228,8 @@ class TransferEllipse(Ellipse):
         "vka": [vka],
         "delta_vp": [delta_vp_or_delta_v2],
         "delta_va": [delta_va_or_delta_v2],
+        "delta_v1": [lambda delta_vp, delta_va, flug_zu_innerem_planet: delta_va if flug_zu_innerem_planet else delta_vp],
+        "delta_v2": [lambda delta_vp, delta_va, flug_zu_innerem_planet: delta_vp if flug_zu_innerem_planet else delta_va],
         "v_total": [lambda delta_vp, delta_va: UnitDecimal(delta_vp.copy_abs() + delta_va.copy_abs(), "km/s")],
         "phi_ankunft": [phi_ankunft],
         "transfer_dauer": [transfer_dauer],
