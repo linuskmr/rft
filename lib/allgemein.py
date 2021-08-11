@@ -152,9 +152,9 @@ def inklinationsaenderung(*, v: Decimal, delta_i: Decimal) -> Decimal:
 
     Args:
         v: Die Geschwindigkeit auf der Bahn in km/s.
-        delta_i: Der Winkel, um den die Bahn geändert werden soll in Radiant.
+        delta_i: Der Winkel, um den die Bahn geändert werden soll in Grad.
 
     Returns:
         Decimal: Das notwendige delta_v für die Bahnebenendrehung.
     """
-    return 2 * v * Decimal(math.sin(delta_i / 2))
+    return 2 * v * Decimal(math.sin(grad_zu_rad(delta_i) / 2))
