@@ -5,12 +5,24 @@ from lib.planet import *
 from lib.unit_decimal import UnitDecimal
 
 
+@return_unit('km/s')
+def delta_va(*, vka: UnitDecimal, va: UnitDecimal) -> Decimal:
+    return (va - vka).copy_abs()
+
+
+@return_unit('km/s')
+def delta_vp(*, vkp: UnitDecimal, vp: UnitDecimal) -> Decimal:
+    return (vp - vkp).copy_abs()
+
+
 class HohmannTransfer(TransferEllipse):
     param_funcs: dict = merge_param_funcs({
         "vkp": [lambda rp, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=rp)],
         "vka": [lambda ra, zentralgestirn: vk(zentralgestirn=zentralgestirn, radius=ra)],
         "rp": [lambda planet_p: planet_p.a],
-        "ra": [lambda planet_a: planet_a.a]
+        "ra": [lambda planet_a: planet_a.a],
+        "delta_vp": [delta_vp],
+        "delta_va": [delta_va]
     }, TransferEllipse.param_funcs)
 
     def __init__(self, **kwargs):
