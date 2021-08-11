@@ -22,10 +22,10 @@ class Fluchthyperbel:
     """Numerische Exzentrizität."""
     p: UnitDecimal
     """Bahnparameter p in km."""
-    grosses_epsilon: UnitDecimal
-    """"""
-    psi_inf: UnitDecimal
-    """"""
+    umlenkwinkel_gross_phi: UnitDecimal
+    """Umlenkwinkel in Grad."""
+    phi_inf: UnitDecimal
+    """Unendlichkeitsanomalie in Grad."""
     vk: UnitDecimal
     """Kreisbahngeschwindigkeit am Perizentrum in km/s."""
     vp: UnitDecimal
@@ -81,8 +81,8 @@ def fluchthyperbel(planet: Planet, vinf: Decimal, hp: Decimal) -> Fluchthyperbel
     print(f'Benötigter Gesamtschubimpuls {v_total=}')
 
     return Fluchthyperbel(
-        vinf=vinf, hp=hp, a=a, rp=rp, epsilon=epsilon, p=p, grosses_epsilon=grosses_epsilon, psi_inf=psi_inf, vk=vk,
-        vp=vp, v_total=v_total
+        vinf=vinf, hp=hp, a=a, rp=rp, epsilon=epsilon, p=p, umlenkwinkel_gross_phi=grosses_epsilon, phi_inf=psi_inf,
+        vk=vk, vp=vp, v_total=v_total
     )
 
 
