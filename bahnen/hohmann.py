@@ -2,7 +2,7 @@
 from bahnen.transfer_ellipse import TransferEllipse, vk
 from lib.helper import merge_param_funcs
 from lib.planet import *
-from lib.unit_decimal import UnitDecimal
+from lib.unit_decimal import UnitDecimal, return_unit
 
 
 @return_unit('km/s')
