@@ -2,6 +2,8 @@ import math
 from datetime import timedelta
 from decimal import Decimal
 from typing import Any
+
+from lib import konstanten
 from lib.planet import *
 from lib.unit_decimal import return_unit, UnitDecimal
 
@@ -99,7 +101,7 @@ def vis_viva_r_a(*, planet: Planet, r: Decimal, a: Decimal) -> Decimal:
     return Decimal(math.sqrt(planet.mu * ((2 / r) - (1 / a))))
 
 
-def numerische_exzentrizitaet_ra_rp(*, rp: Decimal, ra: Decimal) -> Decimal:
+def numerische_exzentrizitaet_ra_rp(*, rp: Decimal, ra: Decimal) -> int:
     """
     Berechnet die numerische Exzentrizität epsilon.
 
@@ -107,7 +109,7 @@ def numerische_exzentrizitaet_ra_rp(*, rp: Decimal, ra: Decimal) -> Decimal:
     :param rp: Radius des Perizentrums in km, also der Ort mit minimaler Entfernung zum Planten.
     :return: Numerische Exzentrizität.
     """
-    return (ra - rp) / (ra + rp)
+    return round((ra - rp) / (ra + rp), konstanten.EPSILON_PRECISION)
 
 
 def numerische_exzentrizitaet_e_a(*, e: Decimal, a: Decimal) -> Decimal:
@@ -118,7 +120,7 @@ def numerische_exzentrizitaet_e_a(*, e: Decimal, a: Decimal) -> Decimal:
     :param a: Große Halbachse in km.
     :return: Numerische Exzentrizität.
     """
-    return e / a
+    return round(e / a, konstanten.EPSILON_PRECISION)
 
 
 def numerische_exzentrizitaet_epsilon_a(*, epsilon: Decimal, a: Decimal) -> Decimal:
@@ -129,7 +131,7 @@ def numerische_exzentrizitaet_epsilon_a(*, epsilon: Decimal, a: Decimal) -> Deci
     :param a: Große Halbachse in km.
     :return: Numerische Exzentrizität.
     """
-    return (a * (1 + epsilon) - a * (1 - epsilon)) / (2 * a)
+    return round((a * (1 + epsilon) - a * (1 - epsilon)) / (2 * a), konstanten.EPSILON_PRECISION)
 
 
 @return_unit('km')

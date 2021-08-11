@@ -1,5 +1,7 @@
 import math
 from decimal import Decimal
+
+from lib import konstanten
 from lib.planet import *
 from lib.unit_decimal import return_unit
 
@@ -78,7 +80,7 @@ def numerische_exzentrizitaet(*, a: Decimal, ra: Decimal) -> Decimal:
     :param ra: Radius des Apozentrums der Hyperbel in km.
     :return: Numerische Exzentrizität.
     """
-    return (ra / a) - 1
+    return round(Decimal((ra / a) - 1), konstanten.EPSILON_PRECISION)
 
 
 @return_unit('km')
