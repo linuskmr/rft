@@ -5,6 +5,7 @@ from typing import Optional
 from bahnaufstieg import bahnaufstieg, Bahnaufstieg
 from fluchthyperbel import fluchthyperbel, Fluchthyperbel
 from lib.planet import *
+from lib.solvable import Solvable
 from lib.unit_decimal import UnitDecimal
 from bahnen.hohmann import HohmannTransfer
 from dataclasses import dataclass
@@ -20,6 +21,13 @@ class Mission:
     """3. Der Hohmann-Transfeer vom Startplaneten zum Zielplaneten."""
     einschwenken_orbit_zielplanet_4: Fluchthyperbel
     """4. Eine 'umgedrehte' Fluchthyperbel zum Einschwenken in den Orbit um den Zielplaneten."""
+
+    def __str__(self):
+        return json.dumps(
+            dataclasses.asdict(self), indent='  ',
+            default=lambda x: vars(x) if isinstance(x, Solvable) else str(x),
+            ensure_ascii=False
+        )
 
 
 def print_mission_ablauf():
@@ -143,10 +151,7 @@ def main():
         start_planet=start_planet, ziel_planet=ziel_planet, start_planet_hoehe_umlaufbahn=start_planet_hoehe_umlaufbahn,
         ziel_planet_hoehe_umlaufbahn=ziel_planet_hoehe_umlaufbahn, bahnaufstieg_machen=bahnaufstieg_machen
     )
-    data_json = json.dumps(dataclasses.asdict(data), indent='  ', default=lambda x: str(x), ensure_ascii=False)
-    print()
-    print('Raw data:')
-    print(data_json)
+    print('Raw data:', data)
 
 
 if __name__ == '__main__':
