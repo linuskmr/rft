@@ -1,6 +1,6 @@
 import math
 from decimal import Decimal
-
+from lib.helper import rad_zu_grad
 from lib import konstanten
 from lib.planet import *
 from lib.unit_decimal import return_unit
@@ -149,16 +149,15 @@ def unendlichkeitsanomalie(*, epsilon: Decimal) -> Decimal:
     Berechnet die Umlaufzeit der Hyperbel.
 
     :param epsilon: Die numerische Exzentrizität.
-    :return: Unendlichkeitsanomalie.
+    :return: Unendlichkeitsanomalie in Grad.
     """
-    return Decimal(math.acos(-(1 / epsilon)))
+    return rad_zu_grad(Decimal(math.acos(-(1 / epsilon))))
 
 
 def umlenkwinkel(epsilon: Decimal) -> Decimal:
     """
     Berechnet den Umlenkwinkel der Parabel.
     :param epsilon: Die numerische Exzentrizität.
-    :return: Den Umlinkwinkel als sin(Psi/2).
+    :return: Den Umlinkwinkel in Grad.
     """
-    # TODO: Was ist der Return-Wert?
-    return 1 / epsilon
+    return rad_zu_grad(2 * Decimal(math.asin(1 / epsilon)))
