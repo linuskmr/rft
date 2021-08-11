@@ -116,11 +116,11 @@ def mission(
     uebergang_zielplanet_3_data = uebergang_zielplanet_3(start_planet=start_planet, ziel_planet=ziel_planet)
     print('\n---\n')
     flucht_gravitationsfeld_2_data = flucht_gravitationsfeld_2(
-        planet=start_planet, hp=start_planet_hoehe_umlaufbahn, vinf=uebergang_zielplanet_3_data.vp
+        planet=start_planet, hp=start_planet_hoehe_umlaufbahn, vinf=uebergang_zielplanet_3_data.delta_v1
     )
     print('\n---\n')
     einschwenken_orbit_zielplanet_4_data = einschwenken_orbit_zielplanet_4(
-        ziel_planet=ziel_planet, hp=ziel_planet_hoehe_umlaufbahn, vinf=uebergang_zielplanet_3_data.va
+        ziel_planet=ziel_planet, hp=ziel_planet_hoehe_umlaufbahn, vinf=uebergang_zielplanet_3_data.delta_v2
     )
 
     return Mission(
