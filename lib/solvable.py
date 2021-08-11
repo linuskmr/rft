@@ -67,7 +67,8 @@ class Solvable:
                 continue
 
             output = {
-                'berechneter Wert': param,
+                'parameter': param,
+                'result': result,
                 'function': {
                     'name': func.__name__,
                     'parameter': [
