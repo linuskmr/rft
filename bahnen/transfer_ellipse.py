@@ -142,7 +142,7 @@ def delta_v2(*, zentralgestirn: Planet, v_start: UnitDecimal, start_planet: Plan
     v_pl = vk(zentralgestirn=zentralgestirn, radius=ziel_planet.a)
     # Cosinus-Satz
     cos_b = UnitDecimal((start_planet.a * v_start) / (ziel_planet.a * v_phi), '°')
-    return -Decimal(math.sqrt(v_pl**2 + v_phi**2 - 2 * v_phi * v_pl * cos_b)).copy_abs()
+    return -Decimal(math.sqrt((v_pl**2 + v_phi**2 - 2 * v_phi * v_pl * cos_b).copy_abs())).copy_abs()
 
 
 @return_unit('km/s')
