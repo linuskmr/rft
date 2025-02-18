@@ -5,7 +5,7 @@ from lib.solvable import Solvable
 
 
 @return_unit('kg')
-def nutzlast(*, m0: Decimal, mk: Decimal, mT: Decimal) -> Decimal:
+def payload(*, m0: Decimal, mk: Decimal, mT: Decimal) -> Decimal:
     """
     Berechnet die Nutzlast mN aus m0, mK und mT.
 
@@ -20,7 +20,7 @@ def nutzlast(*, m0: Decimal, mk: Decimal, mT: Decimal) -> Decimal:
     return m0 - mk - mT
 
 
-def konstruktionsmasse(m0: Decimal, mT: Decimal, mN: Decimal) -> Decimal:
+def structural_mass(m0: Decimal, mT: Decimal, mN: Decimal) -> Decimal:
     """
     Berechnet die Konstruktionsmasse mK aus m0, mT und mN.
     Args:
@@ -34,7 +34,7 @@ def konstruktionsmasse(m0: Decimal, mT: Decimal, mN: Decimal) -> Decimal:
     return m0 - mT - mN
 
 
-def startmasse(*, mK: Decimal, mT: Decimal, mN: Decimal) -> Decimal:
+def launch_mass(*, mK: Decimal, mT: Decimal, mN: Decimal) -> Decimal:
     """
     Berechnet die Startmasse m0 aus mK, mT und mN.
     Args:
@@ -48,7 +48,7 @@ def startmasse(*, mK: Decimal, mT: Decimal, mN: Decimal) -> Decimal:
     return mK + mT + mN
 
 
-def nutzlastverhaeltnis(*, mN: Decimal, m0: Decimal) -> Decimal:
+def payload_ratio(*, mN: Decimal, m0: Decimal) -> Decimal:
     """
     Berechnet das Nutzlastverhältnis lambda bzw. mN/m0.
 
@@ -62,7 +62,7 @@ def nutzlastverhaeltnis(*, mN: Decimal, m0: Decimal) -> Decimal:
     return mN / m0
 
 
-def strukturverhaeltnis(*, mK: Decimal, mT: Decimal) -> Decimal:
+def structural_ratio(*, mK: Decimal, mT: Decimal) -> Decimal:
     """
     Berechnet das Strukturverhältnis sigma bzw. mK / (mk+mT).
 
@@ -76,7 +76,7 @@ def strukturverhaeltnis(*, mK: Decimal, mT: Decimal) -> Decimal:
     return mK / (mK + mT)
 
 
-def massenverhaeltnis(*, m0: Decimal, mb: Decimal) -> Decimal:
+def mass_ratio(*, m0: Decimal, mb: Decimal) -> Decimal:
     """
     Berechnet das Massenverhältnis r bzw. m0/mb.
 
@@ -90,31 +90,31 @@ def massenverhaeltnis(*, m0: Decimal, mb: Decimal) -> Decimal:
     return m0 / mb
 
 
-class Nutzlast(Solvable):
+class Payload(Solvable):
     mN: UnitDecimal
-    """Nutzlast in kg."""
+    """Payload in kg."""
     m0: UnitDecimal
-    """Startmasse in kg (Masse Rakete + Treibstoff + Nutzlast)."""
+    """Launch mass in kg (mass of rocket + propellant + payload)."""
     mK: UnitDecimal
-    """Konstruktionsmasse in kg."""
+    """Structural mass in kg."""
     mb: UnitDecimal
-    """Brennschlussmasse in kg (Konstruktionsmasse + Nutzlast)."""
+    """Burnout mass in kg (structural mass + payload)."""
     mT: UnitDecimal
-    """Treibstoffmasse in kg."""
+    """Propellant in kg."""
     r: UnitDecimal
-    """Massenverhältnis (m0/mb)."""
+    """Mass ratio (m0/mb)."""
     sigma: UnitDecimal
-    """Strukturverhältnis (mK / (mk+mT))"""
+    """Structural ratio (mK / (mk+mT))"""
     lambda_: UnitDecimal
-    """Nutzlastverhältnis (mN/m0)"""
+    """Payload ratio (mN/m0)"""
 
     param_funcs: dict = {
-        "mN": [nutzlast],
-        "lambda_": [nutzlastverhaeltnis],
-        "sigma": [strukturverhaeltnis],
-        "r": [massenverhaeltnis],
-        "mk": [konstruktionsmasse],
-        "m0": [startmasse]
+        "mN": [payload],
+        "lambda_": [payload_ratio],
+        "sigma": [structural_ratio],
+        "r": [mass_ratio],
+        "mk": [structural_mass],
+        "m0": [launch_mass]
     }
 
     def __init__(self, **kwargs):
@@ -122,10 +122,10 @@ class Nutzlast(Solvable):
 
 
 def main():
-    nutzlast_input_json = input('Nutzlast Data: ')
-    nutzlast_input = json.loads(nutzlast_input_json)
-    nutzlast_obj = Nutzlast(**nutzlast_input)
-    print(json.dumps(nutzlast_obj.__dict__, indent='  ', default=lambda x: str(x)))
+    payload_input_json = input('Payload JSON Data: ')
+    payload_input = json.loads(payload_input_json)
+    payload_obj = Payload(**payload_input)
+    print(json.dumps(payload_obj.__dict__, indent='  ', default=lambda x: str(x)))
 
 
 if __name__ == '__main__':

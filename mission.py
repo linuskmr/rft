@@ -2,8 +2,8 @@ import dataclasses
 import json
 from typing import Optional
 
-from bahnaufstieg import bahnaufstieg, Bahnaufstieg
-from fluchthyperbel import fluchthyperbel, Fluchthyperbel
+from ascent_trajectory import ascent_trajectory, Bahnaufstieg
+from escape_hyperbola import fluchthyperbel, EscapeHyperbola
 from lib.planet import *
 from lib.solvable import Solvable
 from lib.unit_decimal import UnitDecimal
@@ -13,14 +13,14 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class Mission:
-    bahnaufstieg_1: Optional[Bahnaufstieg]
-    """1. Das Starten der Rakete von der Oberfläche des Startplaneten in einen niedrigen Orbit."""
-    flucht_gravitationsfeld_2: Fluchthyperbel
-    """2. Die Flucht aus dem Gravitationsfeld des Startplaneten."""
-    uebergang_zielplanet_3: HohmannTransfer
-    """3. Der Hohmann-Transfeer vom Startplaneten zum Zielplaneten."""
-    einschwenken_orbit_zielplanet_4: Fluchthyperbel
-    """4. Eine 'umgedrehte' Fluchthyperbel zum Einschwenken in den Orbit um den Zielplaneten."""
+    ascent_trajectory_1: Optional[AscentTrajectory]
+    """1. Launching the rocket from the surface of the departure planet into a low orbit."""
+    escape_gravitational_field_2: EscapeHyperbola
+    """2. Escaping the gravitational field of the departure planet."""
+    transfer_to_target_planet_3: HohmannTransfer
+    """3. The Hohmann transfer from the departure planet to the target planet."""
+    insertion_orbit_target_planet_4: EscapeHyperbola
+    """4. A 'reversed' escape hyperbola to the enter orbit around the target planet."""
     delta_v_total: UnitDecimal
 
     def __str__(self):
@@ -32,106 +32,105 @@ class Mission:
 
 
 def print_mission_ablauf():
-    """Gibt den Missionsablauf aus."""
+    """Prints the mission sequence."""
 
-    print('Ablauf der Mission')
-    print('1. Bahnaufstieg')
-    print('2. Flucht aus dem Gravitationsfeld des Startplaneten')
-    print('3. Übergang zum Zielplaneten (Hohmann-Transfer)')
-    print('4. Einschwenken in den Orbit um die Zielplaneten')
+    print('Mission Sequence')
+    print('1. Ascent Trajectory')
+    print('2. Escape from the gravitational field of the departure planet')
+    print('3. Transfer to the target planet (Hohmann Transfer)')
+    print('4. Enter orbit around the target planet')
 
 
-def bahnaufstieg_1() -> Bahnaufstieg:
+def ascent_trajectory_1() -> AscentTrajectory:
     """
-    Berechnet den Bahnaufstieg vom Startplaneten.
+    Calculates the ascent trajectory from the departure planet.
 
-    :return: Sämtliche berechneten Werte.
+    :return: All calculated values.
     """
-    return bahnaufstieg()
+    return ascent_trajectory()
 
 
-def uebergang_zielplanet_3(*, start_planet: Planet, ziel_planet: Planet) -> HohmannTransfer:
+def transfer_to_target_planet_3(*, departure_planet: Planet, target_planet: Planet) -> HohmannTransfer:
     """
-    Berechnet den Hohmann-Transfer (Ellipse) vom Startplaneten zum Zielplanten.
+    Calculates the Hohmann transfer (ellipse) from the departure planet to the target planet.
 
-    :param start_planet: Startplanet.
-    :param ziel_planet: Zielplanet.
-    :return: Sämtliche berechneten Werte.
+    :param departure_planet: Departure planet.
+    :param target_planet: Target planet.
+    :return: All calculated values.
     """
-    print('3. Übergang zum Zielplaneten')
-    uebergang_zielplanet_data = HohmannTransfer(zentralgestirn=SONNE, start_planet=start_planet, ziel_planet=ziel_planet)
-    return uebergang_zielplanet_data
+    print('3. Transfer to the target planet')
+    transfer_to_target_planet_data = HohmannTransfer(central_star=SUN, departure_planet=departure_planet, target_planet=target_planet)
+    return transfer_to_target_planet_data
 
 
-def flucht_gravitationsfeld_2(planet: Planet, hp: Decimal, vinf: Decimal) -> Fluchthyperbel:
+def escape_gravitational_field_2(planet: Planet, hp: Decimal, vinf: Decimal) -> EscapeHyperbola:
     """
-    2. Berechnet die Flucht aus dem Gravtiationsfeld des Startplaneten.
+    2. Calculates the escape from the gravitational field of the departure planet.
     
-    :param planet: Planet, aus dessen Gravitationsfeld geflohen werden soll.
-    :param hp: Höhe des Perizentrums über der Planetenoberfläche in km.
-    :param vinf: Hyperbolische Exzessgeschwindigkeit im Unendlichen in km/s.
+    :param planet: Planet to escape from.
+    :param hp: Pericenter height above the planet's surface in km.
+    :param vinf: Hyperbolic excess velocity at infinity in km/s.
     :return: 
     """
-    print(f'2. Flucht aus dem Gravitationsfeld von Start {planet}')
-    print(f'Berechne Fluchthyperbel von {planet=}')
-    print(f'Höhe des Perizentrums über der Planetenoberfläche {hp=}')
-    print(f'Exzessgeschwindigkeit delta_v1 (vom Hohmann-Übergang) {vinf=}')
-    return fluchthyperbel(planet=planet, hp=hp, vinf=vinf)
+    print(f'2. Escape from the gravitational field of departure {planet}')
+    print(f'Calculating escape hyperbola from {planet=}')
+    print(f'Pericenter height above the planet's surface {hp=}')
+    print(f'Excess velocity delta_v1 (from Hohmann transfer) {vinf=}')
+    return escape_hyperbola(planet=planet, hp=hp, vinf=vinf)
 
 
-def einschwenken_orbit_zielplanet_4(ziel_planet: Planet, hp: Decimal, vinf: Decimal) -> Fluchthyperbel:
+def insertion_orbit_target_planet_4(target_planet: Planet, hp: Decimal, vinf: Decimal) -> EscapeHyperbola:
     """
-    4. Berechnet das Einschwenken in den Orbit des Zielplanten.
+    4. Calculates the orbit insertion around the target planet.
 
-    :param ziel_planet: Zielplanet.
-    :param hp: Höhe des Perizentrums über der Planetenoberfläche in km.
-    :param vinf: Hyperbolische Exzessgeschwindigkeit; Geschwindigkeit im Unendlichen; Hier Anflugggeschwindigkeit in
-    km/s.
-    :return: Daten der Hyperbel.
+    :param target_planet: Target planet.
+    :param hp: Pericenter height above the planet's surface in km.
+    :param vinf: Hyperbolic excess velocity; velocity at infinity; here approach velocity in km/s.
+    :return: Hyperbola data.
     """
-    print(f'4. Einschwenken in Orbit um den Zielplaneten')
-    print(f'{ziel_planet=}')
-    print(f'Höhe Perizentrum über Plantenoberfläche {hp=}')
-    print(f'Anfluggeschwindigkeit vom Hohmann-Transfer (va) hier als hyperbolische Exzessgeschwindigkeit {vinf=}')
-    return fluchthyperbel(planet=ziel_planet, hp=hp, vinf=vinf)
+    print(f'4. Orbit insertion around the target planet')
+    print(f'{target_planet=}')
+    print(f'Pericenter height above the planet surface {hp=}')
+    print(f'Approach velocity from Hohmann transfer (va) here as hyperbolic excess velocity {vinf=}')
+    return escape_hyperbola(planet=target_planet, hp=hp, vinf=vinf)
 
 
 def mission(
-        *, start_planet: Planet, ziel_planet: Planet, start_planet_hoehe_umlaufbahn: Decimal,
-        ziel_planet_hoehe_umlaufbahn: Decimal, bahnaufstieg_machen: bool
+        *, departure_planet: Planet, target_planet: Planet, departure_planet_orbit_height: Decimal,
+        target_planet_orbit_height: Decimal, perform_ascent_trajectory: bool
 ) -> Mission:
     """
-    Berechnet eine vollständige Mission vom Startplanten zum Zielplaneten.
+    Calculates a complete mission from the departure planet to the target planet.
 
-    :param start_planet: Startplanet.
-    :param ziel_planet: Zielplanet.
-    :param start_planet_hoehe_umlaufbahn: Die Höhe der Umlaufbahn über der Planetenoberfläche des Startplaneten.
-    :param ziel_planet_hoehe_umlaufbahn: Die Höhe der Umlaufbahn über der Planetenoberfläche des Zielplanten.
-    :param bahnaufstieg_machen: Gibt an, ob ein Bahnaufstieg vom Startplaneten durchgeführt werden soll.
-    :return: Sämtliche berechneten Werte.
+    :param departure_planet: Departure planet.
+    :param target_planet: Target planet.
+    :param departure_planet_orbit_height: The orbit height above the surface of the departure planet.
+    :param target_planet_orbit_height: The orbit height above the surface of the target planet.
+    :param perform_ascent_trajectory: Indicates whether an ascent trajectory should be performed from the departure planet.
+    :return: All calculated values.
     """
-    print_mission_ablauf()
+    print_mission_sequence()
     print('\n---\n')
-    bahnaufstieg_1_data = bahnaufstieg_1() if bahnaufstieg_machen else None
+    ascent_trajectory_1_data = ascent_trajectory_1() if perform_ascent_trajectory else None
     print('\n---\n')
-    uebergang_zielplanet_3_data = uebergang_zielplanet_3(start_planet=start_planet, ziel_planet=ziel_planet)
+    transfer_to_target_planet_3_data = transfer_to_target_planet_3(departure_planet=departure_planet, target_planet=target_planet)
     print('\n---\n')
-    flucht_gravitationsfeld_2_data = flucht_gravitationsfeld_2(
-        planet=start_planet, hp=start_planet_hoehe_umlaufbahn, vinf=uebergang_zielplanet_3_data.delta_v1
+    escape_gravitational_field_2_data = escape_gravitational_field_2(
+        planet=departure_planet, hp=departure_planet_orbit_height, vinf=transfer_to_target_planet_3_data.delta_v1
     )
     print('\n---\n')
-    einschwenken_orbit_zielplanet_4_data = einschwenken_orbit_zielplanet_4(
-        ziel_planet=ziel_planet, hp=ziel_planet_hoehe_umlaufbahn, vinf=uebergang_zielplanet_3_data.delta_v2
+    insertion_orbit_target_planet_4_data = insertion_orbit_target_planet_4(
+        target_planet=target_planet, hp=target_planet_orbit_height, vinf=transfer_to_target_planet_3_data.delta_v2
     )
 
     return Mission(
-        bahnaufstieg_1=bahnaufstieg_1_data,
-        uebergang_zielplanet_3=uebergang_zielplanet_3_data,
-        flucht_gravitationsfeld_2=flucht_gravitationsfeld_2_data,
-        einschwenken_orbit_zielplanet_4=einschwenken_orbit_zielplanet_4_data,
+        ascent_trajectory_1=ascent_trajectory_1_data,
+        transfer_to_target_planet_3=transfer_to_target_planet_3_data,
+        escape_gravitational_field_2=escape_gravitational_field_2_data,
+        insertion_orbit_target_planet_4=insertion_orbit_target_planet_4_data,
         delta_v_total=UnitDecimal(
-            flucht_gravitationsfeld_2_data.v_total.copy_abs()
-            + einschwenken_orbit_zielplanet_4_data.v_total.copy_abs(),
+            escape_gravitational_field_2_data.v_total.copy_abs()
+            + insertion_orbit_target_planet_4_data.v_total.copy_abs(),
             'km/s'
         )
     )
